@@ -1,7 +1,11 @@
 package edu.iastate.netid.pocketcalculator;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,6 +41,24 @@ public class MainActivity extends AppCompatActivity {
     public void onOneClicked(View view) {
         try {
             mCalculationStream.inputDigit(CalculationStream.Digit.ONE);
+        } finally {
+            updateCalculatorDisplay();
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void onThreeZeroNineClicked(View view) {
+        try {
+            mCalculationStream.inputDigit(CalculationStream.Digit.THREE);
+            mCalculationStream.inputDigit(CalculationStream.Digit.ZERO);
+            mCalculationStream.inputDigit(CalculationStream.Digit.NINE);
+
+            final Button button = (Button) findViewById(R.id.Button_309);
+            button.setBackgroundColor(Color.RED);
+
+            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
+            layout.setBackgroundColor(R.color.special309color); // could refer to color directly but want to get practice /w xml
+
         } finally {
             updateCalculatorDisplay();
         }
@@ -162,9 +184,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     public void onClearClicked(View view) {
         try {
             mCalculationStream.clear();
+
+
+            final Button button = (Button) findViewById(R.id.Button_309);
+            button.setBackgroundColor(R.color.colorAccent);
+
+            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
+            layout.setBackgroundColor(R.color.colorPrimaryDark); // could refer to color directly but want to get practice /w xml
+
         } finally {
             updateCalculatorDisplay();
         }
