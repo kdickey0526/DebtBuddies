@@ -59,6 +59,14 @@ public class CounterActivity extends AppCompatActivity {
             }
         });
 
+        Button hiddenBtn = findViewById(R.id.radioButton2);
+        hiddenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CounterActivity.this, secret.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
