@@ -17,4 +17,7 @@ rootProject.name = "exp1"
 include(":mobile")
 include(":automotive")
 include(":shared")
+include(":mobile")
+include(":automotive")
+include(":shared")
  
