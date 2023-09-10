@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">experiment3</string>
+    <string name="show">show me a kitty please</string>
+    <string name="next">next kitty please</string>
+    <string name="rat">uh that\'s a rat</string>
+</resources>
