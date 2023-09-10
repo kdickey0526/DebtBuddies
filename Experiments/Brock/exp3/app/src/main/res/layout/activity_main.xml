@@ -6,28 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="244dp"
-        android:layout_marginEnd="139dp"
-        android:text="Don't press the button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonClickMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="291dp"
-        android:layout_marginEnd="164dp"
-        android:onClick="buttonClicked"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Click Me"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="0dp" />
+
 </RelativeLayout>

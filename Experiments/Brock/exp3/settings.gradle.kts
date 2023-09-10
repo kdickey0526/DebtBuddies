@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "exp3"
+rootProject.name = "exp2"
 include(":app")
- 

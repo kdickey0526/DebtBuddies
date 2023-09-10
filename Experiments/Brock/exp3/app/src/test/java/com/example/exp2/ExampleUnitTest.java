@@ -1,4 +1,4 @@
-package com.example.exp3;
+package com.example.exp2;
 
 import org.junit.Test;
 

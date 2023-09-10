@@ -10,10 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Exp3"
+        android:theme="@style/Theme.Exp2"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Activity2"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
