@@ -10,8 +10,10 @@
         android:id="@+id/buttonClickMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="524dp"
+        android:layout_marginEnd="116dp"
         android:text="Click Me"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
