@@ -32,32 +32,52 @@ public class MainActivity extends AppCompatActivity {
 
         r = new Random();
 
-        b_deal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int leftCard = r.nextInt(13) + 2; //values 2 - 14
-                int rightCard = r.nextInt(13) + 2;
-
-                int leftImage = getResources().getIdentifier("card" + leftCard, "drawable", getPackageName());
-                iv_cards_left.setImageResource(leftImage);
-
-                int rightImage = getResources().getIdentifier("card" + rightCard, "drawable", getPackageName());
-                iv_cards_right.setImageResource(rightImage);
-
-                if (leftCard > rightCard) {
-                    leftScore += 1;
-                    tv_score_left.setText(String.valueOf(leftScore));
-                } else if (leftCard < rightCard) {
-                    rightScore += 1;
-                    tv_score_right.setText(String.valueOf(rightScore));
-                } else {
-                    Toast.makeText(MainActivity.this, "WAR", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
+//        b_deal.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int leftCard = r.nextInt(13) + 2; //values 2 - 14
+//                int rightCard = r.nextInt(13) + 2;
+//
+//                int leftImage = getResources().getIdentifier("card" + leftCard, "drawable", getPackageName());
+//                iv_cards_left.setImageResource(leftImage);
+//
+//                int rightImage = getResources().getIdentifier("card" + rightCard, "drawable", getPackageName());
+//                iv_cards_right.setImageResource(rightImage);
+//
+//                if (leftCard > rightCard) {
+//                    leftScore += 1;
+//                    tv_score_left.setText(String.valueOf(leftScore));
+//                } else if (leftCard < rightCard) {
+//                    rightScore += 1;
+//                    tv_score_right.setText(String.valueOf(rightScore));
+//                } else {
+//                    Toast.makeText(MainActivity.this, "WAR", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
+
+    }
+
+    public void onDealClicked(View view) {
+        int leftCard = r.nextInt(13) + 2; //values 2 - 14
+        int rightCard = r.nextInt(13) + 2;
+
+        int leftImage = getResources().getIdentifier("card" + leftCard, "drawable", getPackageName());
+        iv_cards_left.setImageResource(leftImage);
+
+        int rightImage = getResources().getIdentifier("card" + rightCard, "drawable", getPackageName());
+        iv_cards_right.setImageResource(rightImage);
+
+        if (leftCard > rightCard) {
+            leftScore += 1;
+            tv_score_left.setText(String.valueOf(leftScore));
+        } else if (leftCard < rightCard) {
+            rightScore += 1;
+            tv_score_right.setText(String.valueOf(rightScore));
+        } else {
+            Toast.makeText(MainActivity.this, "WAR", Toast.LENGTH_SHORT).show();
+        }
     }
 }

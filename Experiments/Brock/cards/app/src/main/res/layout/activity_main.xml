@@ -36,15 +36,16 @@
 
     <Button
         android:id="@+id/b_deal"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_alignParentBottom="true"
-        android:textSize="40sp"
         android:layout_marginEnd="115dp"
         android:layout_marginBottom="405dp"
-        android:text="DEAL" />
+        android:onClick="onDealClicked"
+        android:text="DEAL"
+        android:textSize="40sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
