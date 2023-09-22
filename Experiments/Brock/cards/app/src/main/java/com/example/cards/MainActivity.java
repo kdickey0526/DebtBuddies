@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Button b_deal;
     Random r;
     int leftScore = 0, rightScore = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             rightScore += 1;
             tv_score_right.setText(String.valueOf(rightScore));
         } else {
-            Toast.makeText(MainActivity.this, "WAR", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "WAR", Toast.LENGTH_SHORT).show();
         }
     }
 }
