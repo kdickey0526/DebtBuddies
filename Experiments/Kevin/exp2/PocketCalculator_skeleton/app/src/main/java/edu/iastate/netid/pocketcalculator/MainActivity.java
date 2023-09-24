@@ -56,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
             final Button button = (Button) findViewById(R.id.Button_309);
             button.setBackgroundColor(Color.RED);
 
-            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
-            layout.setBackgroundColor(R.color.special309color); // could refer to color directly but want to get practice /w xml
+//            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
+//            layout.setBackgroundColor(R.color.special309color); // could refer to color directly but want to get practice /w xml
+            // Lines commented out cuz I don't like the color lol
 
         } finally {
             updateCalculatorDisplay();
@@ -191,11 +192,11 @@ public class MainActivity extends AppCompatActivity {
 
 
             final Button button = (Button) findViewById(R.id.Button_309);
-            button.setBackgroundColor(R.color.colorAccent);
+            button.setBackgroundColor(Color.LTGRAY);
 
-            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
-            layout.setBackgroundColor(R.color.colorPrimaryDark); // could refer to color directly but want to get practice /w xml
-
+//            final LinearLayout layout = findViewById(R.id.OverarchLinearLayout);
+//            layout.setBackgroundColor(R.color.colorPrimaryDark); // could refer to color directly but want to get practice /w xml
+            // Lines commted out cuz I don't like the color
         } finally {
             updateCalculatorDisplay();
         }
