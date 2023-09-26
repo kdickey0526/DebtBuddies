@@ -1,24 +1,24 @@
 package com.javatpoint.controller;
 import org.springframework.web.bind.annotation.*;
+import java.sql.*;
+ 
+public class MySqlConnection {
+    public static void main(String arg[])
+    {
+        Connection connection = null;
+        try {
+//            Class.forName("com.gjt.mm.mysql.Driver"); //Debugging
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:8080/CasinoDatabase","Casino", "MS313"); 
+            Statement st = conn.createStatement();
 
-@RestController
-public class HelloWorldController {
-    @RequestMapping("/")
-    public String hello() {
-        return "Hello my name is Owen Parker";
-    }
+      st.executeUpdate("INSERT INTO Users (Username, Password) "
+          +"VALUES ('Owen', 'MS313'");
 
 
-    @PostMapping("/people")
-    public @ResponseBody String createPerson(@RequestBody Person person) {
-        System.out.println(person);
-        peopleList.put(person.getFirstName(), person);
-        return "New person " + person.getFirstName() + " Saved";
-    }
-
-    @getMapping("/people/{firstName}")
-    public @ResponseBody Person getPerson(@PathVariable String firstName) {
-        Person p = peopleList.get(firstName);
-        return p;
+            connection.close();
+        }
+        catch (Exception exception) {
+            System.out.println(exception);
+        }
     }
 }
