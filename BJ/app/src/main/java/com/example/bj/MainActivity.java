@@ -160,20 +160,27 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onStandClicked (View view) {
         int i = 2;
-
-
+        int playerNum;
+        if (playerNumH <= 21){
+            playerNum = playerNumH;
+        } else {
+            playerNum = playerNumL;
+        }
 
         String card = hitDealer();
 
         int image = getResources().getIdentifier("club" + card, "drawable", getPackageName());
         dealerCard2.setImageResource(image);
 
-
-
         while(true) {
+            i++;
             if (playerNumH > 21 || playerNumL > 21) {
                 tvDealer.setText(String.valueOf(dealerNumH));
                 openLoose();
+                break;
+            } else if (playerNum == dealerNumH || playerNum == dealerNumL) {
+                openPush();
+                tvDealer.setText(String.valueOf(dealerNumH));
                 break;
             }
             if (dealerNumH >= playerNumH && dealerNumH <= 21 || dealerNumL >= playerNumH && dealerNumL <= 21 || dealerNumH == 21) { //dealer wins
@@ -195,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
                     dealerCard5.setImageResource(image);
                 }
             }
-            i++;
             tvDealer.setText(String.valueOf(dealerNumH));
         }
 
@@ -259,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
     public void openPush() {
 //        Intent intent = new Intent(this, Push.class);
 //        startActivity(intent);
+        tvStatus.setText("PUSH");
     }
     public void openLoose() {
 //        Intent intent = new Intent(this, Loose.class);
