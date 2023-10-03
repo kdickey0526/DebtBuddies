@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Project 1</string>
+    <string name="title">train yo AIM</string>
+    <string name="score">Score\n0</string>
+    <string name="highscore">High Score\n0</string>
+    <string name="start">START</string>
+    <string name="time">%s</string>
+    <string name="restart">I give up.</string>
+    <string name="curMissed">%s</string>
+    <string name="maxMissed">%s</string>
+</resources>
