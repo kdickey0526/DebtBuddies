@@ -1,0 +1,26 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id checkBox
+id checkBox2
+id editTextText
+id editTextTextPassword
+id textView
+id textView4
+id textView5
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string login
+string password
+string remPass
+string remUser
+string username
+style Base.Theme.Loginscreen
+style Theme.Loginscreen
+xml backup_rules
+xml data_extraction_rules
