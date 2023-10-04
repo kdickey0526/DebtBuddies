@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">DebtBuddies</string>
+    <string name="app_name">login-screen</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="remUser">Remember Username</string>
+    <string name="remPass">Remember Password</string>
+    <string name="noAcct">Don\'t have an account? Click here.</string>
 </resources>

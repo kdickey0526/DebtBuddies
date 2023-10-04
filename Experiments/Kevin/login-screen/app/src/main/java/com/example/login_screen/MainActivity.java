@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private void makeStringReq() {
         showProgressDialog();
 
-        StringRequest strReq = new StringRequest(Method.GET, URL_STRING_REQ, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Method.GET, SERVER_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response.toString());
