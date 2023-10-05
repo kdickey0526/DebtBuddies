@@ -36,10 +36,10 @@ class Main {
     @Bean
     CommandLineRunner initUser(UserRepository userRepository/*, LaptopRepository laptopRepository*/) {
         return args -> {
-            User user1 = new User("Owen", 80);
-            User user2 = new User("Kyle", 50);
-            User user3 = new User("Kevin", 35);
-            User user4 = new User("Brock", 65);
+            User user1 = new User("Owen", "oparker@iastate.edu", "MS313Owen");
+            User user2 = new User("Kyle", "kyle@iastate.edu", "MS313Kyle");
+            User user3 = new User("Kevin", "Kevin@iastate.edu", "MS313Kevin");
+            User user4 = new User("Brock", "Brock@iastate.edu", "MS313Brock");
             /*Laptop laptop1 = new Laptop( 2.5, 4, 8, "Lenovo", 300);
             Laptop laptop2 = new Laptop( 4.1, 8, 16, "Hp", 800);
             Laptop laptop3 = new Laptop( 3.5, 32, 32, "Dell", 2300); */
