@@ -51,10 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
-        if (!usernameField.getText().toString().equals(null) && !passwordField.getText().toString().equals(null)) {
-            SERVER_URL = "http://10.0.2.2:8080/users/" + usernameField.getText().toString(); // URL is set by serveraddress/<given username>
-            makeStringReq(); // sets text for "Logged in as: "
-        }
+        String requestedUser = (String) usernameField.getText().toString();
+        SERVER_URL = "http://10.0.2.2:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
+        makeStringReq(); // sets text for "Logged in as: "
     }
 
     public void createAcctButtonListener(View view) {
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
     }
 
     private void hideProgressDialog() {
