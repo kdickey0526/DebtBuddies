@@ -13,23 +13,32 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText usernameField;
     private EditText passwordField;
+    private TextView coinCount;
     private TextView msgResponse;
     private Button loginBtn;
     private Button createAcctBtn;
 
                                     // vv URL below not setup to our server yet
-    public String SERVER_URL; // = "http://10.0.2.2:8080/users/1"; // access table of users
+    public String SERVER_URL;
+
+    private JSONObject currentObj;
+    private boolean loggedIn;
 
 
     @Override
@@ -39,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         // instantiate views & such
         msgResponse = (TextView) findViewById(R.id.loggedInAs);
+        coinCount = (TextView) findViewById(R.id.coinCount);
         usernameField = (EditText) findViewById(R.id.usernameField);
         passwordField = (EditText) findViewById(R.id.passwordField);
         loginBtn = (Button) findViewById(R.id.loginBtn);
@@ -67,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
+                    // grab fields here
                     String username = response.getString("userName");
-                    // grab other fields here
+                    String coins = response.getString("coins");
+
+                    currentObj = response; // store json object as string in currentObj
 
                     msgResponse.setText("Logged in as: " + username);
-
+                    coinCount.setText("Coins: " + coins);
+                    loggedIn = true;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -84,5 +98,59 @@ public class MainActivity extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    public void onIncrementCoinListener(View view) {
+        if (loggedIn) {
+            int coins;
+            try {
+                coins = currentObj.getInt("coins");
+                coins++;
+                currentObj.put("coins", coins);
+                postRequest();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void postRequest() {
+
+        // Convert input to JSONObject
+        JSONObject postBody = null;
+        try{
+            // etRequest should contain a JSON object string as your POST body
+            // similar to what you would have in POSTMAN-body field
+            // and the fields should match with the object structure of @RequestBody on sb
+            postBody = new JSONObject(currentObj.toString());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PUT,
+                SERVER_URL,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.d("Volley: ", "object PUT");
+                            coinCount.setText("Coins: " + response.getInt("coins"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                }
+        );
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 }
