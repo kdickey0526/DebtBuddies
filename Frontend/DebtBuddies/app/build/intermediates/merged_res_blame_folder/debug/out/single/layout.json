@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.debtbuddies.app-mergeDebugResources-33:/layout/activity_create_account.xml",
+        "source": "com.example.debtbuddies.app-main-36:/layout/activity_create_account.xml"
+    },
+    {
+        "merged": "com.example.debtbuddies.app-mergeDebugResources-33:/layout/activity_main.xml",
+        "source": "com.example.debtbuddies.app-main-36:/layout/activity_main.xml"
+    }
+]

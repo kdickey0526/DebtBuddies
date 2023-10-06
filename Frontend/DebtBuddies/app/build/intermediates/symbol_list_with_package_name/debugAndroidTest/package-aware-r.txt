@@ -1,0 +1,3 @@
+com.example.debtbuddies.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
