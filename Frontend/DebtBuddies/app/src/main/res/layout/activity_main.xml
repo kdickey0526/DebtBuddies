@@ -7,6 +7,18 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/coinCount"
+        android:layout_width="257dp"
+        android:layout_height="33dp"
+        android:text="Coins:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createAcctButton"
+        app:layout_constraintVertical_bias="0.686" />
+
+    <TextView
         android:id="@+id/textView19"
         android:layout_width="86dp"
         android:layout_height="34dp"
@@ -136,5 +148,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rememberPassword"
         app:layout_constraintVertical_bias="0.156" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:onClick="onIncrementCoinListener"
+        android:text="+"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/coinCount"
+        app:layout_constraintTop_toBottomOf="@+id/createAcctButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
