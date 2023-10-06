@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
-        SERVER_URL = "http://10.0.2.2:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
-        makeJsonObjReq(); // sets text for "Logged in as: "
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
+        makeJsonObjReq();
     }
 
     public void createAcctButtonListener(View view) {
@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
-                    String username = response.getString("username");
+                    String username = response.getString("userName");
                     // grab other fields here
 
-                    msgResponse.setText(username);
+                    msgResponse.setText("Logged in as: " + username);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
