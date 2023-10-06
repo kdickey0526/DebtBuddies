@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginBtn;
     private Button createAcctBtn;
 
-                                    // vv URL below not setup to our server yet
+
     public String SERVER_URL;
 
     private JSONObject currentObj;
