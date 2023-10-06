@@ -1,9 +1,18 @@
 package onetoone.Users;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.io.*;
+
+
+import onetoone.Laptops.Laptop;
 
 /**
  * 
@@ -51,6 +60,32 @@ public class User {
 
     // =============================== Getters and Setters for each field ================================== //
 
+    public String convert_hex(String input) {
+
+        try {
+            // Create a SHA-256 message digest object
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // Update the digest with the input string bytes
+            byte[] hash = digest.digest(input.getBytes());
+
+            // Convert the byte array to a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            System.out.println("SHA-256 Hash: " + hexString.toString());
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+
+        }
+        return "";
+    }
+
     public int getId(){
         return id;
     }
@@ -92,7 +127,7 @@ public class User {
         return password;
     }
     public void setPassword(String password){
-        this.password = password;
+        this.password = convert_hex(password);
     }
 
     /*public Laptop getLaptop(){
