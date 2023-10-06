@@ -27,8 +27,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String userName;
+    private boolean isOnline;
+    private String email;
+    private String password;
     private int Coins;
-    private String isOnline;
 
     /*
      * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
@@ -36,14 +38,17 @@ public class User {
      * in the database (more info : https://www.baeldung.com/jpa-cascade-types)
      * @JoinColumn defines the ownership of the foreign key i.e. the user table will have a field called laptop_id
      */
+
     /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "laptop_id")
     private Laptop laptop;*/
 
-    public User(String userName, int Coins) {
+    public User(String userName, String email, String password) {
         this.userName = userName;
-        this.Coins = Coins;
-        this.isOnline = isOnline;
+        this.Coins = 0;
+        this.email = email;
+        this.password = password;
+        this.isOnline = true;
     }
 
     public User() {
@@ -75,12 +80,24 @@ public class User {
         this.Coins = Coins;
     }
 
-    public String getIsOnline(){
+    public Boolean getIsOnline(){
         return isOnline;
     }
 
-    public void setIsOnline(String isOnline){
+    public void setIsOnline(Boolean isOnline){
         this.isOnline = isOnline;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public String getPassword(){
+        return password;
+    }
+    public void setPassword(String password){
+        this.password = password;
     }
 
     /*public Laptop getLaptop(){
