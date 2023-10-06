@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.example.debtbuddies.app.AppController;
+import com.android.volley.toolbox.Volley;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView msgResponse;
     private Button loginBtn;
     private Button createAcctBtn;
-    private String TAG = MainActivity.class.getSimpleName();
-    private ProgressDialog pDialog;
-                                         // vv URL below not setup to our server yet
+
+                                    // vv URL below not setup to our server yet
     public String SERVER_URL; // = "http://10.0.2.2:8080/users/1"; // access table of users
-    private String tag_string_req = "string_req";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +43,13 @@ public class MainActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.passwordField);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
-
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading...");
-        pDialog.setCancelable(false);
     }
 
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
         SERVER_URL = "http://10.0.2.2:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
-        makeStringReq(); // sets text for "Logged in as: "
+        makeJsonObjReq(); // sets text for "Logged in as: "
     }
 
     public void createAcctButtonListener(View view) {
@@ -65,39 +61,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Making json object request
      **/
-    private void makeStringReq() {
-        showProgressDialog();
-                                                        // SERVER_URL should be modified to link to whatever
-                                                        // user is being logged into.
-        StringRequest strReq = new StringRequest(Method.GET, SERVER_URL, new Response.Listener<String>() {
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response.toString());
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                try {
+                    String username = response.getString("username");
+                    // grab other fields here
 
-                // need to check password matches here too before logging in appropriately
+                    msgResponse.setText(username);
 
-                msgResponse.setText("Logged in as: " + response.toString());
-                hideProgressDialog();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hideProgressDialog();
+                Log.e("Volley Error", error.toString());
             }
         });
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-    private void hideProgressDialog() {
-        if (pDialog.isShowing())
-            pDialog.hide();
-    }
-
-    private void showProgressDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 }
