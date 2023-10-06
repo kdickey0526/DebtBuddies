@@ -1,4 +1,4 @@
-package onetoone.Laptops;
+package onetoone.Friends;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */ 
 
-public interface LaptopRepository extends JpaRepository<Laptop, Long> {
+public interface FriendRepository extends JpaRepository<Laptop, Long> {
     Laptop findById(int id);
 
     @Transactional

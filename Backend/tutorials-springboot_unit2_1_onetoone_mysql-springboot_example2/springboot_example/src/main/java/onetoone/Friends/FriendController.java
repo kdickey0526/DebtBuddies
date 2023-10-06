@@ -1,4 +1,4 @@
-package onetoone.Laptops;
+package onetoone.Friends;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
  */ 
 
 @RestController
-public class LaptopController {
+public class FriendController {
 
     @Autowired
-    LaptopRepository laptopRepository;
+    FriendRepository laptopRepository;
     
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";

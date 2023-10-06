@@ -1,14 +1,19 @@
-package onetoone.Laptops;
+package onetomany.Friend;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+
+import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import onetoone.Users.User;
+
+import javax.persistence.CascadeType;
+
 
 /**
  * 
@@ -16,20 +21,27 @@ import onetoone.Users.User;
  */ 
 
 @Entity
-public class Laptop {
+public class Friend {
     
     /* 
      * The annotation @ID marks the field below as the primary key for the table created by springboot
      * The @GeneratedValue generates a value if not already present, The strategy in this case is to start from 1 and increment for each table
      */
-    @Id
+    @Friend1
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private double cpuClock;
-    private int cpuCores;
-    private int ram;
-    private String manufacturer;
-    private int cost;
+    private User user1;
+
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user2;
 
     /*
      * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
@@ -39,7 +51,7 @@ public class Laptop {
     @JsonIgnore
     private User user;
 
-    public Laptop( double cpuClock, int cpuCores, int ram, String manufacturer, int cost) {
+    public Friend(String Friend1, String Friend2) {
         this.cpuClock = cpuClock;
         this.cpuCores = cpuCores;
         this.ram = ram;
