@@ -88,10 +88,14 @@ public class War extends AppCompatActivity {
             temp = r.nextInt(i);
             player1.add(deck.get(temp));
             deck.remove(temp);
+
         }
         player2 = deck;
-    }
 
+        tvPlayer1.setText(String.valueOf(player2.size()));
+        tvPlayer2.setText(String.valueOf(player1.size()));
+    }
+git a
 
     public void onDealClicked (View view) {
 
