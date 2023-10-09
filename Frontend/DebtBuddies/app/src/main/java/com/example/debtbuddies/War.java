@@ -95,7 +95,7 @@ public class War extends AppCompatActivity {
         tvPlayer1.setText(String.valueOf(player2.size()));
         tvPlayer2.setText(String.valueOf(player1.size()));
     }
-git a
+git agit
 
     public void onDealClicked (View view) {
 
