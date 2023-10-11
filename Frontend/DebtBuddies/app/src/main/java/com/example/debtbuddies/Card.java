@@ -9,4 +9,7 @@ public class Card {
         value = v;
         cardId = id;
     }
+    public String getID() {
+        return cardId;
+    }
 }

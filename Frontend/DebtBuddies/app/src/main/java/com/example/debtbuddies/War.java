@@ -49,6 +49,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class War extends AppCompatActivity {
     TextView tvPlayer1, tvPlayer2;
     ImageView cardPlayer1, cardPlayer2;
+
+    ArrayList<Card> player1 = new ArrayList<Card>();
+    ArrayList<Card> player2 = new ArrayList<Card>();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,7 @@ public class War extends AppCompatActivity {
         cardPlayer2 = findViewById(R.id.id_player2);
 
         ArrayList<Card> deck = new ArrayList<Card>();
-        ArrayList<Card> player1 = new ArrayList<Card>();
-        ArrayList<Card> player2 = new ArrayList<Card>();
+
 
         for (int i = 1; i <= 4; i ++) {
             if (i == 1) {
@@ -95,10 +97,70 @@ public class War extends AppCompatActivity {
         tvPlayer1.setText(String.valueOf(player2.size()));
         tvPlayer2.setText(String.valueOf(player1.size()));
     }
-git agit
 
     public void onDealClicked (View view) {
+        int player1val;
+        int player2val;
+        int image;
+        String card = player1.get(0).getID();
+        image = getResources().getIdentifier(card, "drawable", getPackageName());
+        cardPlayer1.setImageResource(image);
+        player1val = player1.get(0).value;
 
+
+        card = player2.get(0).getID();
+        image = getResources().getIdentifier(card, "drawable", getPackageName());
+        cardPlayer2.setImageResource(image);
+        player2val = player2.get(0).value;
+
+
+
+        if (player1val > player2val) {  // 1 > 2
+            player1.add(player1.get(0));
+            player1.add(player2.get(0));
+        } else if (player2val == player1val) {  // 1 = 2
+
+            if (player1.get(4).value > player2.get(4).value) {
+                player1.add(player1.get(0));
+                player1.add(player2.get(0));
+                player1.add(player1.get(1));
+                player1.add(player2.get(1));
+                player1.add(player1.get(2));
+                player1.add(player2.get(2));
+                player1.add(player1.get(3));
+                player1.add(player2.get(3));
+                player1.add(player1.get(4));
+                player1.add(player2.get(4));
+            } else {
+                player2.add(player1.get(0));
+                player2.add(player2.get(0));
+                player2.add(player1.get(1));
+                player2.add(player2.get(1));
+                player2.add(player1.get(2));
+                player2.add(player2.get(2));
+                player2.add(player1.get(3));
+                player2.add(player2.get(3));
+                player2.add(player1.get(4));
+                player2.add(player2.get(4));
+            }
+            player1.remove(4);
+            player1.remove(3);
+            player1.remove(2);
+            player1.remove(1);
+            player2.remove(4);
+            player2.remove(3);
+            player2.remove(2);
+            player2.remove(1);
+        } else {    // 1 < 2
+            player2.add(player1.get(0));
+            player2.add(player2.get(0));
+        }
+
+        player1.remove(0);
+        player2.remove(0);
+
+        tvPlayer1.setText(String.valueOf(player2.size()));
+        tvPlayer2.setText(String.valueOf(player1.size()));
     }
 }
 
