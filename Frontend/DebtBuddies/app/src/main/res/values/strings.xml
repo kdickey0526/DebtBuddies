@@ -6,4 +6,6 @@
     <string name="remUser">Remember Username</string>
     <string name="remPass">Remember Password</string>
     <string name="noAcct">Don\'t have an account? Click here.</string>
+    <string name="debtBuddies">Debt Buddies</string>
+    <string name="games">Games</string>
 </resources>

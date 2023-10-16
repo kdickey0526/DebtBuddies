@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String SERVER_URL;
 
+    // will probably want to store in a singleton somewhere
     private JSONObject currentObj;
     private boolean loggedIn;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         String requestedUser = (String) usernameField.getText().toString();
         SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
         makeJsonObjReq();
+        startActivity(new Intent(this, HomeScreenActivity.class));
     }
 
     public void createAcctButtonListener(View view) {
