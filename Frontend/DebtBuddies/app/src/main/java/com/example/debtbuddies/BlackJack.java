@@ -45,7 +45,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
 public class BlackJack extends AppCompatActivity {
-
+    int id;
+    String username, email, password;
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
     int playerNumH;
     int playerNumL;
     int dealerNumH;
@@ -64,8 +66,8 @@ public class BlackJack extends AppCompatActivity {
     ImageView dealerCard4;
     ImageView dealerCard5;
 
-    TextView tvDealer, tvPlayer, tvStatus;
-    int i;
+    TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
+    int i, bal, bet;
 
 
     @Override
@@ -91,8 +93,12 @@ public class BlackJack extends AppCompatActivity {
         tvDealer = findViewById(R.id.tv_dealer);
         tvPlayer = findViewById(R.id.tv_player);
         tvStatus =  findViewById(R.id.tv_text);
+        tvBal = findViewById(R.id.textView);
+        tvBet = findViewById(R.id.textView2);
         String card;
 
+        bal = 50;
+        bet = 5;
 
         card = hitPlayer();
 
@@ -113,6 +119,13 @@ public class BlackJack extends AppCompatActivity {
 
         tvDealer.setText(String.valueOf(dealerNumH));
         tvPlayer.setText(String.valueOf(playerNumH));
+        String temp = "Balance: ";
+        temp += bal;
+        tvBal.setText(temp);
+
+       String temp2 = "Bet: ";
+       temp2 += bet;
+       tvBet.setText(temp2);
         i = 2;
     }
 
@@ -187,6 +200,13 @@ public class BlackJack extends AppCompatActivity {
         tvPlayer.setText(String.valueOf(playerNumH));
 
         tvStatus.setText("");
+        String temp = "Balance: ";
+        temp += bal;
+        tvBal.setText(temp);
+
+        String temp2 = "Bet: ";
+        temp2 += bet;
+        tvBet.setText(temp2);
         i = 2;
     }
     public void onStandClicked (View view) {
@@ -205,22 +225,21 @@ public class BlackJack extends AppCompatActivity {
 
         while(true) {
             i++;
-            if (playerNumH > 21 || playerNumL > 21) {
+            if (playerNumH > 21 || playerNumL > 21) { //dealer win
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openLoose();
+                bal -= bet;
                 break;
-            } else if (playerNum == dealerNumH || playerNum == dealerNumL) {
-                openPush();
+            } else if (playerNum == dealerNumH || playerNum == dealerNumL) { //push
                 tvDealer.setText(String.valueOf(dealerNumH));
                 break;
             }
             if (dealerNumH >= playerNumH && dealerNumH <= 21 || dealerNumL >= playerNumH && dealerNumL <= 21 || dealerNumH == 21) { //dealer wins
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openLoose();
+                bal -= bet;
                 break;
             } else if (dealerNumL > 21) {   //dealer looses
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openWin();
+                bal += bet;
                 break;
             } else {    //dealer hit
                 card = hitDealer();
@@ -235,6 +254,14 @@ public class BlackJack extends AppCompatActivity {
             }
             tvDealer.setText(String.valueOf(dealerNumH));
         }
+
+        String temp = "Balance: ";
+        temp += bal;
+        tvBal.setText(temp);
+
+        String temp2 = "Bet: ";
+        temp2 += bet;
+        tvBet.setText(temp2);
 
     }
 
@@ -310,19 +337,76 @@ public class BlackJack extends AppCompatActivity {
         String cards = suit + Integer.toString(card);
         return cards;
     }
-    public void openWin() {
-//        Intent intent = new Intent(this, Win.class);
-//        startActivity(intent);
-        tvStatus.setText("PLAYER WINS");
-    }
-    public void openPush() {
-//        Intent intent = new Intent(this, Push.class);
-//        startActivity(intent);
-        tvStatus.setText("PUSH");
-    }
-    public void openLoose() {
-//        Intent intent = new Intent(this, Loose.class);
-//        startActivity(intent);
-        tvStatus.setText("DEALER WINS");
+    private void postRequest() {
+
+        // Convert input to JSONObject
+        JSONObject postBody;
+        String temp =
+                "{" +
+                        "\"id\":\"" + id + "\"," +
+                        "\"userName\":\"" + username + "\"," +
+                        "\"email\":\"" + email +"\"," +
+                        "\"password\":\"" + password + "\"" +
+                        "\"coins\":\"" + bal + "\"" +
+                        "}";
+
+
+        //\"password\":\"MS313Owen\"}";
+
+//                "{\"id\":62,\"userName\":\"Brock\",\"isOnline\":true,\"email\":\"oparker@iastate.edu\",\"password\":\"MS313Owen\",\"coins\":0}";
+        try {
+            postBody = new JSONObject(temp);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        //String postBody = "username:" + username + "password:" + password + "email:" + email;
+
+        try{
+            // etRequest should contain a JSON object string as your POST body
+            // similar to what you would have in POSTMAN-body field
+            // and the fields should match with the object structure of @RequestBody on sb
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                SERVER_URL,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //  tvResponse.setText(response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //tvResponse.setText(error.getMessage());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
+                //                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //                params.put("param1", "value1");
+                //                params.put("param2", "value2");
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 }
