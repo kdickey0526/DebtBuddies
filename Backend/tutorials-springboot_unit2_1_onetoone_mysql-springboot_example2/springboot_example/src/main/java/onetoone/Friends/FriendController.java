@@ -21,41 +21,41 @@ import org.springframework.web.bind.annotation.RestController;
 public class FriendController {
 
     @Autowired
-    FriendRepository laptopRepository;
+    FriendRepository FriendRepository;
     
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
 
-    @GetMapping(path = "/laptops")
+    @GetMapping(path = "/Friends")
     List<Laptop> getAllLaptops(){
-        return laptopRepository.findAll();
+        return FriendRepository.findAll();
     }
 
-    @GetMapping(path = "/laptops/{id}")
+    @GetMapping(path = "/Friend/{id}")
     Laptop getLaptopById(@PathVariable int id){
-        return laptopRepository.findById(id);
+        return FriendRepository.findById(id);
     }
 
-    @PostMapping(path = "/laptops")
-    String createLaptop(@RequestBody Laptop Laptop){
-        if (Laptop == null)
+    @PostMapping(path = "/Friends")
+    String createLaptop(@RequestBody Friend Friend1){
+        if (Friend1 == null)
             return failure;
-        laptopRepository.save(Laptop);
+        FriendRepository.save(Friend1);
         return success;
     }
 
-    @PutMapping(path = "/laptops/{id}")
-    Laptop updateLaptop(@PathVariable int id, @RequestBody Laptop request){
-        Laptop laptop = laptopRepository.findById(id);
-        if(laptop == null)
+    @PutMapping(path = "/Friend/{id}")
+    Laptop updateLaptop(@PathVariable int id, @RequestBody Friend request){
+        Friend Friend = FriendRepository.findById(id);
+        if(Friend == null)
             return null;
-        laptopRepository.save(request);
-        return laptopRepository.findById(id);
+        FriendRepository.save(request);
+        return FriendRepository.findById(id);
     }
 
-    @DeleteMapping(path = "/laptops/{id}")
+    @DeleteMapping(path = "/Friend/{id}")
     String deleteLaptop(@PathVariable int id){
-        laptopRepository.deleteById(id);
+        FriendRepository.deleteById(id);
         return success;
     }
 }
