@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     public String SERVER_URL;
 
-    // will probably want to store in a singleton somewhere
-    private JSONObject currentObj;
+    // will probably want to store in a singleton somewhere (now stored in MyApplication)
+//    private JSONObject currentObj;
+
     private boolean loggedIn;
 
 
@@ -61,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
         String requestedUser = (String) usernameField.getText().toString();
         SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
         makeJsonObjReq();
-        startActivity(new Intent(this, HomeScreenActivity.class));
+
+        Intent intent = new Intent(this, HomeScreenActivity.class);
+        startActivity(intent);
     }
 
     public void createAcctButtonListener(View view) {
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     String username = response.getString("userName");
                     String coins = response.getString("coins");
 
-                    currentObj = response; // store json object as string in currentObj
+                    MyApplication.currentUser = response; // store json object
 
                     msgResponse.setText("Logged in as: " + username);
                     coinCount.setText("Coins: " + coins);
@@ -106,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
         if (loggedIn) {
             int coins;
             try {
-                coins = currentObj.getInt("coins");
+                coins = MyApplication.currentUser.getInt("coins");
                 coins++;
-                currentObj.put("coins", coins);
+                MyApplication.currentUser.put("coins", coins);
                 postRequest();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             // etRequest should contain a JSON object string as your POST body
             // similar to what you would have in POSTMAN-body field
             // and the fields should match with the object structure of @RequestBody on sb
-            postBody = new JSONObject(currentObj.toString());
+            postBody = new JSONObject(MyApplication.currentUser.toString());
         } catch (Exception e){
             e.printStackTrace();
         }

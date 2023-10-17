@@ -3,6 +3,7 @@ package com.example.debtbuddies;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -10,5 +11,9 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+    }
+
+    public void whacAMoleOnClickListener(View v) {
+
     }
 }

@@ -8,4 +8,6 @@
     <string name="noAcct">Don\'t have an account? Click here.</string>
     <string name="debtBuddies">Debt Buddies</string>
     <string name="games">Games</string>
+    <string name="coins">Coins</string>
+    <string name="whacamole">Whac-A-Mole</string>
 </resources>
