@@ -10,6 +10,12 @@ public class TexasHoldEmPlayer extends Player{
 
     private boolean fold;
 
+    public TexasHoldEmPlayer(Player player){
+        super(player.toString());
+        bet = 0;
+        fold = false;
+    }
+
     public TexasHoldEmPlayer(String username){
         super(username);
         bet = 0;

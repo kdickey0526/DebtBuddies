@@ -119,81 +119,17 @@ public class GameServer {
          * {"game":*game*,"gameid":*gameid*,*action*:value}
          */
 
-        int gameid = NULL;
-        int value;
-        Move move;
-        String play;
+        Player player = sessionPlayerMap.get(session);
 
         Action action = gson.fromJson(message, Action.class);
-
         String game = action.getGame();
-        if(!(action.getGameid()==NULL)){
-            gameid = action.getGameid();
-            move = action.getMove();
-            play = move.getPlay();
-            value = move.getValue();
-            if(gameid == 0 && play == "Q"){
-                Manager.sendToQueue(player, game);
-            }
-        }
 
+        Response response = Manager.getResponse(player, action);
 
-        // get the username by session
-        TexasHoldEmPlayer player = sessionPlayerMap.get(session);
-
-        StringBuilder sb = new StringBuilder(player.toString());
-        sb.append(" has decided to ").append(actionValue);
-        if(value != NULL){
-            sb.append(" by ").append(value).append(" credits.\n");
-        }
-        broadcast(sb.toString());
-
-        if(Objects.equals(actionValue, "start") && running == 0){
-            if(num_players < 3){
-                broadcast("\nNeed at least 3 players to start. Currently there are " + num_players + " players\n");
-                return;
-            }
-            running = 1;
-            pot = 0;
-            ante = 10;
-            pit = new ArrayList<>();
-            deck = new Deck();
-            deal_hole();
-            send_hand();
-            pot += players.get(0).placeBet(ante/2);
-            pot += players.get(1).placeBet(ante);
-            current_player = players.get(2);
-            broadcast("\n" + players.get(0).toString() + " is small blind and bet 5 and " + players.get(1).toString() + " is big blind and bet 10 credits\nIt is now " + current_player.toString() + "'s turn");
-        }else if(running == 1 && Objects.equals(player.toString(), current_player.toString())) {
-            if (Objects.equals(actionValue, "fold")) {
-                player.foldHand();
-            } else if (Objects.equals(actionValue, "call")) {
-                int before_bet = current_player.getBet();
-                pot += current_player.placeBet(ante - current_player.getBet());
-                broadcast(player.toString() + " is calling his bet from " + before_bet + " to " + ante + " credits\n");
-                broadcast("The pot is now at " + pot + " credits\n");
-                current_player.setBet(ante);
-            } else if (Objects.equals(actionValue, "raise")) {
-                ante += value;
-                pot += current_player.placeBet(ante - current_player.getBet());
-                broadcast(player.toString() + " is raising the ante from " + (ante-value) + " to " + ante + " credits\n");
-                broadcast("The pot is now at " + pot + " credits\n");
-            }else{
-                broadcast(player.toString()+" used an invalid move, they lose their turn\n");
-            }
-
-            do{
-                int ind = players.indexOf(current_player);
-                if(ind + 1 == players.size()){
-                    current_player = players.get(0);
-                }else{
-                    current_player = players.get(ind + 1);
-                }
-            }while(current_player.foldStatus());
-
-            broadcast("It is now " + current_player.toString() + "'s turn\n");
+        if(Objects.equals(response.getUsername(), "all")){
+            broadcast(response.getMessage());
         }else{
-            logger.info("it did not work");
+            sendMessageToPArticularUser(player.toString(), response.getMessage());
         }
     }
 

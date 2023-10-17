@@ -4,12 +4,13 @@ import java.util.Objects;
 
 public class Manager {
 
-    private static TexasManager texasManager = new TexasManager();
+    private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
 
-    public static void sendToQueue(Player player, String game){
-        if(Objects.equals(game, "texasholdem")){
-            texasManager.addToQueue(player);
+    public static Response getResponse(Player player, Action action){
+        if(Objects.equals(action.getGame(), "texasholdem")){
+            return texasManager.getResponse(player, action);
         }
+        return new Response("all", "Error");
     }
 
 }
