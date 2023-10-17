@@ -107,8 +107,15 @@ public class GameServer {
 
         Response response = Manager.getResponse(player, action);
 
-        for(Player t_player : response.getPlayers()){
-            sendMessageToParticularUser(t_player.toString(), response.getMessage());
+        List<Player> players_to_message = response.getPlayers();
+        for(int i = 0; i < players_to_message.size(); i++){
+            String msg;
+            if(response.getMessages().size() == 1){
+                msg = response.getMessages().get(0);
+            }else{
+                msg = response.getMessages().get(i);
+            }
+            sendMessageToParticularUser(players_to_message.get(i).toString(), msg);
         }
     }
 

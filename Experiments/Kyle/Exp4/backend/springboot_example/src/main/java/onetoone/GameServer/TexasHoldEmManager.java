@@ -27,6 +27,12 @@ public class TexasHoldEmManager {
                 if(Queue.size() == 3){
                     TexasHoldEm new_game = new TexasHoldEm(Queue, ++GAMEID);
                     Servers.add(new_game);
+                    return new_game.sendHands();
+                }else{
+                    Response re = new Response();
+                    re.addPlayer(player);
+                    re.setMessage("You have been added to queue");
+                    return re;
                 }
             }
         }else{
@@ -39,7 +45,9 @@ public class TexasHoldEmManager {
         }
         List<Player> k = new ArrayList<>();
         k.add(player);
-        return new Response(k, "Error");
+        List<String> m = new ArrayList<>();
+        m.add("Error");
+        return new Response(k, m);
     }
 
     private TexasHoldEmPlayer getTexasPlayer(Player player){

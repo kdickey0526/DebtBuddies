@@ -71,11 +71,25 @@ public class TexasHoldEm {
                     response.setPlayers(getAllPlayers());
                     message = getCommunityString();
                 }else{
-                    
+
                 }
             }
         }
-        response.setMessage(message);
+        response.addMessage(message);
+        return response;
+    }
+
+    public Response sendHands(){
+        Response response = new Response();
+
+        for(TexasHoldEmPlayer player : players){
+            response.addPlayer(player);
+            StringBuilder handstring = new StringBuilder();
+            for(Card card : player.getHand()){
+                handstring.append(card.toString()).append("\n");
+            }
+            response.addMessage(handstring.toString());
+        }
         return response;
     }
 
