@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */ 
 
-public interface FriendRepository extends JpaRepository<Laptop, Long> {
+public interface FriendRepository extends JpaRepository<Friend, Long> {
     Laptop findById(int id);
 
     @Transactional
