@@ -52,11 +52,8 @@ public class Friend {
     private User user;
 
     public Friend(String Friend1, String Friend2) {
-        this.cpuClock = cpuClock;
-        this.cpuCores = cpuCores;
-        this.ram = ram;
-        this.manufacturer = manufacturer;
-        this.cost = cost;
+        this.user1 = Friend1;
+        this.user2 = Friend2;
     }
 
     public Laptop() {
@@ -72,52 +69,20 @@ public class Friend {
         this.id = id;
     }
 
-    public double getCpuClock(){
-        return cpuClock;
+    public double getFriend1(){
+        return user1;
     }
 
-    public void setCpuClock(double cpuClock){
-        this.cpuClock = cpuClock;
+    public void setFriend1(String Friend1){
+        this.user1 = Friend1;
     }
 
-    public int getCpuCores(){
-        return cpuCores;
+    public int getFriend2(){
+        return user2;
     }
 
-    public void setCpuCores(int cpuCores){
-        this.cpuCores = cpuCores;
-    }
-
-    public String getManufacturer(){
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer){
-        this.manufacturer = manufacturer;
-    }
-
-    public int getCost(){
-        return cost;
-    }
-
-    public void setCost(int cost){
-        this.cost = cost;
-    }
-
-    public User getUser(){
-        return user;
-    }
-
-    public void setUser(User user){
-        this.user = user;
-    }
-
-    public int getRam(){
-        return ram;
-    }
-
-    public void setRam(int ram){
-        this.ram = ram;
+    public void setFriend2(String Friend2){
+        this.user2 = Friend2;
     }
 
 }
