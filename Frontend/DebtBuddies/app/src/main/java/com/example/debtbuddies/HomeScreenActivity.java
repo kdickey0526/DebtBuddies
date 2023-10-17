@@ -3,6 +3,7 @@ package com.example.debtbuddies;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,21 +41,26 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void whacAMoleOnClickListener(View v) {
         Log.d(TAG, "whacAMoleOnClickListener: clicked");
+        
     }
 
     public void blackjackOnClickListener(View v) {
         Log.d(TAG, "blackjackOnClickListener: clicked");
+        startActivity(new Intent(this, BlackJack.class));
     }
 
     public void friendsListOnClickListener(View v) {
         Log.d(TAG, "friendsListOnClickListener: clicked");
+
     }
 
     public void settingsOnClickListener(View v) {
         Log.d(TAG, "settingsOnClickListener: clicked");
+
     }
 
     public void leaderboardOnClickListener(View v) {
         Log.d(TAG, "leaderboardOnClickListener: clicked");
+
     }
 }

@@ -24,8 +24,8 @@
 
     <ImageView
         android:id="@+id/settings"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:onClick="settingsOnClickListener"
@@ -68,12 +68,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="77dp"
             android:layout_weight="1"
             android:onClick="blackjackOnClickListener">
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/blackjackBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="blackjackOnClickListener"
@@ -84,7 +84,7 @@
                 app:srcCompat="@drawable/blackjackbackground" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/blackjackText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -97,16 +97,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="@+id/blackjackBackground"
+                app:layout_constraintTop_toTopOf="@+id/blackjackBackground"
                 app:layout_constraintVertical_bias="0.489" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/whacAMoleBox"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="77dp"
             android:layout_weight="1"
             android:onClick="whacAMoleOnClickListener">
 
@@ -125,8 +133,8 @@
 
             <ImageView
                 android:id="@+id/whacIcon"
-                android:layout_width="96dp"
-                android:layout_height="85dp"
+                android:layout_width="86dp"
+                android:layout_height="77dp"
                 android:onClick="whacAMoleOnClickListener"
                 app:layout_constraintBottom_toBottomOf="@+id/whacBackground"
                 app:layout_constraintEnd_toEndOf="@+id/whacBackground"
@@ -157,22 +165,46 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer2"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="10dp"
             android:layout_weight="1">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="77dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
             android:layout_weight="1">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="77dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer4"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
             android:layout_weight="1">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -240,8 +272,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:onClick="leaderboardOnClickListener"
