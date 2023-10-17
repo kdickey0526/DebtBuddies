@@ -1,22 +1,26 @@
 package onetoone.GameServer;
 
+import java.util.*;
+
 public class Response {
 
-    String username;
+    private List<Player> players;
 
     String message;
 
-    public Response(String username, String message){
-        this.username = username;
+    public Response(List<Player> players, String message){
+        this.players = players;
         this.message = message;
     }
+
+    public void setPlayers(List<Player> players){ this.players = players; }
 
     public void setMessage(String message){
         this.message = message;
     }
 
-    public String getUsername(){
-        return username;
+    public List<Player> getPlayers(){
+        return players;
     }
 
     public String getMessage(){

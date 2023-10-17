@@ -45,29 +45,10 @@ public class GameServer {
     private static Map < String, TexasHoldEmPlayer> usernamePlayerMap = new Hashtable < > ();
     private static Map < Session, TexasHoldEmPlayer > sessionPlayerMap = new Hashtable < > ();
     private static Map < TexasHoldEmPlayer , Session > playerSessionMap = new Hashtable < > ();
-
-    private static Map < String, Integer > usernameGameId = new Hashtable < > ();
-
-    // server side logger
-    private final Logger logger = LoggerFactory.getLogger(TexasHoldEmServer.class);
-
+    private static List<Player> players = new ArrayList<>();
     private static int num_players = 0;
 
-    private static int GAMEID = 0;
-
-    private static List<TexasHoldEmPlayer> players = new ArrayList<>();
-
-    private static int running = 0;
-
-    private static TexasHoldEmPlayer current_player;
-
-    private static List<TexasHoldEmPlayer> TexasQueue = new ArrayList<>();
-
-    private static List<Card> pit;
-
-    private static int pot;
-    private static int ante;
-    private static Deck deck;
+    private final Logger logger = LoggerFactory.getLogger(TexasHoldEmServer.class);
 
     /**
      * This method is called when a new WebSocket connection is established.
@@ -99,10 +80,10 @@ public class GameServer {
             usernamePlayerMap.put(username, player);
 
             // send to the user joining in
-            sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
+            sendMessageToParticularUser(username, "Welcome to the chat server, "+username);
 
             // send to everyone in the chat
-            broadcast("User: " + username + " has Joined the Chat");
+            //broadcast("User: " + username + " has Joined the Chat");
         }
     }
 
@@ -126,45 +107,10 @@ public class GameServer {
 
         Response response = Manager.getResponse(player, action);
 
-        if(Objects.equals(response.getUsername(), "all")){
-            broadcast(response.getMessage());
-        }else{
-            sendMessageToPArticularUser(player.toString(), response.getMessage());
+        for(Player t_player : response.getPlayers()){
+            sendMessageToParticularUser(t_player.toString(), response.getMessage());
         }
     }
-
-    public void send_hand(){
-        for(TexasHoldEmPlayer player : sessionPlayerMap.values()){
-            sendMessageToPArticularUser(player.toString(), player.handToString());
-        }
-    }
-
-    public void send_community(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("---------------\n");
-        for (Card card : pit) {
-            sb.append(card.toString());
-        }
-        sb.append("---------------\n");
-        broadcast(sb.toString());
-    }
-/*
-    public void game(){
-        deal_hole();
-
-        bettingRound();
-
-        flop();
-
-        bettingRound();
-
-        river();
-
-        bettingRound();
-
-        decideWinner();
-    }
- */
 
     /**
      * Handles the closure of a WebSocket connection.
@@ -175,7 +121,7 @@ public class GameServer {
     public void onClose(Session session) throws IOException {
 
         // get the username from session-username mapping
-        TexasHoldEmPlayer player = sessionPlayerMap.get(session);
+        Player player = sessionPlayerMap.get(session);
 
         // server side log
         logger.info("[onClose] " + player.toString());
@@ -185,6 +131,8 @@ public class GameServer {
         sessionPlayerMap.remove(session);
         playerSessionMap.remove(player);
         players.remove(sessionPlayerMap.get(session));
+
+        num_players--;
 
         // send the message to chat
         broadcast(player.toString() + " disconnected");
@@ -212,7 +160,7 @@ public class GameServer {
      * @param username The username of the recipient.
      * @param message  The message to be sent.
      */
-    private void sendMessageToPArticularUser(String username, String message) {
+    private void sendMessageToParticularUser(String username, String message) {
         try {
             playerSessionMap.get(usernamePlayerMap.get(username)).getBasicRemote().sendText(message);
         } catch (IOException e) {
@@ -233,227 +181,5 @@ public class GameServer {
                 logger.info("[Broadcast Exception] " + e.getMessage());
             }
         });
-    }
-
-    public void deal_hole(){
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < num_players; j++){
-                players.get(j).draw(deck);
-            }
-        }
-    }
-
-    public void flop(){
-        for(int i = 0; i < 3; i++){
-            pit.add(deck.draw());
-        }
-    }
-
-    public void turn(){
-        pit.add(deck.draw());
-    }
-
-    public void river(){
-        pit.add(deck.draw());
-    }
-
-    public TexasHoldEmPlayer decideWinner(){
-        int high_index = 0;
-        PokerHands high_hand = PokerHands.LOW;
-
-        for(int i = 0; i < num_players; i++){
-            PokerHands player_high = getHigh(i);
-            if(player_high.getValue() > high_hand.getValue()){
-                high_index = i;
-                high_hand = player_high;
-            }
-        }
-        return players.get(high_index);
-    }
-
-    private PokerHands getHigh(int index){
-        List<Card> handAndPit = new ArrayList<>();
-        handAndPit.addAll(players.get(index).getHand());
-        handAndPit.addAll(pit);
-
-        Deck.CardManager.sortCards(handAndPit);
-
-        return convertHigh(handAndPit);
-    }
-
-    private List<Integer> countNumbers(List<Card> cards){
-        List<Integer> values = new ArrayList<>();
-
-        int count = 1;
-
-        for(int i = 1; i < cards.size(); i++){
-            if(cards.get(i).getRank() == cards.get(i - 1).getRank()){
-                count++;
-            }else{
-                values.add(count);
-                count = 1;
-            }
-        }
-        return values;
-    }
-
-    private PokerHands convertHigh(List<Card> cards){
-        if(royalFlush(cards)){
-            return PokerHands.ROYAL_FLUSH;
-        }else if(straightFlush(cards)){
-            return PokerHands.STRAIGHT_FLUSH;
-        }else if(fourOfAKind(cards)){
-            return PokerHands.FOUR_OF_A_KIND;
-        }else if(fullHouse(cards)){
-            return PokerHands.FULL_HOUSE;
-        }else if(flush(cards)){
-            return PokerHands.FLUSH;
-        }else if(straight(cards)){
-            return PokerHands.STRAIGHT;
-        }else if(threeOfAKind(cards)) {
-            return PokerHands.THREE_OF_A_KIND;
-        }else if(twoPair(cards)){
-            return PokerHands.TWO_PAIR;
-        }else if(pair(cards)){
-            return PokerHands.PAIR;
-        }else{
-            return getHighEnum(cards);
-        }
-    }
-
-    private boolean royalFlush(List<Card> cards){
-        List<Card> temp = new ArrayList<>();
-        for (Card card : cards) {
-            if (card.getRank() >= 10) {
-                temp.add(card);
-            }
-        }
-
-        return straightFlush(temp);
-    }
-
-    private boolean straightFlush(List<Card> cards){
-        for(int i = 0; i < 3; i++){
-            int count = 1;
-            for(int j = 1; j < 5; j++){
-                if(Deck.CardManager.contains(cards, cards.get(i).getSuit(), cards.get(i).getRank() + j)){
-                    if(++count == 5){ return true; }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean fourOfAKind(List<Card> cards){
-
-        List<Integer> values = countNumbers(cards);
-
-        for(Integer value : values){
-            if(values.get(value) == 4){ return true; }
-        }
-
-        return false;
-    }
-
-    private boolean fullHouse(List<Card> cards){
-
-        List<Integer> values = countNumbers(cards);
-
-        int twoCount = 0, threeCount = 0;
-
-        for(Integer value : values){
-            if(values.get(value) == 3){
-                threeCount++;
-            }else if(values.get(value) == 2){
-                twoCount++;
-            }
-        }
-
-        return threeCount == 2 || (threeCount == 1 && twoCount >= 1);
-    }
-
-    private boolean flush(List<Card> cards){
-        for(Suit suit : Suit.values()){
-            int count = 0;
-            for(Card card : cards){
-                if(card.getSuit() == suit){ count++; }
-            }
-            if(count >= 5){ return true; }
-        }
-        return false;
-    }
-
-    private boolean straight(List<Card> cards){
-        for(int i = 0; i < 3; i++){
-            int count = 1;
-            for(int j = 1; j < 5; j++){
-                if(Deck.CardManager.contains(cards, cards.get(i).getRank() + j)){
-                    if(++count == 5){ return true; }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean threeOfAKind(List<Card> cards){
-        List<Integer> values = countNumbers(cards);
-
-        for(Integer i : values){
-            if(values.get(i) == 3){ return true; }
-        }
-
-        return false;
-    }
-
-    private boolean twoPair(List<Card> cards){
-        List<Integer> values = countNumbers(cards);
-        int count = 0;
-
-        for(Integer value : values){
-            if(values.get(value) == 2){ count++; }
-        }
-
-        return count >= 2;
-    }
-
-    private boolean pair(List<Card> cards){
-        List<Integer> values = countNumbers(cards);
-
-        for(Integer i : values){
-            if(values.get(i) == 2){ return true; }
-        }
-
-        return false;
-    }
-
-    private PokerHands getHighEnum(List<Card> cards){
-        switch(cards.get(cards.size() - 1).getRank()){
-            case 2:
-                return PokerHands.HIGH_TWO;
-            case 3:
-                return PokerHands.HIGH_THREE;
-            case 4:
-                return PokerHands.HIGH_FOUR;
-            case 5:
-                return PokerHands.HIGH_FIVE;
-            case 6:
-                return PokerHands.HIGH_SIX;
-            case 7:
-                return PokerHands.HIGH_SEVEN;
-            case 8:
-                return PokerHands.HIGH_EIGHT;
-            case 9:
-                return PokerHands.HIGH_NINE;
-            case 10:
-                return PokerHands.HIGH_TEN;
-            case 11:
-                return PokerHands.HIGH_JACK;
-            case 12:
-                return PokerHands.HIGH_QUEEN;
-            case 13:
-                return PokerHands.HIGH_KING;
-            default:
-                return PokerHands.HIGH_ACE;
-        }
     }
 }

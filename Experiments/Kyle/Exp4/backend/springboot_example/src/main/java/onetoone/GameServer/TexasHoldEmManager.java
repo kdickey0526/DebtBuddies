@@ -37,8 +37,9 @@ public class TexasHoldEmManager {
                 }
             }
         }
-
-        return new Response("all", "Error");
+        List<Player> k = new ArrayList<>();
+        k.add(player);
+        return new Response(k, "Error");
     }
 
     private TexasHoldEmPlayer getTexasPlayer(Player player){

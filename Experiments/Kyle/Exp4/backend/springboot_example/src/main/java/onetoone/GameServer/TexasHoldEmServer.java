@@ -306,15 +306,43 @@ public class TexasHoldEmServer {
             if(player_high.getValue() > high_hand.getValue()){
                 high_index = i;
                 high_hand = player_high;
+            }else if(player_high.getValue() == high_hand.getValue()){
+                TexasHoldEmPlayer player1 = players.get(high_index);
+                TexasHoldEmPlayer player2 = players.get(i);
+                int winner = tiebreaker(player1, player2);
+                if(winner == 1){
+                    high_index = i;
+                }
             }
         }
         return players.get(high_index);
     }
 
+    private int tiebreaker(TexasHoldEmPlayer player1, TexasHoldEmPlayer player2){
+        List<Card> p1_total = getTotal(player1.getHand(), pit);
+        List<Card> p2_total = getTotal(player2.getHand(), pit);
+        Deck.CardManager.sortCards(p1_total);
+        Deck.CardManager.sortCards(p2_total);
+        for(int i = p1_total.size() - 1; i >= 0; i--){
+            if(p1_total.get(i).getRank() > p2_total.get(i).getRank()){
+                return 0;
+            }else if(p2_total.get(i).getRank() > p1_total.get(i).getRank()){
+                return 1;
+            }
+        }
+        return 2;
+    }
+
+    private List<Card> getTotal(List<Card> deck1, List<Card> deck2){
+        List<Card> total = new ArrayList<>();
+        total.addAll(deck1);
+        total.addAll(deck2);
+        return total;
+    }
+
     private PokerHands getHigh(int index){
-        List<Card> handAndPit = new ArrayList<>();
-        handAndPit.addAll(players.get(index).getHand());
-        handAndPit.addAll(pit);
+
+        List<Card> handAndPit = getTotal(players.get(index).getHand(), pit);
 
         Deck.CardManager.sortCards(handAndPit);
 

@@ -1,7 +1,9 @@
 package onetoone.GameServer;
 
 import java.util.Objects;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 public class Manager {
 
     private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
@@ -10,7 +12,9 @@ public class Manager {
         if(Objects.equals(action.getGame(), "texasholdem")){
             return texasManager.getResponse(player, action);
         }
-        return new Response("all", "Error");
+        List<Player> k = new ArrayList<>();
+        k.add(player);
+        return new Response(k, "Error");
     }
 
 }
