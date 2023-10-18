@@ -47,8 +47,10 @@ import java.util.Random;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class War extends AppCompatActivity {
-    TextView tvPlayer1, tvPlayer2;
+    TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
+
+    boolean gameOver;
 
     ArrayList<Card> player1 = new ArrayList<Card>();
     ArrayList<Card> player2 = new ArrayList<Card>();
@@ -62,10 +64,14 @@ public class War extends AppCompatActivity {
         tvPlayer1 = findViewById(R.id.tv_player1);
         tvPlayer2 = findViewById(R.id.tv_player2);
 
+        whoWin = findViewById(R.id.tv_text);
+
         cardPlayer1 = findViewById(R.id.id_player1);
         cardPlayer2 = findViewById(R.id.id_player2);
 
         ArrayList<Card> deck = new ArrayList<Card>();
+
+        gameOver = false;
 
 
         for (int i = 1; i <= 4; i ++) {
@@ -86,7 +92,7 @@ public class War extends AppCompatActivity {
         }
         int temp;
         Random r = new Random();
-        for (int i = 52; i > 26; i --) {
+        for (int i = 52; i > 3; i --) { //change back to 26
             temp = r.nextInt(i);
             player1.add(deck.get(temp));
             deck.remove(temp);
@@ -99,68 +105,85 @@ public class War extends AppCompatActivity {
     }
 
     public void onDealClicked (View view) {
-        int player1val;
-        int player2val;
-        int image;
-        String card = player1.get(0).getID();
-        image = getResources().getIdentifier(card, "drawable", getPackageName());
-        cardPlayer1.setImageResource(image);
-        player1val = player1.get(0).value;
+        if (gameOver = true) {
+            int player1val;
+            int player2val;
+            int image;
+            String card = player1.get(0).getID();
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            cardPlayer1.setImageResource(image);
+            player1val = player1.get(0).value;
 
 
-        card = player2.get(0).getID();
-        image = getResources().getIdentifier(card, "drawable", getPackageName());
-        cardPlayer2.setImageResource(image);
-        player2val = player2.get(0).value;
+            card = player2.get(0).getID();
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            cardPlayer2.setImageResource(image);
+            player2val = player2.get(0).value;
 
 
-
-        if (player1val > player2val) {  // 1 > 2
-            player1.add(player1.get(0));
-            player1.add(player2.get(0));
-        } else if (player2val == player1val) {  // 1 = 2
-
-            if (player1.get(4).value > player2.get(4).value) {
+            if (player1val > player2val) {  // 1 > 2
                 player1.add(player1.get(0));
                 player1.add(player2.get(0));
-                player1.add(player1.get(1));
-                player1.add(player2.get(1));
-                player1.add(player1.get(2));
-                player1.add(player2.get(2));
-                player1.add(player1.get(3));
-                player1.add(player2.get(3));
-                player1.add(player1.get(4));
-                player1.add(player2.get(4));
-            } else {
+            } else if (player2val == player1val) {  // 1 = 2 war
+                if (player1.size() < 3 || player2.size() < 3) {
+                    gameOver();
+                }
+                if (player1.get(4).value > player2.get(4).value) {
+                    player1.add(player1.get(0));
+                    player1.add(player2.get(0));
+                    player1.add(player1.get(1));
+                    player1.add(player2.get(1));
+                    player1.add(player1.get(2));
+                    player1.add(player2.get(2));
+                    player1.add(player1.get(3));
+                    player1.add(player2.get(3));
+                    player1.add(player1.get(4));
+                    player1.add(player2.get(4));
+                } else {
+                    player2.add(player1.get(0));
+                    player2.add(player2.get(0));
+                    player2.add(player1.get(1));
+                    player2.add(player2.get(1));
+                    player2.add(player1.get(2));
+                    player2.add(player2.get(2));
+                    player2.add(player1.get(3));
+                    player2.add(player2.get(3));
+                    player2.add(player1.get(4));
+                    player2.add(player2.get(4));
+                }
+                player1.remove(4);
+                player1.remove(3);
+                player1.remove(2);
+                player1.remove(1);
+                player2.remove(4);
+                player2.remove(3);
+                player2.remove(2);
+                player2.remove(1);
+            } else {    // 1 < 2
                 player2.add(player1.get(0));
                 player2.add(player2.get(0));
-                player2.add(player1.get(1));
-                player2.add(player2.get(1));
-                player2.add(player1.get(2));
-                player2.add(player2.get(2));
-                player2.add(player1.get(3));
-                player2.add(player2.get(3));
-                player2.add(player1.get(4));
-                player2.add(player2.get(4));
             }
-            player1.remove(4);
-            player1.remove(3);
-            player1.remove(2);
-            player1.remove(1);
-            player2.remove(4);
-            player2.remove(3);
-            player2.remove(2);
-            player2.remove(1);
-        } else {    // 1 < 2
-            player2.add(player1.get(0));
-            player2.add(player2.get(0));
+
+            player1.remove(0);
+            player2.remove(0);
+
+            if (player1.size() == 0 || player2.size() == 0) {
+                gameOver();
+            }
+
+            tvPlayer1.setText(String.valueOf(player2.size()));
+            tvPlayer2.setText(String.valueOf(player1.size()));
         }
-
-        player1.remove(0);
-        player2.remove(0);
-
-        tvPlayer1.setText(String.valueOf(player2.size()));
-        tvPlayer2.setText(String.valueOf(player1.size()));
     }
+
+    public void gameOver() {
+        gameOver = true;
+        if (player1.size() > player2.size()) {  //player1 wins
+            whoWin.setText("player 1 wins");
+        } else {    //player2 wins
+            whoWin.setText("player 2 wins");
+        }
+    }
+
 }
 

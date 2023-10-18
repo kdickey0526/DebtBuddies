@@ -52,19 +52,10 @@ public class BlackJack extends AppCompatActivity {
     int playerNumL;
     int dealerNumH;
     int dealerNumL;
-    Button b_deal;
-    Button b_stand;
-    Button b_double, b_replay;
-    ImageView playerCard1;
-    ImageView playerCard2;
-    ImageView playerCard3;
-    ImageView playerCard4;
-    ImageView playerCard5;
-    ImageView dealerCard1;
-    ImageView dealerCard2;
-    ImageView dealerCard3;
-    ImageView dealerCard4;
-    ImageView dealerCard5;
+    Button b_deal, b_stand, b_double, b_replay;
+    ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
+        dealerCard2, dealerCard3, dealerCard4, dealerCard5;
+    boolean gameOver;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
     int i, bal, bet;
@@ -99,6 +90,7 @@ public class BlackJack extends AppCompatActivity {
 
         bal = 50;
         bet = 5;
+        gameOver = false;
 
         card = hitPlayer();
 
@@ -131,7 +123,33 @@ public class BlackJack extends AppCompatActivity {
 
 
     public void onDoubleClicked(View view) {
+        if (gameOver = true) {
 
+        } else {
+            gameOver = true;
+
+            bet = bet * 2;
+
+            String card = hitPlayer();
+
+            int image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard3.setImageResource(image);
+
+            if (playerNumH <= 21) {
+                String display = Integer.toString(playerNumH);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else if (playerNumL <= 21) {
+                playerNumH = playerNumL;
+                String display = Integer.toString(playerNumL);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else {
+                String display = "BUST";
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            }
+
+            tvPlayer.setText(String.valueOf(playerNumH));
+            tvBet.setText("Bet: " + String.valueOf(bet));
+        }
     }
 
     public void onDealClicked(View view) {
@@ -162,7 +180,12 @@ public class BlackJack extends AppCompatActivity {
         tvPlayer.setText(String.valueOf(playerNumH));
     }
     public void onReplayClicked(View view) {
+        if (bet > bal || gameOver == false) {
+
+        }
+        gameOver = false;
         String card;
+        bet = 5;
 
         playerNumH = 0;
         playerNumL = 0;
@@ -210,9 +233,13 @@ public class BlackJack extends AppCompatActivity {
         i = 2;
     }
     public void onStandClicked (View view) {
+        if (gameOver == true) {
+
+        } else {
+            gameOver = true;
         int i = 2;
         int playerNum;
-        if (playerNumH <= 21){
+        if (playerNumH <= 21) {
             playerNum = playerNumH;
         } else {
             playerNum = playerNumL;
@@ -223,7 +250,7 @@ public class BlackJack extends AppCompatActivity {
         int image = getResources().getIdentifier(card, "drawable", getPackageName());
         dealerCard2.setImageResource(image);
 
-        while(true) {
+        while (true) {
             i++;
             if (playerNumH > 21 || playerNumL > 21) { //dealer win
                 tvDealer.setText(String.valueOf(dealerNumH));
@@ -246,9 +273,9 @@ public class BlackJack extends AppCompatActivity {
                 image = getResources().getIdentifier(card, "drawable", getPackageName());
                 if (i == 3) {
                     dealerCard3.setImageResource(image);
-                } else if (i  == 4) {
+                } else if (i == 4) {
                     dealerCard4.setImageResource(image);
-                } else if (i  == 5) {
+                } else if (i == 5) {
                     dealerCard5.setImageResource(image);
                 }
             }
@@ -262,7 +289,7 @@ public class BlackJack extends AppCompatActivity {
         String temp2 = "Bet: ";
         temp2 += bet;
         tvBet.setText(temp2);
-
+    }
     }
 
 

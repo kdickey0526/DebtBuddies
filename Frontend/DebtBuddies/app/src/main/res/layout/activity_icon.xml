@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardview_dark_background">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon0"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="500dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="500dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="500dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="375dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon3"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="375dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon4"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="375dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon5"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="250dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon7"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="250dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon8"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="250dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon9"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="125dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon10"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="125dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/icon11"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="125dp"
+        android:src="@drawable/icon0"
+        app:cardCornerRadius="160dp"
+        app:cardElevation="16dp">
+        <ImageView
+            android:scaleType = "centerCrop"
+            android:src = "@drawable/icon0"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
