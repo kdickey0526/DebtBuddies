@@ -8,9 +8,12 @@ import com.google.gson.Gson;
 import onetoone.DeckLibrary.Card;
 import onetoone.DeckLibrary.Deck;
 import onetoone.DeckLibrary.Suit;
-import onetoone.GameServer.*;
+import onetoone.Events.Action;
+import onetoone.Events.Event;
 import onetoone.PlayerClasses.Player;
 import onetoone.PlayerClasses.TexasHoldEmPlayer;
+import onetoone.Responses.Message;
+import onetoone.Responses.Response;
 
 public class TexasHoldEm {
 

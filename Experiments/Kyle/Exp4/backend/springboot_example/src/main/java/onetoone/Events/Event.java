@@ -1,4 +1,4 @@
-package onetoone.GameServer;
+package onetoone.Events;
 
 public class Event {
 

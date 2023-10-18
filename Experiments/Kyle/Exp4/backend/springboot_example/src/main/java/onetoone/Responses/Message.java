@@ -1,4 +1,4 @@
-package onetoone.GameServer;
+package onetoone.Responses;
 
 import onetoone.PlayerClasses.Player;
 

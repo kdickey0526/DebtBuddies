@@ -12,7 +12,10 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
+import onetoone.Events.Event;
 import onetoone.PlayerClasses.Player;
+import onetoone.Responses.Message;
+import onetoone.Responses.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -100,7 +103,7 @@ public class GameServer {
     public void onMessage(Session session, String message) throws IOException {
 
         /**
-         * {"game":*game*,"gameid":*gameid*,*action*:value}
+         * {"event":*String event*,"action":*Action action*}
          */
 
         Player player = sessionPlayerMap.get(session);
@@ -114,10 +117,6 @@ public class GameServer {
         String game = usernameGameMap.get(player.toString());
 
         Response response = Manager.getResponse(player, game, event);
-
-        for(Message msg : response.getMessages()){
-            logger.info("UUSUAUAUUAAH: " + msg.getMessage());
-        }
 
         List<Message> messages = response.getMessages();
 

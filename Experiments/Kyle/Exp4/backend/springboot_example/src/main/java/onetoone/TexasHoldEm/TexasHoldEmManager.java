@@ -1,12 +1,12 @@
 package onetoone.TexasHoldEm;
 
-import onetoone.GameServer.*;
+import onetoone.Events.Action;
 import onetoone.PlayerClasses.Player;
 import onetoone.PlayerClasses.TexasHoldEmPlayer;
+import onetoone.Responses.Message;
+import onetoone.Responses.Response;
 
 import java.util.*;
-
-import static java.sql.Types.NULL;
 
 public class TexasHoldEmManager {
 
