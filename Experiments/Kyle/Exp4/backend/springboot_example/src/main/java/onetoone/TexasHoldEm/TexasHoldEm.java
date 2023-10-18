@@ -17,16 +17,15 @@ import onetoone.Responses.Response;
 
 public class TexasHoldEm {
 
+    private int gameId;
     private final int BASE_ANTE = 10;
     private List<TexasHoldEmPlayer> players;
     private Deck deck;
     private List<Card> pit;
     private int pot;
-    private int gameId;
     private int ante;
     private int stage;
     private int num_players;
-
     private int running = 0;
     private int p_index = 0;
     private TexasHoldEmPlayer target_player;
