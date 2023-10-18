@@ -1,7 +1,4 @@
-package onetoone.GameServer;
-
-import onetoone.GameServer.Card;
-import onetoone.GameServer.Suit;
+package onetoone.DeckLibrary;
 
 import java.util.ArrayList;
 import java.util.Collections;

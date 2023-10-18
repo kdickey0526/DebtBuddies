@@ -1,4 +1,4 @@
-package onetoone.GameServer;
+package onetoone.DeckLibrary;
 
 public enum Suit {
     HEARTS,

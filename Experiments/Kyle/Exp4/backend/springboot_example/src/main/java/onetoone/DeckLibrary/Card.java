@@ -1,6 +1,4 @@
-package onetoone.GameServer;
-
-import onetoone.GameServer.Suit;
+package onetoone.DeckLibrary;
 
 public class Card {
 

@@ -4,46 +4,32 @@ import java.util.*;
 
 public class Response {
 
-    private List<Player> players;
-
-    private List<String> messages;
-
-    public Response(List<Player> players, List<String> messages){
-        this.players = players;
-        this.messages = messages;
-    }
+    private List<Message> messages;
 
     public Response(){
-        players = new ArrayList<>();
         messages = new ArrayList<>();
     }
 
-    public void setPlayers(List<Player> players){ this.players = players; }
-
-    public void setMessages(List<String> messages){
-        this.messages = messages;
-    }
-
-    public void setMessage(String message){
-        List<String> msgs = new ArrayList<>();
+    public Response(Message message){
+        List<Message> msgs = new ArrayList<>();
         msgs.add(message);
         messages = msgs;
     }
 
-    public void addPlayer(Player player){
-        this.players.add(player);
+    public Response(List<Message> messages){
+        this.messages = messages;
     }
 
-    public void addMessage(String message){ messages.add(message); }
-
-    public List<Player> getPlayers(){
-        return players;
+    public void addMessage(Message message){
+        messages.add(message);
     }
 
-    public List<String> getMessages(){
+    public List<Message> getMessages(){
         return messages;
     }
 
-    public String getMessage(int index){ return messages.get(index); }
+    public void addResponse(Response response){
+        messages.addAll(response.getMessages());
+    }
 
 }

@@ -1,4 +1,4 @@
-package onetoone.GameServer;
+package onetoone.TexasHoldEm;
 
 public enum PokerHands {
     ROYAL_FLUSH(23),

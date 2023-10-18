@@ -1,4 +1,4 @@
-package onetoone.GameServer;
+package onetoone.PlayerClasses;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,12 @@ public class Player {
         playerID = playerID_index++;
         balance = 100;
         this.username = username;
+    }
+
+    public Player(Player player){
+        playerID = player.getID();
+        balance = player.getBalance();
+        username = player.toString();
     }
     
     public int getBalance(){ return balance; }

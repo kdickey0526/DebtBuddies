@@ -12,11 +12,10 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
+import onetoone.PlayerClasses.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import static java.sql.Types.NULL;
 
 
 /**
@@ -42,13 +41,15 @@ public class GameServer {
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
 
-    private static Map < String, TexasHoldEmPlayer> usernamePlayerMap = new Hashtable < > ();
-    private static Map < Session, TexasHoldEmPlayer > sessionPlayerMap = new Hashtable < > ();
-    private static Map < TexasHoldEmPlayer , Session > playerSessionMap = new Hashtable < > ();
+    private static Map < String, Player> usernamePlayerMap = new Hashtable < > ();
+    private static Map < Session, Player > sessionPlayerMap = new Hashtable < > ();
+    private static Map < Player , Session > playerSessionMap = new Hashtable < > ();
+
+    private static Map < String, String > usernameGameMap = new Hashtable < > ();
     private static List<Player> players = new ArrayList<>();
     private static int num_players = 0;
 
-    private final Logger logger = LoggerFactory.getLogger(TexasHoldEmServer.class);
+    private final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
     /**
      * This method is called when a new WebSocket connection is established.
@@ -68,9 +69,11 @@ public class GameServer {
             session.close();
         }
         else {
-            TexasHoldEmPlayer player = new TexasHoldEmPlayer(username);
+            Player player = new Player(username);
             num_players++;
             players.add(player);
+
+            usernameGameMap.put(username, game);
             // map current session with username
             sessionPlayerMap.put(session, player);
 
@@ -102,20 +105,28 @@ public class GameServer {
 
         Player player = sessionPlayerMap.get(session);
 
-        Action action = gson.fromJson(message, Action.class);
-        String game = action.getGame();
+        Event event = gson.fromJson(message, Event.class);
 
-        Response response = Manager.getResponse(player, action);
+        logger.info(event.toString());
 
-        List<Player> players_to_message = response.getPlayers();
-        for(int i = 0; i < players_to_message.size(); i++){
-            String msg;
-            if(response.getMessages().size() == 1){
-                msg = response.getMessages().get(0);
-            }else{
-                msg = response.getMessages().get(i);
+        logger.info(player.toString() + " sent " + message);
+
+        String game = usernameGameMap.get(player.toString());
+
+        Response response = Manager.getResponse(player, game, event);
+
+        for(Message msg : response.getMessages()){
+            logger.info("UUSUAUAUUAAH: " + msg.getMessage());
+        }
+
+        List<Message> messages = response.getMessages();
+
+        for (Message value : messages) {
+            logger.info("[Message]: " + value.getMessage());
+            List<Player> m_players = value.getPlayers();
+            for (Player m_player : m_players) {
+                sendMessageToParticularUser(m_player.toString(), value.getMessage());
             }
-            sendMessageToParticularUser(players_to_message.get(i).toString(), msg);
         }
     }
 

@@ -1,15 +1,30 @@
 package onetoone.GameServer;
 
 public class Action {
-    private String game;
-    private int gameid;
-    private Move move;
+    private String action;
 
-    public Move getMove() {
-        return move;
+    private int value;
+
+    public Action(String action, int value){
+        this.action = action;
+        this.value = value;
     }
 
-    public int getGameid(){ return gameid; }
+    public Action(String action){
+        this.action = action;
+    }
 
-    public String getGame(){ return game; }
+    public String getAction(){
+        return action;
+    }
+
+    public int getValue(){
+        return value;
+    }
+
+    @Override
+    public String toString(){
+        return "\nAction: " + action + "\nValue: " + Integer.toString(value);
+    }
+
 }

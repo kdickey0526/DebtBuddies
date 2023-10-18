@@ -1,8 +1,16 @@
-package onetoone.GameServer;
+package onetoone.TexasHoldEm;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.google.gson.Gson;
+import onetoone.DeckLibrary.Card;
+import onetoone.DeckLibrary.Deck;
+import onetoone.DeckLibrary.Suit;
+import onetoone.GameServer.*;
+import onetoone.PlayerClasses.Player;
+import onetoone.PlayerClasses.TexasHoldEmPlayer;
 
 public class TexasHoldEm {
 
@@ -14,87 +22,124 @@ public class TexasHoldEm {
     private int gameId;
     private int ante;
     private int stage;
-    private int running;
     private int num_players;
+
+    private int running = 0;
     private int p_index = 0;
     private TexasHoldEmPlayer target_player;
 
+    private TexasHoldEmPlayer final_player;
+
+    private Gson gson = new Gson();
+
     public TexasHoldEm(List<TexasHoldEmPlayer> players, int gameId){
-        this.players = players;
+        this.players = new ArrayList<>(players);
         this.gameId = gameId;
-        initializeGame();
     }
 
-    public Response getResponse(TexasHoldEmPlayer player, Move move){
-        String message = "Error";
-        List<Player> k = new ArrayList<>();
-        k.add(player);
-        Response response = new Response(k, "Error");
-        if(running == 0 && Objects.equals(move.getPlay(), "start")){
-            running = 1;
-            message = player.toString() + " has started the game";
+    public TexasHoldEm(int gameId){
+        this.gameId = gameId;
+    }
+
+    public void addPlayer(Player player){
+        players.add((TexasHoldEmPlayer) player);
+    }
+
+    public Response getResponse(TexasHoldEmPlayer player, Action action){
+        Response response = new Response();
+        if(running == 0 && Objects.equals(action.getAction(), "start")){
+            initializeGame();
+            response.addMessage(new Message(castToPlayers(), player.toString() + " has started the game"));
+            response.addResponse(sendHands());
+            return response;
         }else if(running == 1 && target_player == player){
             int previous_ante = ante;
-            switch(move.getPlay()) {
+            switch(action.getAction()) {
                 case "fold":
                     fold(player);
-                    message = player.toString() + " has folded";
+                    response.addMessage(new Message(castToPlayers(), player.toString() + " has folded"));
                     break;
                 case "call":
                     call(player);
-                    message = player.toString() + " called\nThe pot is now at " + Integer.toString(pot);
+                    response.addMessage(new Message(castToPlayers(), player.toString() + " called\nThe pot is now at " + Integer.toString(pot)));
                     break;
                 case "raise":
-                    raise(player, move.getValue());
-                    message = player.toString() + " has raised the ante by " + move.getValue() + "\nThe pot is now at " + pot + " and the ante is " + ante;
+                    raise(player, action.getValue());
+                    response.addMessage(new Message(castToPlayers(), player.toString() + " has raised the ante by " + action.getValue() + "\nThe pot is now at " + pot + " and the ante is " + ante));
                     break;
                 default:
-                    message = "invalid move";
+                    response.addMessage(new Message(player, "invalid move"));
+                    return response;
             }
-            if(getActivePlayers() > 1){
-                target_player = nextTargetPlayer();
-            }else{
-                end_game();
+            if(getActivePlayers() == 1){
+                TexasHoldEmPlayer winner = end_game();
+                response.addMessage(new Message(castToPlayers(), winner.toString() + " won the game."));
+                return response;
             }
-            if(Objects.equals(move.getPlay(), "call") || Objects.equals(move.getPlay(), "fold")){
-                if(Objects.equals(move.getPlay(),"call") && player.getBet() == previous_ante && target_player.getBet() == previous_ante){
+            if(Objects.equals(action.getAction(), "call") || Objects.equals(action.getAction(), "fold")){
+                if(Objects.equals(action.getAction(),"call") && player.getBet() == previous_ante && nextTargetPlayer() == final_player) {
                     stage++;
-                    if(stage == 1){
+                    if (stage == 1) {
                         flop();
-                    }else if(stage == 2){
+                        response.addMessage(new Message(castToPlayers(), getCommunityString()));
+                    } else if (stage == 2) {
                         turn();
-                    }else if(stage == 3){
+                        response.addMessage(new Message(castToPlayers(), getCommunityString()));
+                    } else if (stage == 3) {
                         river();
-                    }else{
-                        end_game();
+                        response.addMessage(new Message(castToPlayers(), getCommunityString()));
+                    } else {
+                        TexasHoldEmPlayer winner = end_game();
+                        response.addMessage(new Message(castToPlayers(), winner.toString() + " won the game."));
                     }
-                    response.setPlayers(getAllPlayers());
-                    message = getCommunityString();
-                }else{
-
                 }
             }
+            if(running == 1) {
+                target_player = nextTargetPlayer();
+                response.addMessage(new Message(castToPlayers(), "It is now " + target_player.toString() + "'s turn"));
+            }
         }
-        response.addMessage(message);
         return response;
+    }
+
+    public List<Player> castToPlayers(){
+        List<Player> temp = new ArrayList<>();
+        for (TexasHoldEmPlayer player : players) {
+            temp.add((Player) player);
+        }
+        return temp;
     }
 
     public Response sendHands(){
+
         Response response = new Response();
 
+        Event event;
+
         for(TexasHoldEmPlayer player : players){
-            response.addPlayer(player);
-            StringBuilder handstring = new StringBuilder();
-            for(Card card : player.getHand()){
-                handstring.append(card.toString()).append("\n");
-            }
-            response.addMessage(handstring.toString());
+
+            event = new Event("hole", new Action("{\"card1\":\""+player.getHand().get(0).toString()+"\",\"card2\":\""+player.getHand().get(1).toString()+"\"}"));
+
+            response.addMessage(new Message(player, gson.toJson(event)));
         }
+
+        event = new Event("message", new Action("{\"value\":\"It is now " + target_player + "'s turn\"}"));
+
+        response.addMessage(new Message(getAllPlayers(), gson.toJson(event)));
+
         return response;
     }
 
-    private void end_game(){
-
+    private TexasHoldEmPlayer end_game(){
+        running = 0;
+        if(getActivePlayers() == 1){
+            for(TexasHoldEmPlayer player : players){
+                if(player.foldStatus()){
+                    return player;
+                }
+            }
+        }
+        return decideWinner();
     }
 
     private String getCommunityString(){
@@ -111,25 +156,18 @@ public class TexasHoldEm {
 
     private void call(TexasHoldEmPlayer player){
         int increase = ante - player.getBet();
-        player.placeBet(increase);
+        pot += player.placeBet(increase);
     }
 
     private void raise(TexasHoldEmPlayer player, int ante_increase){
         ante += ante_increase;
         int increase = ante - player.getBet();
         player.placeBet(increase);
+        final_player = player;
     }
 
     private TexasHoldEmPlayer nextTargetPlayer(){
-        do{
-            int ind = players.indexOf(target_player);
-            if(ind + 1 == players.size()){
-                target_player = players.get(0);
-            }else{
-                target_player = players.get(ind + 1);
-            }
-        }while(target_player.foldStatus());
-        return target_player;
+        return players.get((players.indexOf(target_player) + 1) % players.size());
     }
 
     private void initializeGame(){
@@ -137,10 +175,14 @@ public class TexasHoldEm {
         pit = new ArrayList<>();
         deck = new Deck();
         ante = BASE_ANTE;
-        running = 0;
+        running = 1;
         stage = 0;
         pot = 0;
         target_player = players.get(p_index++ % num_players);
+        final_player = target_player;
+        for(TexasHoldEmPlayer player : players){
+            player.clearInventory();
+        }
         deal_hole();
     }
 
@@ -189,6 +231,7 @@ public class TexasHoldEm {
         PokerHands high_hand = PokerHands.LOW;
 
         for(int i = 0; i < num_players; i++){
+            if(players.get(i).foldStatus()){ continue; }
             PokerHands player_high = getHigh(i);
             if(player_high.getValue() > high_hand.getValue()){
                 high_index = i;
@@ -196,7 +239,8 @@ public class TexasHoldEm {
             }else if(player_high.getValue() == high_hand.getValue()){
                 TexasHoldEmPlayer player1 = players.get(high_index);
                 TexasHoldEmPlayer player2 = players.get(i);
-                int winner = tiebreaker(player1, player2);
+                //int winner = tiebreaker(player1, player2);
+                int winner = 1;
                 if(winner == 1){
                     high_index = i;
                 }
@@ -283,12 +327,15 @@ public class TexasHoldEm {
                 temp.add(card);
             }
         }
-
-        return straightFlush(temp);
+        if(temp.size() < 5){
+            return false;
+        }else{
+            return straightFlush(temp);
+        }
     }
 
     private boolean straightFlush(List<Card> cards){
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
             for(int j = 1; j < 5; j++){
                 if(Deck.CardManager.contains(cards, cards.get(i).getSuit(), cards.get(i).getRank() + j)){
@@ -339,7 +386,7 @@ public class TexasHoldEm {
     }
 
     private boolean straight(List<Card> cards){
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
             for(int j = 1; j < 5; j++){
                 if(Deck.CardManager.contains(cards, cards.get(i).getRank() + j)){
