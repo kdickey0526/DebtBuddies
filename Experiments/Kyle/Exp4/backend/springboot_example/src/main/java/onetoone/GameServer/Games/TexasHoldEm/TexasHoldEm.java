@@ -75,13 +75,15 @@ public class TexasHoldEm extends Game<TexasHoldEmPlayer> {
                         response.addMessage(new Message(getAllPlayers(), getCommunityString()));
                     } else {
                         TexasHoldEmPlayer winner = end_game();
-                        response.addMessage(new Message(getAllPlayers(), winner.toString() + " won the game."));
+                        GameEvent gameEvent = new GameEvent("winner", winner.toString());
+                        response.addMessage(new Message(getAllPlayers(), gameEvent.toString()));
                     }
                 }
             }
             if(running == 1) {
                 target_player = nextTargetPlayer();
-                response.addMessage(new Message(getAllPlayers(), "It is now " + target_player.toString() + "'s turn"));
+                GameEvent gameEvent = new GameEvent("turn", target_player.toString());
+                response.addMessage(new Message(getAllPlayers(), gameEvent.toString()));
             }
         }
         return response;
@@ -421,6 +423,11 @@ public class TexasHoldEm extends Game<TexasHoldEmPlayer> {
             default:
                 return PokerHands.HIGH_ACE;
         }
+    }
+
+    @Override
+    public String toString(){
+        return Integer.toString(gameId);
     }
 
 }

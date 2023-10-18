@@ -8,10 +8,12 @@ import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmManager;
 
 public class Manager {
 
+    private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
+
     public static Response getResponse(String game, Player player, ServerEvent serverEvent){
         switch(game){
             case "texasholdem":
-                return TexasHoldEmManager.getResponse(player, serverEvent);
+                return texasManager.getResponse(player, serverEvent);
             case "gofish":
                 //return GoFishManager.getResponse(player, serverEvent.getAction());
             default:

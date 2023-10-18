@@ -26,6 +26,8 @@ public abstract class GameManager<T, K> {
 
     protected Map < K , Integer > serverGameIdMap = new Hashtable<>();
 
+    public GameManager(){}
+
     protected abstract T getNewPlayer(Player player);
 
     protected abstract K getNewGame(List<T> queue, Integer gameId);
@@ -45,8 +47,9 @@ public abstract class GameManager<T, K> {
                     usernameGameIdMap.put(temp_player.toString(), GameId);
                 }
                 Servers.add(new_game);
+                serverGameIdMap.put(new_game, GameId);
                 gameIdServerMap.put(GameId, new_game);
-                GameEvent gameEvent = new GameEvent("joinGame", "{\"event\":\"join\",\"value\":{\"gameid\":"+GameId+"}}");
+                GameEvent gameEvent = new GameEvent("joinGame", "{\"gameid\":"+GameId+"}");
                 response.addMessage(new Message(getAllPlayers(Queue), gameEvent.toString()));
                 Queue.clear();
             }else{
