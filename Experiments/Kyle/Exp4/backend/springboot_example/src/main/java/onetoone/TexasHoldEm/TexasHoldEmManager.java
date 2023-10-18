@@ -20,11 +20,7 @@ public class TexasHoldEmManager {
 
     private static Map < String, Integer > usernameGameIdMap = new Hashtable<>();
 
-    public TexasHoldEmManager(){
-
-    }
-
-    public Response getResponse(Player player, Action action){
+    public static Response getResponse(Player player, Action action){
         Response response = new Response();
 
         if(!usernameGameIdMap.containsKey(player.toString())){
@@ -53,7 +49,7 @@ public class TexasHoldEmManager {
         return response;
     }
 
-    private TexasHoldEmPlayer getTexasPlayer(Player player){
+    private static TexasHoldEmPlayer getTexasPlayer(Player player){
         return playerTexasMap.get(player);
     }
 

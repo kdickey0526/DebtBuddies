@@ -1,26 +1,23 @@
 package onetoone.GameServer;
 
-import onetoone.Events.Event;
+import onetoone.Events.ServerEvent;
 import onetoone.GoFish.GoFishManager;
 import onetoone.PlayerClasses.Player;
 import onetoone.Responses.Response;
 import onetoone.TexasHoldEm.TexasHoldEmManager;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Manager {
 
-    private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
-
-    private static GoFishManager fishManager = new GoFishManager();
-
-    public static Response getResponse(Player player, String game, Event event){
-        if(Objects.equals(game, "texasholdem")){
-            return texasManager.getResponse(player, event.getAction());
-        }else if(Objects.equals(game, "gofish")){
-            return fishManager.getResponse(player, event.getAction());
+    public static Response getResponse(Player player, ServerEvent serverEvent){
+        switch(serverEvent.getGame()){
+            case "texasholdem":
+                return TexasHoldEmManager.getResponse(player, serverEvent.getAction());
+            case "gofish":
+                return GoFishManager.getResponse(player, serverEvent.getAction());
+            default:
+                return new Response();
         }
-        return new Response();
     }
-
 }

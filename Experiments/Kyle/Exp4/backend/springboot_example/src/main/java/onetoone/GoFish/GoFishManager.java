@@ -21,11 +21,7 @@ public class GoFishManager {
 
     private static Map < String, Integer > usernameGameIdMap = new Hashtable<>();
 
-    public GoFishManager(){
-
-    }
-
-    public Response getResponse(Player player, Action action){
+    public static Response getResponse(Player player, Action action){
         Response response = new Response();
 
         if(!usernameGameIdMap.containsKey(player.toString())){
@@ -54,7 +50,7 @@ public class GoFishManager {
         return response;
     }
 
-    private GoFishPlayer getFishPlayer(Player player){
+    private static GoFishPlayer getFishPlayer(Player player){
         return playerFishMap.get(player);
     }
 

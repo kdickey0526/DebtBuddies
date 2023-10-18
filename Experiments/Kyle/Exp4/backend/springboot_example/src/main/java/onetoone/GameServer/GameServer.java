@@ -12,7 +12,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
-import onetoone.Events.Event;
+import onetoone.Events.ServerEvent;
 import onetoone.PlayerClasses.Player;
 import onetoone.Responses.Message;
 import onetoone.Responses.Response;
@@ -108,15 +108,13 @@ public class GameServer {
 
         Player player = sessionPlayerMap.get(session);
 
-        Event event = gson.fromJson(message, Event.class);
+        ServerEvent serverEvent = gson.fromJson(message, ServerEvent.class);
 
-        logger.info(event.toString());
+        logger.info(serverEvent.toString());
 
         logger.info(player.toString() + " sent " + message);
 
-        String game = usernameGameMap.get(player.toString());
-
-        Response response = Manager.getResponse(player, game, event);
+        Response response = Manager.getResponse(player, serverEvent);
 
         List<Message> messages = response.getMessages();
 
