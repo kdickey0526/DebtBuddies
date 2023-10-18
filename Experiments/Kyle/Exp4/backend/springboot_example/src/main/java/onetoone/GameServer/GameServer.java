@@ -12,10 +12,10 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
-import onetoone.Events.ServerEvent;
-import onetoone.PlayerClasses.Player;
-import onetoone.Responses.Message;
-import onetoone.Responses.Response;
+import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.Communication.Responses.Message;
+import onetoone.GameServer.Communication.Responses.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -110,11 +110,9 @@ public class GameServer {
 
         ServerEvent serverEvent = gson.fromJson(message, ServerEvent.class);
 
-        logger.info(serverEvent.toString());
-
         logger.info(player.toString() + " sent " + message);
 
-        Response response = Manager.getResponse(player, serverEvent);
+        Response response = Manager.getResponse(usernameGameMap.get(player.toString()), player, serverEvent);
 
         List<Message> messages = response.getMessages();
 
