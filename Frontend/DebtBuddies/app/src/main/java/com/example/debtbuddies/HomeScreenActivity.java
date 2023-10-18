@@ -41,7 +41,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void whacAMoleOnClickListener(View v) {
         Log.d(TAG, "whacAMoleOnClickListener: clicked");
-        
+        startActivity(new Intent(this, WhacAMoleActivity.class));
     }
 
     public void blackjackOnClickListener(View v) {
