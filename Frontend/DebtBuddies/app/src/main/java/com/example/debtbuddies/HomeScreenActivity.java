@@ -30,13 +30,13 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
-//        try {
-//            usernameField.setText(MyApplication.currentUser.getString("userName"));
-//            coinsField.setText(MyApplication.currentUser.getString("coins"));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, "failed setting username and coins");
-//        }
+        try {
+            usernameField.setText(MyApplication.currentUser.getString("userName"));
+            coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "failed setting username and coins");
+        }
     }
 
     public void whacAMoleOnClickListener(View v) {
