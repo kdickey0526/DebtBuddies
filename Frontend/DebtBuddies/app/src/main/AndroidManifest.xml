@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".WhacAMoleActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeScreenActivity"
             android:exported="false" />
         <activity
