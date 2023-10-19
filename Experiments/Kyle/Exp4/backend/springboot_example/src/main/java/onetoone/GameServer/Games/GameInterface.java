@@ -5,6 +5,6 @@ import onetoone.GameServer.Communication.Responses.Response;
 
 public interface GameInterface <T>{
 
-    public Response getResponse(T player, ServerEvent serverEvent);
+    public void getResponse(T player, ServerEvent serverEvent);
 
 }

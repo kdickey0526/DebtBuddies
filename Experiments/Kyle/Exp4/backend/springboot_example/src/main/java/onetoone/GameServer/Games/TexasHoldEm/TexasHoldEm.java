@@ -46,89 +46,90 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         deal_hole();
     }
 
-    public Response getResponse(TexasHoldEmUser user, ServerEvent serverEvent){
-        Response response = new Response();
-        GameEvent gameEvent;
+    public void getResponse(TexasHoldEmUser user, ServerEvent serverEvent){
+
         String message;
+
         if(running == 0 && Objects.equals(serverEvent.getAction(), "start")){
+
             initializeGame();
-            message = user.toString() + " has started the game.";
-            response.addMessage(getAllUsers(), "message", message);
-            response.addResponse(sendHands());
-            return response;
+            Response.addMessage(getAllUsers(), "start", user.toString());
+            sendHands();
+
         }else if(running == 1 && target_user == user){
+
             int previous_ante = ante;
+
             switch(serverEvent.getAction()) {
                 case "fold":
                     fold(user);
-                    message = user.toString() + " has folded.";
-                    response.addMessage(getAllUsers(), "message", message);
+                    Response.addMessage(getAllUsers(), "fold", user.toString());
                     break;
                 case "call":
                     call(user);
-                    message = user.toString() + " called\nThe pot is now at " + Integer.toString(pot);
-                    response.addMessage(getAllUsers(), "message", message);
+                    message = "{\"user\":\""+ user +"\",\"pot\":"+ pot +"}";
+                    Response.addMessage(getAllUsers(), "call", message);
                     break;
                 case "raise":
                     raise(user, serverEvent.getValue());
-                    message = users.toString() + " has raised the ante by " + serverEvent.getValue() + "\nThe pot is now at " + pot + " and the ante is " + ante;
-                    response.addMessage(getAllUsers(), "message", message);
+                    message = "{\"user\":\""+ user +"\",\"pot\":"+ pot +",\"ante\":"+ante+"}";
+                    Response.addMessage(getAllUsers(), "raise", message);
                     break;
                 default:
-                    response.addMessage(user, "message", "invalid move");
-                    return response;
+                    Response.addMessage(user, "message", "invalid move");
+                    return;
             }
             if(getActivePlayers() == 1){
                 TexasHoldEmUser winner = end_game();
-                gameEvent = new GameEvent("message", winner.toString() + " won the game.");
-                response.addMessage(new Message(getAllUsers(), gameEvent.toString()));
-                return response;
+                Response.addMessage(getAllUsers(), "winner", winner.toString());
+                return;
             }
             if(Objects.equals(serverEvent.getAction(), "call") || Objects.equals(serverEvent.getAction(), "fold")){
                 if(Objects.equals(serverEvent.getAction(),"call") && user.getBet() == previous_ante && nextTargetPlayer() == final_user) {
                     stage++;
                     if (stage == 1) {
                         flop();
-                        response.addMessage(new Message(getAllUsers(), getCommunityString()));
+                        Response.addMessage(getAllUsers(), "flop", getCommunityJson());
                     } else if (stage == 2) {
                         turn();
-                        response.addMessage(new Message(getAllUsers(), getCommunityString()));
+                        Response.addMessage(getAllUsers(), "turn", getCommunityJson());
                     } else if (stage == 3) {
                         river();
-                        response.addMessage(new Message(getAllUsers(), getCommunityString()));
+                        Response.addMessage(getAllUsers(), "river", getCommunityJson());
                     } else {
                         TexasHoldEmUser winner = end_game();
-                        gameEvent = new GameEvent("winner", winner.toString());
-                        response.addMessage(new Message(getAllUsers(), gameEvent.toString()));
+                        Response.addMessage(getAllUsers(), "winner", winner.toString());
+                        return;
                     }
                 }
             }
             if(running == 1) {
                 target_user = nextTargetPlayer();
-                gameEvent = new GameEvent("turn", target_user.toString());
-                response.addMessage(new Message(getAllUsers(), gameEvent.toString()));
+                Response.addMessage(getAllUsers(), "turn", target_user.toString());
             }
         }
-        return response;
     }
 
-    public Response sendHands(){
+    public String getCommunityJson(){
+        StringBuilder sb = new StringBuilder("{");
+        for(int i = 0; i < pit.size(); i++){
+            sb.append("\"card").append(i).append("\":\"").append(pit.get(i).toString()).append("\"");
+            if(i != pit.size() - 1){
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+        return sb.toString();
+    }
 
-        Response response = new Response();
-
-        GameEvent gameEvent;
+    public void sendHands(){
 
         for(TexasHoldEmUser user : users){
-
             String message = "{\"card1\":\""+user.getHand().get(0).toString()+"\",\"card2\":\""+user.getHand().get(1).toString()+"\"}";
-            response.addMessage(user, "hole", message);
+            Response.addMessage(user, "hole", message);
         }
 
-        gameEvent = new GameEvent("message", "It is now " + target_user + "'s turn.");
-
-        response.addMessage(new Message(getAllUsers(), gameEvent.toString()));
-
-        return response;
+        Response.addMessage(getAllUsers(), "turn", target_user.toString());
     }
 
     private TexasHoldEmUser end_game(){

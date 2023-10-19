@@ -9,14 +9,16 @@ public class Manager {
 
     private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
 
-    public static Response getResponse(String game, User user, ServerEvent serverEvent){
+    public static void getResponse(String game, User user, ServerEvent serverEvent){
         switch(game){
             case "texasholdem":
-                return texasManager.getResponse(user, serverEvent);
+                texasManager.getResponse(user, serverEvent);
+                return;
             case "gofish":
                 //return GoFishManager.getResponse(player, serverEvent.getAction());
+                return;
             default:
-                return new Response();
+                return;
         }
     }
 }

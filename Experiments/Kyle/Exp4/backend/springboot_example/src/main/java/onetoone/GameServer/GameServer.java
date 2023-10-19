@@ -112,9 +112,9 @@ public class GameServer {
 
         logger.info(user.toString() + " sent " + message);
 
-        Response response = Manager.getResponse(usernameGameMap.get(user.toString()), user, serverEvent);
+        Manager.getResponse(usernameGameMap.get(user.toString()), user, serverEvent);
 
-        List<Message> messages = response.getMessages();
+        List<Message> messages = Response.getMessages();
 
         for (Message value : messages) {
             logger.info("[Message]: " + value.getMessage());
@@ -123,6 +123,9 @@ public class GameServer {
                 sendMessageToParticularUser(m_user.toString(), value.getMessage());
             }
         }
+
+        Response.clearMessages();
+
     }
 
     /**

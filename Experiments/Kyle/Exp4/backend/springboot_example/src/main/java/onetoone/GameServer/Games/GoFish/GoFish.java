@@ -19,8 +19,8 @@ public class GoFish extends Game<GoFishUser> implements GameInterface<GoFishUser
 
     }
 
-    public Response getResponse(GoFishUser user, ServerEvent serverEvent){
-        return new Response(new Message(user, "hello there"));
+    public void getResponse(GoFishUser user, ServerEvent serverEvent){
+        Response.addMessage(user, "message", "hello there");
     }
 
 }

@@ -30,8 +30,7 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
 
     protected abstract K getNewGame(List<T> queue, Integer gameId);
 
-    public Response getResponse(User user, ServerEvent serverEvent){
-        Response response = new Response();
+    public void getResponse(User user, ServerEvent serverEvent){
 
         if(!usernameGameIdMap.containsKey(user.toString()) && Objects.equals(serverEvent.getAction(), "joinQueue")){
             T new_player = getNewUser(user);
@@ -46,21 +45,20 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
                 serverGameIdMap.put(new_game, GameId);
                 gameIdServerMap.put(GameId, new_game);
                 GameEvent gameEvent = new GameEvent("joinGame", "{\"gameid\":"+GameId+"}");
-                response.addMessage(new Message(getAllUsers(Queue), gameEvent.toString()));
+                Response.addMessage(new Message(getAllUsers(Queue), gameEvent.toString()));
                 Queue.clear();
             }else{
                 GameEvent gameEvent = new GameEvent("queue");
-                response.addMessage(new Message(user, gameEvent.toString()));
+                Response.addMessage(new Message(user, gameEvent.toString()));
             }
         }else{
             for(K server : Servers){
                 if(Objects.equals(usernameGameIdMap.get(user.toString()), serverGameIdMap.get(server))){
-                    response.addResponse(server.getResponse(getUserPlayer(user), serverEvent));
+                    server.getResponse(getUserPlayer(user), serverEvent);
                     break;
                 }
             }
         }
-        return response;
     }
 
     public T getUserPlayer(User user){
