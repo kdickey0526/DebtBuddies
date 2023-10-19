@@ -1,15 +1,11 @@
 package onetoone.GameServer.Games.TexasHoldEm;
 
-import onetoone.GameServer.Communication.Events.ServerEvent;
-import onetoone.GameServer.Games.GameInterface;
 import onetoone.GameServer.Games.GameManager;
-import onetoone.GameServer.PlayerClasses.Player;
-import onetoone.GameServer.Communication.Responses.Message;
-import onetoone.GameServer.Communication.Responses.Response;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
 
-public class TexasHoldEmManager extends GameManager<TexasHoldEmPlayer, TexasHoldEm > {
+public class TexasHoldEmManager extends GameManager<TexasHoldEmUser, TexasHoldEm > {
 
 
     public TexasHoldEmManager(){
@@ -17,12 +13,12 @@ public class TexasHoldEmManager extends GameManager<TexasHoldEmPlayer, TexasHold
     }
 
     @Override
-    protected TexasHoldEmPlayer getNewPlayer(Player player) {
-        return new TexasHoldEmPlayer(player);
+    protected TexasHoldEmUser getNewUser(User user) {
+        return new TexasHoldEmUser(user);
     }
 
     @Override
-    protected TexasHoldEm getNewGame(List<TexasHoldEmPlayer> queue, Integer gameId) {
+    protected TexasHoldEm getNewGame(List<TexasHoldEmUser> queue, Integer gameId) {
         return new TexasHoldEm(queue, gameId);
     }
 

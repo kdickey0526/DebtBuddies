@@ -7,16 +7,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CardPlayer extends Player{
+public class CardUser extends User {
 
     private List<Card> hand = new ArrayList<>();
     private List<Card> discard = new ArrayList<>();
 
-    public CardPlayer(String username){
+    public CardUser(String username){
         super(username);
     }
 
-    public CardPlayer(){
+    public CardUser(){
         super();
     }
 

@@ -13,7 +13,7 @@ import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
 import onetoone.GameServer.Communication.Events.ServerEvent;
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
 import org.slf4j.Logger;
@@ -44,12 +44,12 @@ public class GameServer {
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
 
-    private static Map < String, Player> usernamePlayerMap = new Hashtable < > ();
-    private static Map < Session, Player > sessionPlayerMap = new Hashtable < > ();
-    private static Map < Player , Session > playerSessionMap = new Hashtable < > ();
+    private static Map < String, User> usernamePlayerMap = new Hashtable < > ();
+    private static Map < Session, User> sessionPlayerMap = new Hashtable < > ();
+    private static Map <User, Session > playerSessionMap = new Hashtable < > ();
 
     private static Map < String, String > usernameGameMap = new Hashtable < > ();
-    private static List<Player> players = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
     private static int num_players = 0;
 
     private final Logger logger = LoggerFactory.getLogger(GameServer.class);
@@ -72,18 +72,18 @@ public class GameServer {
             session.close();
         }
         else {
-            Player player = new Player(username);
+            User user = new User(username);
             num_players++;
-            players.add(player);
+            users.add(user);
 
             usernameGameMap.put(username, game);
             // map current session with username
-            sessionPlayerMap.put(session, player);
+            sessionPlayerMap.put(session, user);
 
             // map current username with session
-            playerSessionMap.put(player, session);
+            playerSessionMap.put(user, session);
 
-            usernamePlayerMap.put(username, player);
+            usernamePlayerMap.put(username, user);
 
             // send to the user joining in
             sendMessageToParticularUser(username, "Welcome to the chat server, "+username);
@@ -106,21 +106,21 @@ public class GameServer {
          * {"event":*String event*,"action":*Action action*}
          */
 
-        Player player = sessionPlayerMap.get(session);
+        User user = sessionPlayerMap.get(session);
 
         ServerEvent serverEvent = gson.fromJson(message, ServerEvent.class);
 
-        logger.info(player.toString() + " sent " + message);
+        logger.info(user.toString() + " sent " + message);
 
-        Response response = Manager.getResponse(usernameGameMap.get(player.toString()), player, serverEvent);
+        Response response = Manager.getResponse(usernameGameMap.get(user.toString()), user, serverEvent);
 
         List<Message> messages = response.getMessages();
 
         for (Message value : messages) {
             logger.info("[Message]: " + value.getMessage());
-            List<Player> m_players = value.getPlayers();
-            for (Player m_player : m_players) {
-                sendMessageToParticularUser(m_player.toString(), value.getMessage());
+            List<User> m_users = value.getPlayers();
+            for (User m_user : m_users) {
+                sendMessageToParticularUser(m_user.toString(), value.getMessage());
             }
         }
     }
@@ -134,21 +134,21 @@ public class GameServer {
     public void onClose(Session session) throws IOException {
 
         // get the username from session-username mapping
-        Player player = sessionPlayerMap.get(session);
+        User user = sessionPlayerMap.get(session);
 
         // server side log
-        logger.info("[onClose] " + player.toString());
+        logger.info("[onClose] " + user.toString());
 
         // remove user from memory mappings
-        usernamePlayerMap.remove(player.toString());
+        usernamePlayerMap.remove(user.toString());
         sessionPlayerMap.remove(session);
-        playerSessionMap.remove(player);
-        players.remove(sessionPlayerMap.get(session));
+        playerSessionMap.remove(user);
+        users.remove(sessionPlayerMap.get(session));
 
         num_players--;
 
         // send the message to chat
-        broadcast(player.toString() + " disconnected");
+        broadcast(user.toString() + " disconnected");
     }
 
     /**

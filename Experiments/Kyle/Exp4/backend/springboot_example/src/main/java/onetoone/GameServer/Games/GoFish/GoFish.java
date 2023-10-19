@@ -3,17 +3,15 @@ package onetoone.GameServer.Games.GoFish;
 import onetoone.GameServer.Communication.Events.ServerEvent;
 import onetoone.GameServer.Games.Game;
 import onetoone.GameServer.Games.GameInterface;
-import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmPlayer;
-import onetoone.GameServer.PlayerClasses.Player;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
 
 import java.util.*;
 
-public class GoFish extends Game<GoFishPlayer> implements GameInterface<GoFishPlayer> {
+public class GoFish extends Game<GoFishUser> implements GameInterface<GoFishUser> {
 
-    public GoFish(List<GoFishPlayer> players, int gameId){
-        super(players, gameId);
+    public GoFish(List<GoFishUser> users, int gameId){
+        super(users, gameId);
     }
 
     @Override
@@ -21,8 +19,8 @@ public class GoFish extends Game<GoFishPlayer> implements GameInterface<GoFishPl
 
     }
 
-    public Response getResponse(GoFishPlayer player, ServerEvent serverEvent){
-        return new Response(new Message(player, "hello there"));
+    public Response getResponse(GoFishUser user, ServerEvent serverEvent){
+        return new Response(new Message(user, "hello there"));
     }
 
 }

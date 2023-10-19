@@ -1,6 +1,6 @@
 package onetoone.GameServer.PlayerClasses;
 
-public class Player {
+public class User {
 
     private static int playerID_index = 0;
 
@@ -10,22 +10,22 @@ public class Player {
 
     protected int balance;
 
-    public Player(){
+    public User(){
         playerID = playerID_index++;
         balance = 100;
         username = Integer.toString(playerID);
     }
 
-    public Player(String username){
+    public User(String username){
         playerID = playerID_index++;
         balance = 100;
         this.username = username;
     }
 
-    public Player(Player player){
-        playerID = player.getID();
-        balance = player.getBalance();
-        username = player.toString();
+    public User(User user){
+        playerID = user.getID();
+        balance = user.getBalance();
+        username = user.toString();
     }
     
     public int getBalance(){ return balance; }

@@ -1,7 +1,7 @@
 package onetoone.GameServer.Games;
 
 import com.google.gson.Gson;
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
 
@@ -9,38 +9,39 @@ public abstract class Game<T> {
 
     protected int gameId;
     protected int running;
-    protected int num_players;
-    protected List<T> players;
+    protected int num_users;
+
+    protected List<T> users;
     protected Gson gson = new Gson();
 
-    public Game(List<T> players, int gameId){
+    public Game(List<T> users, int gameId){
         this.gameId = gameId;
-        this.players = new ArrayList<>(players);
-        num_players = players.size();
+        this.users = new ArrayList<>(users);
+        num_users = users.size();
         running = 0;
     }
 
     public Game(int gameId){
         this.gameId = gameId;
-        players = new ArrayList<>();
-        num_players = 0;
+        users = new ArrayList<>();
+        num_users = 0;
         running = 0;
     }
 
-    protected void addPlayer(T player){
-        players.add(player);
+    protected void addUser(T player){
+        users.add(player);
     }
 
     public int getGameId(){
         return gameId;
     }
 
-    public List<Player> getAllPlayers(){
-        List<Player> all_players = new ArrayList<>();
-        for(T t_player : players){
-            all_players.add((Player) t_player);
+    public List<User> getAllUsers(){
+        List<User> all_users = new ArrayList<>();
+        for(T t_user : users){
+            all_users.add((User) t_user);
         }
-        return all_players;
+        return all_users;
     }
 
     protected abstract void initializeGame();

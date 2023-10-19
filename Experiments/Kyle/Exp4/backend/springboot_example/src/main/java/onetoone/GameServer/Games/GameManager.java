@@ -4,9 +4,7 @@ import onetoone.GameServer.Communication.Events.GameEvent;
 import onetoone.GameServer.Communication.Events.ServerEvent;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
-import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEm;
-import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmPlayer;
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
 
@@ -18,7 +16,7 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
 
     protected List<K> Servers = new ArrayList<>();
 
-    protected Map<Player, T > userPlayerMap = new Hashtable<>();
+    protected Map<User, T > userPlayerMap = new Hashtable<>();
 
     protected Map < String, Integer > usernameGameIdMap = new Hashtable<>();
 
@@ -28,16 +26,16 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
 
     public GameManager(){}
 
-    protected abstract T getNewPlayer(Player player);
+    protected abstract T getNewUser(User user);
 
     protected abstract K getNewGame(List<T> queue, Integer gameId);
 
-    public Response getResponse(Player player, ServerEvent serverEvent){
+    public Response getResponse(User user, ServerEvent serverEvent){
         Response response = new Response();
 
-        if(!usernameGameIdMap.containsKey(player.toString()) && Objects.equals(serverEvent.getAction(), "joinQueue")){
-            T new_player = getNewPlayer(player);
-            userPlayerMap.put(player, new_player);
+        if(!usernameGameIdMap.containsKey(user.toString()) && Objects.equals(serverEvent.getAction(), "joinQueue")){
+            T new_player = getNewUser(user);
+            userPlayerMap.put(user, new_player);
             Queue.add(new_player);
             if(Queue.size() == 3){
                 K new_game = getNewGame(Queue, ++GameId);
@@ -48,16 +46,16 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
                 serverGameIdMap.put(new_game, GameId);
                 gameIdServerMap.put(GameId, new_game);
                 GameEvent gameEvent = new GameEvent("joinGame", "{\"gameid\":"+GameId+"}");
-                response.addMessage(new Message(getAllPlayers(Queue), gameEvent.toString()));
+                response.addMessage(new Message(getAllUsers(Queue), gameEvent.toString()));
                 Queue.clear();
             }else{
                 GameEvent gameEvent = new GameEvent("queue");
-                response.addMessage(new Message(player, gameEvent.toString()));
+                response.addMessage(new Message(user, gameEvent.toString()));
             }
         }else{
             for(K server : Servers){
-                if(Objects.equals(usernameGameIdMap.get(player.toString()), serverGameIdMap.get(server))){
-                    response.addResponse(server.getResponse(getUserPlayer(player), serverEvent));
+                if(Objects.equals(usernameGameIdMap.get(user.toString()), serverGameIdMap.get(server))){
+                    response.addResponse(server.getResponse(getUserPlayer(user), serverEvent));
                     break;
                 }
             }
@@ -65,20 +63,20 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
         return response;
     }
 
-    public T getUserPlayer(Player player){
-        return userPlayerMap.get(player);
+    public T getUserPlayer(User user){
+        return userPlayerMap.get(user);
     }
 
-    public List<Player> getAllPlayers(List<T> players){
-        List<Player> temp_players = new ArrayList<>();
+    public List<User> getAllUsers(List<T> players){
+        List<User> temp_users = new ArrayList<>();
         for(T player : players){
-            temp_players.add((Player) player);
+            temp_users.add((User) player);
         }
-        return temp_players;
+        return temp_users;
     }
 
-    private T getPlayer(Player player){
-        return userPlayerMap.get(player);
+    private T getPlayer(User user){
+        return userPlayerMap.get(user);
     }
 
 }

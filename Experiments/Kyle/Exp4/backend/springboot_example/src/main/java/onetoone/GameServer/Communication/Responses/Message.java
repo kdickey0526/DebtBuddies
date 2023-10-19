@@ -1,41 +1,41 @@
 package onetoone.GameServer.Communication.Responses;
 
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
 
 public class Message {
 
-    List<Player> players;
+    List<User> users;
 
     String message;
 
-    public Message(List<Player> players, String message){
-        this.players = players;
+    public Message(List<User> users, String message){
+        this.users = users;
         this.message = message;
     }
 
-    public Message(Player player, String message){
-        List<Player> plyrs = new ArrayList<>();
-        plyrs.add(player);
-        players = plyrs;
+    public Message(User user, String message){
+        List<User> plyrs = new ArrayList<>();
+        plyrs.add(user);
+        users = plyrs;
         this.message = message;
     }
 
     public Message(){
-        this.players = new ArrayList<>();
+        this.users = new ArrayList<>();
         this.message = "default";
     }
 
-    public void addPlayer(Player player){
-        players.add(player);
+    public void addPlayer(User user){
+        users.add(user);
     }
 
     public void setMessage(String message){
         this.message = message;
     }
-    public List<Player> getPlayers(){
-        return players;
+    public List<User> getPlayers(){
+        return users;
     }
 
     public String getMessage(){

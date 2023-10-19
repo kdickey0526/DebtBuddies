@@ -2,31 +2,31 @@ package onetoone.GameServer.Games.TexasHoldEm;
 
 import onetoone.GameServer.DeckLibrary.Card;
 import onetoone.GameServer.DeckLibrary.Deck;
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TexasHoldEmPlayer extends Player {
+public class TexasHoldEmUser extends User {
     private List<Card> hand = new ArrayList<>();
 
     private int bet;
 
     private boolean fold;
 
-    public TexasHoldEmPlayer(Player player){
-        super(player.toString());
+    public TexasHoldEmUser(User user){
+        super(user.toString());
         bet = 0;
         fold = false;
     }
 
-    public TexasHoldEmPlayer(String username){
+    public TexasHoldEmUser(String username){
         super(username);
         bet = 0;
         fold = false;
     }
 
-    public TexasHoldEmPlayer(){
+    public TexasHoldEmUser(){
         super();
         bet = 0;
         fold = false;

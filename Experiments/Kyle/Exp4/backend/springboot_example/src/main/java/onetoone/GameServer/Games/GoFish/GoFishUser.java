@@ -1,19 +1,19 @@
 package onetoone.GameServer.Games.GoFish;
 
 import onetoone.GameServer.DeckLibrary.Card;
-import onetoone.GameServer.PlayerClasses.Player;
+import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
 
-public class GoFishPlayer extends Player {
+public class GoFishUser extends User {
 
     private List<Card> hand;
 
-    public GoFishPlayer(Player player){
-        super(player);
+    public GoFishUser(User user){
+        super(user);
     }
 
-    public GoFishPlayer(){
+    public GoFishUser(){
         super();
     }
 
