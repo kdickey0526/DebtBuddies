@@ -10,7 +10,7 @@ import onetoone.GameServer.PlayerClasses.Player;
 
 import java.util.*;
 
-public abstract class GameManager<T, K> {
+public abstract class GameManager<T , K extends GameInterface<T>> {
 
     protected int GameId = 0;
 
@@ -31,8 +31,6 @@ public abstract class GameManager<T, K> {
     protected abstract T getNewPlayer(Player player);
 
     protected abstract K getNewGame(List<T> queue, Integer gameId);
-
-    protected abstract Response getGameResponse(T player, ServerEvent serverEvent);
 
     public Response getResponse(Player player, ServerEvent serverEvent){
         Response response = new Response();
@@ -59,8 +57,8 @@ public abstract class GameManager<T, K> {
         }else{
             for(K server : Servers){
                 if(Objects.equals(usernameGameIdMap.get(player.toString()), serverGameIdMap.get(server))){
-                    T t_player = getUserPlayer(player);
-                    response.addResponse(getGameResponse(t_player, serverEvent));
+                    response.addResponse(server.getResponse(getUserPlayer(player), serverEvent));
+                    break;
                 }
             }
         }

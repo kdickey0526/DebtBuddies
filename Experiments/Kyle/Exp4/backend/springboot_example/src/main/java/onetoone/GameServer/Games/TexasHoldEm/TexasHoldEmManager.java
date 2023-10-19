@@ -1,6 +1,7 @@
 package onetoone.GameServer.Games.TexasHoldEm;
 
 import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Games.GameInterface;
 import onetoone.GameServer.Games.GameManager;
 import onetoone.GameServer.PlayerClasses.Player;
 import onetoone.GameServer.Communication.Responses.Message;
@@ -8,7 +9,8 @@ import onetoone.GameServer.Communication.Responses.Response;
 
 import java.util.*;
 
-public class TexasHoldEmManager extends GameManager<TexasHoldEmPlayer, TexasHoldEm> {
+public class TexasHoldEmManager extends GameManager<TexasHoldEmPlayer, TexasHoldEm > {
+
 
     public TexasHoldEmManager(){
         super();
@@ -24,8 +26,4 @@ public class TexasHoldEmManager extends GameManager<TexasHoldEmPlayer, TexasHold
         return new TexasHoldEm(queue, gameId);
     }
 
-    @Override
-    protected Response getGameResponse(TexasHoldEmPlayer player, ServerEvent serverEvent) {
-        return gameIdServerMap.get(usernameGameIdMap.get(player.toString())).getResponse(player, serverEvent);
-    }
 }
