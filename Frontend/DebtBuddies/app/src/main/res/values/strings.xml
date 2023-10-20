@@ -11,6 +11,7 @@
     <string name="coins">Coins</string>
     <string name="whacamole">Whac-A-Mole</string>
     <string name="blackjack">Blackjack</string>
+    <string name="war">War</string>
     <string name="start">START</string>
     <string name="stop">STOP</string>
     <string name="score">Score\n0</string>

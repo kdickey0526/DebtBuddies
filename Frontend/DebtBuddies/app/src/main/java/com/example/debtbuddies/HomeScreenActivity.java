@@ -1,6 +1,7 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -30,13 +31,13 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
-        try {
-            usernameField.setText(MyApplication.currentUser.getString("userName"));
-            coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e(TAG, "failed setting username and coins");
-        }
+//        try {
+//            usernameField.setText(MyApplication.currentUser.getString("userName"));
+//            coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "failed setting username and coins");
+//        }
     }
 
     public void whacAMoleOnClickListener(View v) {
@@ -47,6 +48,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void blackjackOnClickListener(View v) {
         Log.d(TAG, "blackjackOnClickListener: clicked");
         startActivity(new Intent(this, BlackJack.class));
+    }
+
+    public void warOnClickListener(View v) {
+        Log.d(TAG, "warOnClickListener: clicked");
+        startActivity(new Intent(this, War.class));
     }
 
     public void friendsListOnClickListener(View v) {

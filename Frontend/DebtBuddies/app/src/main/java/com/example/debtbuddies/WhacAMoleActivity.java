@@ -44,7 +44,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
 //    private long hours;
 //    private long minutes;
 //    private long seconds;
-//    private long startTime;
+    private long startTime;
     private int missed = 0;
     private static final int MAX_MISSED = 3;
     private int level = 1;
