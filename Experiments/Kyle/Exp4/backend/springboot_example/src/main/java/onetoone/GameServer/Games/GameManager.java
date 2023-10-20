@@ -5,10 +5,11 @@ import onetoone.GameServer.Communication.Events.ServerEvent;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
 import onetoone.GameServer.PlayerClasses.User;
+import onetoone.GameServer.Games.*;
 
 import java.util.*;
 
-public abstract class GameManager<T , K extends GameInterface<T>> {
+public class GameManager<T , K extends GameInterface<T, K>> {
 
     protected int GameId = 0;
 
@@ -24,20 +25,20 @@ public abstract class GameManager<T , K extends GameInterface<T>> {
 
     protected Map < K , Integer > serverGameIdMap = new Hashtable<>();
 
-    public GameManager(){}
+    protected K dummyInstance;
 
-    protected abstract T getNewUser(User user);
-
-    protected abstract K getNewGame(List<T> queue, Integer gameId);
+    public GameManager(K dummyInstance){
+        this.dummyInstance = dummyInstance;
+    }
 
     public void getResponse(User user, ServerEvent serverEvent){
 
         if(!usernameGameIdMap.containsKey(user.toString()) && Objects.equals(serverEvent.getAction(), "joinQueue")){
-            T new_player = getNewUser(user);
+            T new_player = dummyInstance.getNewUser(user);
             userPlayerMap.put(user, new_player);
             Queue.add(new_player);
-            if(Queue.size() == 3){
-                K new_game = getNewGame(Queue, ++GameId);
+            if(Queue.size() == dummyInstance.getQueueSize()){
+                K new_game = dummyInstance.getNewGame(Queue, ++GameId);
                 for(T temp_player : Queue) {
                     usernameGameIdMap.put(temp_player.toString(), GameId);
                 }

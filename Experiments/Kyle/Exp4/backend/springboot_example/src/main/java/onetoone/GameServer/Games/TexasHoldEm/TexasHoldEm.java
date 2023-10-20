@@ -13,8 +13,11 @@ import onetoone.GameServer.Games.Game;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
 import onetoone.GameServer.Games.GameInterface;
+import onetoone.GameServer.PlayerClasses.User;
 
-public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<TexasHoldEmUser> {
+public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<TexasHoldEmUser, TexasHoldEm> {
+
+    private int QUEUE_SIZE = 3;
     private final int BASE_ANTE = 10;
     private Deck deck;
     private List<Card> pit;
@@ -22,11 +25,18 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private int ante;
     private int stage;
     private int p_index = 0;
+
+    private String last_turn;
     private TexasHoldEmUser target_user;
     private TexasHoldEmUser final_user;
 
     public TexasHoldEm(List<TexasHoldEmUser> users, int gameId){
-        super(users, gameId);
+        super(users, gameId, 3);
+    }
+
+    public TexasHoldEm(){
+        super();
+        queue_size = QUEUE_SIZE;
     }
 
     @Override
@@ -40,10 +50,21 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         pot = 0;
         target_user = users.get(p_index++ % num_users);
         final_user = target_user;
+        last_turn = "hand";
         for(TexasHoldEmUser user : users){
             user.clearInventory();
         }
         deal_hole();
+    }
+
+    @Override
+    public TexasHoldEm getNewGame(List<TexasHoldEmUser> queue, int gameId){
+        return new TexasHoldEm(queue, gameId);
+    }
+
+    @Override
+    public TexasHoldEmUser getNewUser(User user){
+        return new TexasHoldEmUser(user);
     }
 
     public void getResponse(TexasHoldEmUser user, ServerEvent serverEvent){
@@ -71,6 +92,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                     Response.addMessage(getAllUsers(), "call", message);
                     break;
                 case "raise":
+                    //TexasMessage.sendGameInfo(this)
                     raise(user, serverEvent.getValue());
                     message = "{\"user\":\""+ user +"\",\"pot\":"+ pot +",\"ante\":"+ante+"}";
                     Response.addMessage(getAllUsers(), "raise", message);
@@ -92,7 +114,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                         Response.addMessage(getAllUsers(), "flop", getCommunityJson());
                     } else if (stage == 2) {
                         turn();
-                        Response.addMessage(getAllUsers(), "turn", getCommunityJson());
+                        Response.addMessage(getAllUsers(), "round", getCommunityJson());
                     } else if (stage == 3) {
                         river();
                         Response.addMessage(getAllUsers(), "river", getCommunityJson());
@@ -122,6 +144,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return sb.toString();
     }
 
+    public int getPot(){
+        return pot;
+    }
     public void sendHands(){
 
         for(TexasHoldEmUser user : users){
@@ -144,12 +169,16 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return decideWinner();
     }
 
-    private String getCommunityString(){
-        StringBuilder sb = new StringBuilder("\nCommunity Hand:\n");
-        for(Card card : pit){
-            sb.append(card.toString()).append("\n");
-        }
-        return sb.toString();
+    public TexasHoldEmUser getFinalUser() {
+        return final_user;
+    }
+
+    public int getAnte(){
+        return ante;
+    }
+
+    public String getLastTurn(){
+        return last_turn;
     }
 
     private void fold(TexasHoldEmUser player){

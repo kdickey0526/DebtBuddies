@@ -1,13 +1,14 @@
 package onetoone.GameServer;
 
 import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Games.GameManager;
+import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEm;
+import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmUser;
 import onetoone.GameServer.PlayerClasses.User;
-import onetoone.GameServer.Communication.Responses.Response;
-import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmManager;
 
 public class Manager {
 
-    private static TexasHoldEmManager texasManager = new TexasHoldEmManager();
+    private static GameManager<TexasHoldEmUser, TexasHoldEm> texasManager = new GameManager<>(new TexasHoldEm());
 
     public static void getResponse(String game, User user, ServerEvent serverEvent){
         switch(game){
