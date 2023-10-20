@@ -24,6 +24,8 @@
         <activity
             android:name=".BlackJack"
             android:exported="false" />
+        <activity android:name=".War"
+            android:exported="false" />
         <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />

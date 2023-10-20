@@ -91,7 +91,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     // increase difficulty every 5 levels
                     if (level % 5 == 0) {
                         level_ui.setText("Level: " + (level/5 + 1));
-                        targetDuration /= 1.1; // 10% harder every level
+                        targetDuration /= 1.15; // 15% harder/faster every level
                     }
 
                     if (!currentMole.isClicked() && level != 1) { // see if user missed
