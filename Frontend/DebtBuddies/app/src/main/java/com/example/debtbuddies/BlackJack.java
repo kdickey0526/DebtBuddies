@@ -123,10 +123,10 @@ public class BlackJack extends AppCompatActivity {
 
 
     public void onDoubleClicked(View view) {
-        if (gameOver = true) {
+      //  if (gameOver = true) {
 
-        } else {
-            gameOver = true;
+      //  } else {
+      //      gameOver = true;
 
             bet = bet * 2;
 
@@ -149,7 +149,7 @@ public class BlackJack extends AppCompatActivity {
 
             tvPlayer.setText(String.valueOf(playerNumH));
             tvBet.setText("Bet: " + String.valueOf(bet));
-        }
+      //  }
     }
 
     public void onDealClicked(View view) {
@@ -182,55 +182,55 @@ public class BlackJack extends AppCompatActivity {
     public void onReplayClicked(View view) {
         if (bet > bal || gameOver == false) {
 
+        } else {
+            gameOver = false;
+            String card;
+            bet = 5;
+
+            playerNumH = 0;
+            playerNumL = 0;
+            dealerNumH = 0;
+            dealerNumL = 0;
+
+            card = hitPlayer();
+
+
+            int image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard1.setImageResource(image);
+
+            card = hitPlayer();
+
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard2.setImageResource(image);
+
+
+            card = hitDealer();
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            dealerCard1.setImageResource(image);
+
+            image = getResources().getIdentifier("cardback", "drawable", getPackageName());
+            dealerCard2.setImageResource(image);
+            dealerCard3.setImageResource(image);
+            dealerCard4.setImageResource(image);
+            dealerCard5.setImageResource(image);
+
+            playerCard3.setImageResource(image);
+            playerCard4.setImageResource(image);
+            playerCard5.setImageResource(image);
+
+            tvDealer.setText(String.valueOf(dealerNumH));
+            tvPlayer.setText(String.valueOf(playerNumH));
+
+            tvStatus.setText("");
+            String temp = "Balance: ";
+            temp += bal;
+            tvBal.setText(temp);
+
+            String temp2 = "Bet: ";
+            temp2 += bet;
+            tvBet.setText(temp2);
+            i = 2;
         }
-        gameOver = false;
-        String card;
-        bet = 5;
-
-        playerNumH = 0;
-        playerNumL = 0;
-        dealerNumH = 0;
-        dealerNumL = 0;
-
-        card = hitPlayer();
-
-
-        int image = getResources().getIdentifier(card, "drawable", getPackageName());
-        playerCard1.setImageResource(image);
-
-        card = hitPlayer();
-
-        image = getResources().getIdentifier( card, "drawable", getPackageName());
-        playerCard2.setImageResource(image);
-
-
-
-        card = hitDealer();
-        image = getResources().getIdentifier(card, "drawable", getPackageName());
-        dealerCard1.setImageResource(image);
-
-        image = getResources().getIdentifier("cardback", "drawable", getPackageName());
-        dealerCard2.setImageResource(image);
-        dealerCard3.setImageResource(image);
-        dealerCard4.setImageResource(image);
-        dealerCard5.setImageResource(image);
-
-        playerCard3.setImageResource(image);
-        playerCard4.setImageResource(image);
-        playerCard5.setImageResource(image);
-
-        tvDealer.setText(String.valueOf(dealerNumH));
-        tvPlayer.setText(String.valueOf(playerNumH));
-
-        tvStatus.setText("");
-        String temp = "Balance: ";
-        temp += bal;
-        tvBal.setText(temp);
-
-        String temp2 = "Bet: ";
-        temp2 += bet;
-        tvBet.setText(temp2);
-        i = 2;
     }
     public void onStandClicked (View view) {
         if (gameOver == true) {

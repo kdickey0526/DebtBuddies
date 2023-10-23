@@ -24,6 +24,9 @@
             android:name=".War"
             android:exported="true" />
         <activity
+            android:name=".ProfileIcons"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

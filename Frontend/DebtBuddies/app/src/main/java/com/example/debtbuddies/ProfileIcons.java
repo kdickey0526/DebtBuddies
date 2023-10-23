@@ -41,18 +41,26 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import java.util.Random;
 
 public class ProfileIcons extends AppCompatActivity {
-    ImageView playerIcon0, playerIcon1, playerIcon2, playerIcon3, playerIcon4,
-            playerIcon5, playerIcon6, playerIcon7, playerIcon8, playerIcon9,
-            playerIcon10, playerIcon11;
+    String icon;
+    ImageView playerIcon;
+    CardView playerIcon0, playerIcon1, playerIcon2, playerIcon3, playerIcon4,
+            playerIcon5, playerIcon6, playerIcon7, playerIcon8;
+
+    Button b_icon0, b_icon1, b_icon2, b_icon3, b_icon4, b_icon5, b_icon6, b_icon7,
+            b_icon8;
+    int image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_icon);
+        setContentView(R.layout.activity_icons);
 
+        playerIcon = findViewById(R.id.icon);
         playerIcon0 = findViewById(R.id.icon0);
         playerIcon1 = findViewById(R.id.icon1);
         playerIcon2 = findViewById(R.id.icon2);
@@ -62,9 +70,56 @@ public class ProfileIcons extends AppCompatActivity {
         playerIcon6 = findViewById(R.id.icon6);
         playerIcon7 = findViewById(R.id.icon7);
         playerIcon8 = findViewById(R.id.icon8);
-        playerIcon9 = findViewById(R.id.icon9);
-        playerIcon10 = findViewById(R.id.icon10);
-        playerIcon11 = findViewById(R.id.icon11);
+
+
+        b_icon0 = findViewById(R.id.b_icon0);
+        b_icon1 = findViewById(R.id.b_icon1);
+        b_icon2 = findViewById(R.id.b_icon2);
+        b_icon3 = findViewById(R.id.b_icon3);
+        b_icon4 = findViewById(R.id.b_icon4);
+        b_icon5 = findViewById(R.id.b_icon5);
+        b_icon6 = findViewById(R.id.b_icon6);
+        b_icon7 = findViewById(R.id.b_icon7);
+        b_icon8 = findViewById(R.id.b_icon8);
 
     }
+
+
+    public void onButtonClick0(View view) {
+        image = getResources().getIdentifier("icon0", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick1(View view) {
+        image = getResources().getIdentifier("icon1", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick2(View view) {
+        image = getResources().getIdentifier("icon2", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick3(View view) {
+        image = getResources().getIdentifier("icon3", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick4(View view) {
+        image = getResources().getIdentifier("icon4", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick5(View view) {
+        image = getResources().getIdentifier("icon5", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick6(View view) {
+        image = getResources().getIdentifier("icon6", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick7(View view) {
+        image = getResources().getIdentifier("icon7", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+    public void onButtonClick8(View view) {
+        image = getResources().getIdentifier("icon8", "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+    }
+
 }
