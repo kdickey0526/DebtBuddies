@@ -57,7 +57,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void friendsListOnClickListener(View v) {
         Log.d(TAG, "friendsListOnClickListener: clicked");
-
+        startActivity(new Intent(this, FriendsListActivity.class));
     }
 
     public void settingsOnClickListener(View v) {
