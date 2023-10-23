@@ -45,10 +45,33 @@ import androidx.cardview.widget.CardView;
 import java.util.Random;
 
 public class Party extends AppCompatActivity {
+
+    String username = "BoyInBlue";
+    String icon = "icon3";
+
+    ImageView playerIcon;
+
+    TextView playerUsername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party);
+
+        playerUsername = findViewById(R.id.textView);
+        playerIcon = findViewById(R.id.icon);
+
+        int image = getResources().getIdentifier(icon, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+
+        playerIcon.setImageResource(image);
+
+        playerUsername.setText(username);
+    }
+
+    public void onCreate(View v){
+
+    }
+    public void onJoin(View v){
 
     }
 }

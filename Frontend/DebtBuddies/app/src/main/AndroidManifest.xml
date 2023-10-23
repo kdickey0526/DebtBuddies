@@ -20,6 +20,10 @@
         <activity
             android:name=".BlackJack"
             android:exported="true" />
+
+        <activity
+            android:name=".Party"
+            android:exported="true" />
         <activity
             android:name=".War"
             android:exported="true" />
