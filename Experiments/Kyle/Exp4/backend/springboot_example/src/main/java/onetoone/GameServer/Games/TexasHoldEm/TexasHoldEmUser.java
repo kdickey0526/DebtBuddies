@@ -12,6 +12,8 @@ public class TexasHoldEmUser extends User {
 
     private int bet;
 
+    private int ante;
+
     private boolean fold;
 
     public TexasHoldEmUser(User user){
@@ -73,6 +75,10 @@ public class TexasHoldEmUser extends User {
 
     public void setBet(int bet){
         this.bet = bet;
+    }
+
+    public int getAnte(){
+        return ante;
     }
 
     public int cashout(int amount){
