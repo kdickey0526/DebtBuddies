@@ -53,6 +53,8 @@ public class TexasHoldEmUser extends User {
     }
 
     public void clearInventory(){
+        this.bet = 0;
+        this.ante = 0;
         this.hand = new ArrayList<>();
     }
 
@@ -65,7 +67,9 @@ public class TexasHoldEmUser extends User {
     }
 
     public int placeBet(int bet){
+        this.balance -= bet;
         this.bet += bet;
+        this.ante += bet;
         return bet;
     }
 
@@ -79,6 +83,10 @@ public class TexasHoldEmUser extends User {
 
     public int getAnte(){
         return ante;
+    }
+
+    public void setAnte(int ante){
+        this.ante = ante;
     }
 
     public int cashout(int amount){
