@@ -1,4 +1,5 @@
 package com.example.debtbuddies;
+
 import static android.text.TextUtils.replace;
 
 import android.os.Bundle;
@@ -48,44 +49,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Random;
 
-public class Party extends AppCompatActivity {
-
-    String username = "BoyInBlue";
-    String icon = "icon3";
-
-    ImageView playerIcon;
-
-    TextView playerUsername;
-
-    Button joinParty, createParty;
-
-    FragmentTransaction fragmentTransaction;
-
+public class AcceptInvite extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_party);
-
-        playerUsername = findViewById(R.id.textView);
-        playerIcon = findViewById(R.id.icon);
-        joinParty = findViewById(R.id.b_join);
-        createParty = findViewById(R.id.b_create);
-
-        int image = getResources().getIdentifier(icon, "drawable", getPackageName());
-        playerIcon.setImageResource(image);
-
-        playerIcon.setImageResource(image);
-
-        playerUsername.setText(username);
-    }
-
-    public void onCreate(View v){
+        setContentView(R.layout.activity_accept_invite);
 
     }
-    public void onJoin(View v){
-        Intent intent = new Intent(this, AcceptInvite.class);
 
-    }
+
 }
-
-
