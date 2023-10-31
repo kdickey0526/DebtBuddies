@@ -26,6 +26,15 @@
             android:exported="false" />
         <activity
             android:name=".BlackJack"
+            android:exported="true" />
+        <activity
+            android:name=".Party"
+            android:exported="true" />
+        <activity
+            android:name=".AcceptInvite"
+            android:exported="false" />
+        <activity
+            android:name=".GameOver"
             android:exported="false" />
         <activity
             android:name=".War"
@@ -33,6 +42,9 @@
         <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />
+        <activity
+            android:name=".ProfileIcons"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

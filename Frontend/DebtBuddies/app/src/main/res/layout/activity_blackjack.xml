@@ -189,7 +189,7 @@
         android:layout_height="75dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="104dp"
+        android:layout_marginEnd="106dp"
         android:layout_marginBottom="414dp"
         android:onClick="onReplayClicked"
         android:text="REPLAY"
@@ -237,6 +237,30 @@
         android:textColor="#FFFFFFFF"
         android:gravity="center"
         android:text="" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="213dp"
+        android:layout_marginEnd="243dp"
+        android:text="Balance"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="81dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="213dp"
+        android:layout_marginEnd="0dp"
+        android:text="Bet"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20sp" />
 
 
 </RelativeLayout>

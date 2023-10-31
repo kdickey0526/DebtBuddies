@@ -3,62 +3,28 @@ package com.example.debtbuddies;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.LruCache;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.DataInputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
-public class War extends AppCompatActivity {
+
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.util.ArrayList;
+import java.util.Random;
+public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
-   PlayerStats p;  // will remove
-    boolean win;
-    int bet = 5;
-    boolean gameOver, playerWin;
+
+    boolean gameOver;
+
+    private String BASE_URL = "ws://10.0.2.2:8080/chat/";
 
     ArrayList<Card> player1 = new ArrayList<Card>();
     ArrayList<Card> player2 = new ArrayList<Card>();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        p = new PlayerStats();
         String suit;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_war);
@@ -94,7 +60,7 @@ public class War extends AppCompatActivity {
         }
         int temp;
         Random r = new Random();
-        for (int i = 52; i > 2; i --) { //change back to 26
+        for (int i = 52; i > 3; i --) { //change back to 26
             temp = r.nextInt(i);
             player1.add(deck.get(temp));
             deck.remove(temp);
@@ -107,7 +73,7 @@ public class War extends AppCompatActivity {
     }
 
     public void onDealClicked (View view) {
-        if (gameOver != true) {
+        if (gameOver = true) {
             int player1val;
             int player2val;
             int image;
@@ -127,10 +93,10 @@ public class War extends AppCompatActivity {
                 player1.add(player1.get(0));
                 player1.add(player2.get(0));
             } else if (player2val == player1val) {  // 1 = 2 war
-                if (player1.size() <= 4 || player2.size() <= 4) {
+                if (player1.size() < 3 || player2.size() < 3) {
                     gameOver();
                 }
-                 else if (player1.get(4).value > player2.get(4).value) {
+                if (player1.get(4).value > player2.get(4).value) {
                     player1.add(player1.get(0));
                     player1.add(player2.get(0));
                     player1.add(player1.get(1));
@@ -153,16 +119,14 @@ public class War extends AppCompatActivity {
                     player2.add(player1.get(4));
                     player2.add(player2.get(4));
                 }
-                 if (gameOver == false) {
-                     player1.remove(4);
-                     player1.remove(3);
-                     player1.remove(2);
-                     player1.remove(1);
-                     player2.remove(4);
-                     player2.remove(3);
-                     player2.remove(2);
-                     player2.remove(1);
-                 }
+                player1.remove(4);
+                player1.remove(3);
+                player1.remove(2);
+                player1.remove(1);
+                player2.remove(4);
+                player2.remove(3);
+                player2.remove(2);
+                player2.remove(1);
             } else {    // 1 < 2
                 player2.add(player1.get(0));
                 player2.add(player2.get(0));
@@ -184,22 +148,35 @@ public class War extends AppCompatActivity {
         gameOver = true;
         if (player1.size() > player2.size()) {  //player1 wins
             whoWin.setText("player 1 wins");
-            playerWin = true;
-            win = true;
         } else {    //player2 wins
             whoWin.setText("player 2 wins");
-            playerWin = false;
-            win = false;
         }
-        p.gameStats(playerWin, bet, 50);
-//        Intent intent = new Intent(this, GameOver.class);
-//        startActivity(intent);
-       // PlayerStats p = new PlayerStats();
     }
 
-    public Boolean getWin() {
-        return win;
-    }
+    @Override
+    public void onWebSocketMessage(String message) {
+        /**
+         * In Android, all UI-related operations must be performed on the main UI thread
+         * to ensure smooth and responsive user interfaces. The 'runOnUiThread' method
+         * is used to post a runnable to the UI thread's message queue, allowing UI updates
+         * to occur safely from a background or non-UI thread.
+         */
+        runOnUiThread(() -> {
 
+        });
+    }
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+
+        runOnUiThread(() -> {
+
+
+        });
+    }
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {}
+
+    @Override
+    public void onWebSocketError(Exception ex) {}
 }
 

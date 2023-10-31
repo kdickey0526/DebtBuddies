@@ -12,27 +12,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
 public class BlackJack extends AppCompatActivity {
-
+    int id;
+    String username, email, password;
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
     int playerNumH;
     int playerNumL;
     int dealerNumH;
     int dealerNumL;
-    Button b_deal;
-    Button b_stand;
-    Button b_double, b_replay;
-    ImageView playerCard1;
-    ImageView playerCard2;
-    ImageView playerCard3;
-    ImageView playerCard4;
-    ImageView playerCard5;
-    ImageView dealerCard1;
-    ImageView dealerCard2;
-    ImageView dealerCard3;
-    ImageView dealerCard4;
-    ImageView dealerCard5;
+    Button b_deal, b_stand, b_double, b_replay;
+    ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
+        dealerCard2, dealerCard3, dealerCard4, dealerCard5;
+    boolean gameOver;
 
-    TextView tvDealer, tvPlayer, tvStatus;
-    int i;
+    TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
+    int i, bal, bet;
 
 
     @Override
@@ -58,8 +51,13 @@ public class BlackJack extends AppCompatActivity {
         tvDealer = findViewById(R.id.tv_dealer);
         tvPlayer = findViewById(R.id.tv_player);
         tvStatus =  findViewById(R.id.tv_text);
+        tvBal = findViewById(R.id.textView);
+        tvBet = findViewById(R.id.textView2);
         String card;
 
+        bal = 50;
+        bet = 5;
+        gameOver = false;
 
         card = hitPlayer();
 
@@ -80,12 +78,45 @@ public class BlackJack extends AppCompatActivity {
 
         tvDealer.setText(String.valueOf(dealerNumH));
         tvPlayer.setText(String.valueOf(playerNumH));
+        String temp = "Balance: ";
+        temp += bal;
+        tvBal.setText(temp);
+
+       String temp2 = "Bet: ";
+       temp2 += bet;
+       tvBet.setText(temp2);
         i = 2;
     }
 
 
     public void onDoubleClicked(View view) {
+      //  if (gameOver = true) {
 
+      //  } else {
+      //      gameOver = true;
+
+            bet = bet * 2;
+
+            String card = hitPlayer();
+
+            int image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard3.setImageResource(image);
+
+            if (playerNumH <= 21) {
+                String display = Integer.toString(playerNumH);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else if (playerNumL <= 21) {
+                playerNumH = playerNumL;
+                String display = Integer.toString(playerNumL);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else {
+                String display = "BUST";
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            }
+
+            tvPlayer.setText(String.valueOf(playerNumH));
+            tvBet.setText("Bet: " + String.valueOf(bet));
+      //  }
     }
 
     public void onDealClicked(View view) {
@@ -116,50 +147,66 @@ public class BlackJack extends AppCompatActivity {
         tvPlayer.setText(String.valueOf(playerNumH));
     }
     public void onReplayClicked(View view) {
-        String card;
+        if (bet > bal || gameOver == false) {
 
-        playerNumH = 0;
-        playerNumL = 0;
-        dealerNumH = 0;
-        dealerNumL = 0;
+        } else {
+            gameOver = false;
+            String card;
+            bet = 5;
 
-        card = hitPlayer();
+            playerNumH = 0;
+            playerNumL = 0;
+            dealerNumH = 0;
+            dealerNumL = 0;
 
-
-        int image = getResources().getIdentifier(card, "drawable", getPackageName());
-        playerCard1.setImageResource(image);
-
-        card = hitPlayer();
-
-        image = getResources().getIdentifier( card, "drawable", getPackageName());
-        playerCard2.setImageResource(image);
+            card = hitPlayer();
 
 
+            int image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard1.setImageResource(image);
 
-        card = hitDealer();
-        image = getResources().getIdentifier(card, "drawable", getPackageName());
-        dealerCard1.setImageResource(image);
+            card = hitPlayer();
 
-        image = getResources().getIdentifier("cardback", "drawable", getPackageName());
-        dealerCard2.setImageResource(image);
-        dealerCard3.setImageResource(image);
-        dealerCard4.setImageResource(image);
-        dealerCard5.setImageResource(image);
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            playerCard2.setImageResource(image);
 
-        playerCard3.setImageResource(image);
-        playerCard4.setImageResource(image);
-        playerCard5.setImageResource(image);
 
-        tvDealer.setText(String.valueOf(dealerNumH));
-        tvPlayer.setText(String.valueOf(playerNumH));
+            card = hitDealer();
+            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            dealerCard1.setImageResource(image);
 
-        tvStatus.setText("");
-        i = 2;
+            image = getResources().getIdentifier("cardback", "drawable", getPackageName());
+            dealerCard2.setImageResource(image);
+            dealerCard3.setImageResource(image);
+            dealerCard4.setImageResource(image);
+            dealerCard5.setImageResource(image);
+
+            playerCard3.setImageResource(image);
+            playerCard4.setImageResource(image);
+            playerCard5.setImageResource(image);
+
+            tvDealer.setText(String.valueOf(dealerNumH));
+            tvPlayer.setText(String.valueOf(playerNumH));
+
+            tvStatus.setText("");
+            String temp = "Balance: ";
+            temp += bal;
+            tvBal.setText(temp);
+
+            String temp2 = "Bet: ";
+            temp2 += bet;
+            tvBet.setText(temp2);
+            i = 2;
+        }
     }
     public void onStandClicked (View view) {
+        if (gameOver == true) {
+
+        } else {
+            gameOver = true;
         int i = 2;
         int playerNum;
-        if (playerNumH <= 21){
+        if (playerNumH <= 21) {
             playerNum = playerNumH;
         } else {
             playerNum = playerNumL;
@@ -170,39 +217,46 @@ public class BlackJack extends AppCompatActivity {
         int image = getResources().getIdentifier(card, "drawable", getPackageName());
         dealerCard2.setImageResource(image);
 
-        while(true) {
+        while (true) {
             i++;
-            if (playerNumH > 21 || playerNumL > 21) {
+            if (playerNumH > 21 || playerNumL > 21) { //dealer win
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openLoose();
+                bal -= bet;
                 break;
-            } else if (playerNum == dealerNumH || playerNum == dealerNumL) {
-                openPush();
+            } else if (playerNum == dealerNumH || playerNum == dealerNumL) { //push
                 tvDealer.setText(String.valueOf(dealerNumH));
                 break;
             }
             if (dealerNumH >= playerNumH && dealerNumH <= 21 || dealerNumL >= playerNumH && dealerNumL <= 21 || dealerNumH == 21) { //dealer wins
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openLoose();
+                bal -= bet;
                 break;
             } else if (dealerNumL > 21) {   //dealer looses
                 tvDealer.setText(String.valueOf(dealerNumH));
-                openWin();
+                bal += bet;
                 break;
             } else {    //dealer hit
                 card = hitDealer();
                 image = getResources().getIdentifier(card, "drawable", getPackageName());
                 if (i == 3) {
                     dealerCard3.setImageResource(image);
-                } else if (i  == 4) {
+                } else if (i == 4) {
                     dealerCard4.setImageResource(image);
-                } else if (i  == 5) {
+                } else if (i == 5) {
                     dealerCard5.setImageResource(image);
                 }
             }
             tvDealer.setText(String.valueOf(dealerNumH));
         }
 
+        String temp = "Balance: ";
+        temp += bal;
+        tvBal.setText(temp);
+
+        String temp2 = "Bet: ";
+        temp2 += bet;
+        tvBet.setText(temp2);
+    }
     }
 
 
@@ -277,19 +331,76 @@ public class BlackJack extends AppCompatActivity {
         String cards = suit + Integer.toString(card);
         return cards;
     }
-    public void openWin() {
-//        Intent intent = new Intent(this, Win.class);
-//        startActivity(intent);
-        tvStatus.setText("PLAYER WINS");
-    }
-    public void openPush() {
-//        Intent intent = new Intent(this, Push.class);
-//        startActivity(intent);
-        tvStatus.setText("PUSH");
-    }
-    public void openLoose() {
-//        Intent intent = new Intent(this, Loose.class);
-//        startActivity(intent);
-        tvStatus.setText("DEALER WINS");
+    private void postRequest() {
+
+        // Convert input to JSONObject
+        JSONObject postBody;
+        String temp =
+                "{" +
+                        "\"id\":\"" + id + "\"," +
+                        "\"userName\":\"" + username + "\"," +
+                        "\"email\":\"" + email +"\"," +
+                        "\"password\":\"" + password + "\"" +
+                        "\"coins\":\"" + bal + "\"" +
+                        "}";
+
+
+        //\"password\":\"MS313Owen\"}";
+
+//                "{\"id\":62,\"userName\":\"Brock\",\"isOnline\":true,\"email\":\"oparker@iastate.edu\",\"password\":\"MS313Owen\",\"coins\":0}";
+        try {
+            postBody = new JSONObject(temp);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        //String postBody = "username:" + username + "password:" + password + "email:" + email;
+
+        try{
+            // etRequest should contain a JSON object string as your POST body
+            // similar to what you would have in POSTMAN-body field
+            // and the fields should match with the object structure of @RequestBody on sb
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                SERVER_URL,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //  tvResponse.setText(response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //tvResponse.setText(error.getMessage());
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
+                //                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //                params.put("param1", "value1");
+                //                params.put("param2", "value2");
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 }
