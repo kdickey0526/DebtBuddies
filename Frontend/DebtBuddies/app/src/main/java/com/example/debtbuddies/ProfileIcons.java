@@ -1,5 +1,7 @@
 package com.example.debtbuddies;
 
+import static androidx.fragment.app.FragmentManagerKt.commit;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +54,7 @@ public class ProfileIcons extends AppCompatActivity {
             playerIcon5, playerIcon6, playerIcon7, playerIcon8;
 
     Button b_icon0, b_icon1, b_icon2, b_icon3, b_icon4, b_icon5, b_icon6, b_icon7,
-            b_icon8;
+            b_icon8, b_frag;
     int image;
 
     @Override
@@ -81,9 +83,15 @@ public class ProfileIcons extends AppCompatActivity {
         b_icon6 = findViewById(R.id.b_icon6);
         b_icon7 = findViewById(R.id.b_icon7);
         b_icon8 = findViewById(R.id.b_icon8);
+        b_frag = findViewById(R.id.b_menu);
 
+
+//        getSupportFragmentManager().beginTransaction().add(R.id.frag_menu, new FirstFragment()),commit();
     }
-
+    public void menu(View view) {
+        Intent intent = new Intent(this, Menu.class);
+        startActivity(intent);
+    }
 
     public void onButtonClick0(View view) {
         image = getResources().getIdentifier("icon0", "drawable", getPackageName());

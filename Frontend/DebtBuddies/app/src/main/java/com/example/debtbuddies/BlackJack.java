@@ -1,5 +1,6 @@
 package com.example.debtbuddies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +31,10 @@ public class BlackJack extends AppCompatActivity {
     int playerNumL;
     int dealerNumH;
     int dealerNumL;
-    Button b_deal, b_stand, b_double, b_replay;
+    Button b_deal, b_stand, b_double, b_replay, b_menu;
     ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
         dealerCard2, dealerCard3, dealerCard4, dealerCard5;
-    boolean gameOver;
+    boolean gameOver, doubleClick;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
     int i, bal, bet;
@@ -64,6 +65,7 @@ public class BlackJack extends AppCompatActivity {
         tvStatus =  findViewById(R.id.tv_text);
         tvBal = findViewById(R.id.textView);
         tvBet = findViewById(R.id.textView2);
+        b_menu = findViewById(R.id.b_menu);
         String card;
 
         bal = 50;
@@ -101,10 +103,8 @@ public class BlackJack extends AppCompatActivity {
 
 
     public void onDoubleClicked(View view) {
-      //  if (gameOver = true) {
+        if (gameOver == false && doubleClick == false) {
 
-      //  } else {
-      //      gameOver = true;
 
             bet = bet * 2;
 
@@ -127,7 +127,8 @@ public class BlackJack extends AppCompatActivity {
 
             tvPlayer.setText(String.valueOf(playerNumH));
             tvBet.setText("Bet: " + String.valueOf(bet));
-      //  }
+            doubleClick = true;
+        }
     }
 
     public void onDealClicked(View view) {
@@ -161,6 +162,7 @@ public class BlackJack extends AppCompatActivity {
         if (bet > bal || gameOver == false) {
 
         } else {
+            doubleClick = false;
             gameOver = false;
             String card;
             bet = 5;
@@ -341,6 +343,13 @@ public class BlackJack extends AppCompatActivity {
         }
         String cards = suit + Integer.toString(card);
         return cards;
+    }
+
+    public void onMenuClicked(View view) {
+        if (gameOver == true) {
+            Intent intent = new Intent(this, Menu.class);
+            startActivity(intent);
+        }
     }
     private void postRequest() {
 

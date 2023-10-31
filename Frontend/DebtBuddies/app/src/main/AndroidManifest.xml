@@ -19,6 +19,9 @@
             android:name=".FriendsListActivity"
             android:exported="false" />
         <activity
+            android:name=".Menu"
+            android:exported="false" />
+        <activity
             android:name=".WhacAMoleActivity"
             android:exported="false" />
         <activity
