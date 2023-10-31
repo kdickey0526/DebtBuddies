@@ -48,7 +48,7 @@ import androidx.cardview.widget.CardView;
 import java.util.Random;
 
 
-public class Menu extends AppCompatActivity  {
+public class gitMenu extends AppCompatActivity  {
     Button b_back, b_menu;
     TextView tv_username;
     @Override
