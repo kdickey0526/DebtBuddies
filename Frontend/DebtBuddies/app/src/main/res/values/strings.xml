@@ -17,6 +17,7 @@
     <string name="score">Score\n0</string>
     <string name="highscore">High Score\n0</string>
     <string name="missed">Missed: 0</string>
+    <string name="globalchat">Global Chat</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

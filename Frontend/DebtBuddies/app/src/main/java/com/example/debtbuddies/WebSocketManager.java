@@ -66,7 +66,9 @@ public class WebSocketManager {
             URI serverUri = URI.create(serverUrl);
             webSocketClient = new MyWebSocketClient(serverUri);
             webSocketClient.connect();
+            Log.d("WebSocketManager", "connection successful");
         } catch (Exception e) {
+            Log.e("WebSocketManager", "connection failed");
             e.printStackTrace();
         }
     }
@@ -81,6 +83,7 @@ public class WebSocketManager {
     public void sendMessage(String message) {
         if (webSocketClient != null && webSocketClient.isOpen()) {
             webSocketClient.send(message);
+            Log.d("WebSocketManager", "sendMessage: sent");
         }
     }
 
@@ -91,6 +94,7 @@ public class WebSocketManager {
     public void disconnectWebSocket() {
         if (webSocketClient != null) {
             webSocketClient.close();
+            Log.d("WebSocketManager", "disconnectWebSocket: disconnected");
         }
     }
 

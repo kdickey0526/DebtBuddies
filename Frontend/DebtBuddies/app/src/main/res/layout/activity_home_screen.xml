@@ -236,7 +236,19 @@
             android:layout_weight="1">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/chatIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:onClick="chatOnClickListener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/friendsListIcon"
+        app:layout_constraintStart_toEndOf="@+id/usernameText"
+        app:layout_constraintTop_toTopOf="@+id/usernameText"
+        app:srcCompat="@drawable/chaticon" />
 
     <ImageView
         android:id="@+id/userIcon"
@@ -254,9 +266,12 @@
 
     <TextView
         android:id="@+id/usernameText"
-        android:layout_width="240dp"
+        android:layout_width="160dp"
         android:layout_height="34dp"
         android:layout_marginStart="5dp"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="@font/indie_flower"
         android:gravity="clip_vertical|left"
         android:text="@string/username"
@@ -270,7 +285,7 @@
 
     <TextView
         android:id="@+id/coinsText"
-        android:layout_width="240dp"
+        android:layout_width="160dp"
         android:layout_height="36dp"
         android:layout_marginStart="5dp"
         android:fontFamily="@font/indie_flower"

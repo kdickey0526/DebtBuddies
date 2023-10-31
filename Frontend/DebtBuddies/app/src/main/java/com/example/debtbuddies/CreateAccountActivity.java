@@ -3,37 +3,23 @@ package com.example.debtbuddies;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +33,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     Button b_confirm, b_back;
     String username, email, password, confirmPassword, SERVER_URL;
     private String tag_string_req = "string_req";
-    private String TAG = MainActivity.class.getSimpleName();
+    private String TAG = LoginScreenActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     Boolean createAccount;
 
@@ -86,7 +72,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         if (createAccount = true) {
             postRequest();
 
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LoginScreenActivity.class);
             startActivity(intent);
         }
     }
