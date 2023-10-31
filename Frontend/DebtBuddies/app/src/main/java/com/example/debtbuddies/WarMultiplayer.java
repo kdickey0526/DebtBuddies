@@ -73,7 +73,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     }
 
     public void onDealClicked (View view) {
-        if (gameOver = true) {
+        if (gameOver != true) {
             int player1val;
             int player2val;
             int image;
@@ -93,10 +93,10 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
                 player1.add(player1.get(0));
                 player1.add(player2.get(0));
             } else if (player2val == player1val) {  // 1 = 2 war
-                if (player1.size() < 3 || player2.size() < 3) {
+                if (player1.size() <= 4 || player2.size() <= 4) {
                     gameOver();
                 }
-                if (player1.get(4).value > player2.get(4).value) {
+                else if (player1.get(4).value > player2.get(4).value) {
                     player1.add(player1.get(0));
                     player1.add(player2.get(0));
                     player1.add(player1.get(1));
@@ -119,14 +119,16 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
                     player2.add(player1.get(4));
                     player2.add(player2.get(4));
                 }
-                player1.remove(4);
-                player1.remove(3);
-                player1.remove(2);
-                player1.remove(1);
-                player2.remove(4);
-                player2.remove(3);
-                player2.remove(2);
-                player2.remove(1);
+                if (gameOver == false) {
+                    player1.remove(4);
+                    player1.remove(3);
+                    player1.remove(2);
+                    player1.remove(1);
+                    player2.remove(4);
+                    player2.remove(3);
+                    player2.remove(2);
+                    player2.remove(1);
+                }
             } else {    // 1 < 2
                 player2.add(player1.get(0));
                 player2.add(player2.get(0));
@@ -148,6 +150,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         gameOver = true;
         if (player1.size() > player2.size()) {  //player1 wins
             whoWin.setText("player 1 wins");
+
         } else {    //player2 wins
             whoWin.setText("player 2 wins");
         }
@@ -167,9 +170,8 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     }
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
-
+        String closedBy = remote ? "server" : "local";
         runOnUiThread(() -> {
-
 
         });
     }
