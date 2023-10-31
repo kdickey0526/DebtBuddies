@@ -84,7 +84,7 @@ public class Party extends AppCompatActivity {
     }
     public void onJoin(View v){
         Intent intent = new Intent(this, AcceptInvite.class);
-
+        startActivity(intent);
     }
 }
 

@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("org.java-websocket:Java-WebSocket:1.5.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")

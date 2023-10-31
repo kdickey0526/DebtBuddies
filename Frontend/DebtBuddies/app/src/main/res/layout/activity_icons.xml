@@ -229,12 +229,12 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="265dp"
         android:layout_marginBottom="250dp"
-        android:src="@drawable/icon0"
+        android:src="@drawable/icon6"
         app:cardCornerRadius="160dp"
         app:cardElevation="16dp">
         <ImageView
             android:scaleType = "centerCrop"
-            android:src = "@drawable/icon0"
+            android:src = "@drawable/icon6"
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"/>
     </androidx.cardview.widget.CardView>
@@ -260,12 +260,12 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="140dp"
         android:layout_marginBottom="250dp"
-        android:src="@drawable/icon0"
+        android:src="@drawable/icon7"
         app:cardCornerRadius="160dp"
         app:cardElevation="16dp">
         <ImageView
             android:scaleType = "centerCrop"
-            android:src = "@drawable/icon0"
+            android:src = "@drawable/icon7"
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"/>
     </androidx.cardview.widget.CardView>
@@ -296,7 +296,7 @@
         app:cardElevation="16dp">
         <ImageView
             android:scaleType = "centerCrop"
-            android:src = "@drawable/icon0"
+            android:src = "@drawable/icon7"
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"/>
     </androidx.cardview.widget.CardView>
