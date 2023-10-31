@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginScreenActivity">
 
     <TextView
         android:id="@+id/coinCount"
@@ -45,30 +45,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/rememberUsername"
-        android:layout_width="139dp"
-        android:layout_height="39dp"
-        android:text="@string/remUser"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.202"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
-
-    <CheckBox
-        android:id="@+id/rememberPassword"
-        android:layout_width="139dp"
-        android:layout_height="39dp"
-        android:text="@string/remPass"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.202"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.723" />
-
     <EditText
         android:id="@+id/passwordField"
         android:layout_width="301dp"
@@ -93,9 +69,9 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/createAcctButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/rememberUsername"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordField"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <EditText
         android:id="@+id/usernameField"
@@ -141,13 +117,14 @@
         android:id="@+id/createAcctButton"
         android:layout_width="301dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="96dp"
         android:onClick="createAcctButtonListener"
         android:text="@string/noAcct"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rememberPassword"
-        app:layout_constraintVertical_bias="0.156" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordField"
+        app:layout_constraintVertical_bias="0.705" />
 
     <Button
         android:id="@+id/button"

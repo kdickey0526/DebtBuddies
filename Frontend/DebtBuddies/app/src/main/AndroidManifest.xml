@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.DebtBuddies"
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
+        <activity
+            android:name=".GlobalChatActivity"
+            android:exported="false" />
         <activity
             android:name=".FriendsListActivity"
             android:exported="false" />
@@ -49,7 +53,7 @@
             android:name=".ProfileIcons"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

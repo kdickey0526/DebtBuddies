@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.w3c.dom.Text;
 
@@ -31,13 +32,18 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
-//        try {
-//            usernameField.setText(MyApplication.currentUser.getString("userName"));
-//            coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, "failed setting username and coins");
-//        }
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                usernameField.setText(MyApplication.currentUser.getString("userName"));
+                coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
+            } catch (JSONException e) {
+                Log.e(TAG, "failed setting username and coins in text views");
+                e.printStackTrace();
+            }
+        } else {
+            usernameField.setText("Guest");
+            coinsField.setText("No coins");
+        }
     }
 
     public void whacAMoleOnClickListener(View v) {
@@ -63,6 +69,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void settingsOnClickListener(View v) {
         Log.d(TAG, "settingsOnClickListener: clicked");
 
+    }
+
+    public void chatOnClickListener(View v) {
+        Log.d(TAG, "chatOnClickListener: clicked, opening chat box");
+        startActivity(new Intent(this, GlobalChatActivity.class));
     }
 
     public void leaderboardOnClickListener(View v) {

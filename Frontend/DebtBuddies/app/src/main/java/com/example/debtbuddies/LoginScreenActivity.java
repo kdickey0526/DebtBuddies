@@ -2,7 +2,6 @@ package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,22 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
     private EditText passwordField;
@@ -33,20 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView msgResponse;
     private Button loginBtn;
     private Button createAcctBtn;
-
-
+    private static final String TAG = "LoginScreenActivity";
     public String SERVER_URL;
-
-    // will probably want to store in a singleton somewhere (now stored in MyApplication)
-//    private JSONObject currentObj;
-
+    private boolean passFailed = false;
     private boolean loggedIn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_screen);
 
         // instantiate views & such
         msgResponse = (TextView) findViewById(R.id.loggedInAs);
@@ -62,6 +54,18 @@ public class MainActivity extends AppCompatActivity {
         String requestedUser = (String) usernameField.getText().toString();
         SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
         makeJsonObjReq();
+
+
+        if (MyApplication.currentUser == null) {
+            Log.d(TAG, "loginBtnOnClickListener: currentUser was null");
+
+            // allow to login as "guest" for special purposes
+            if (!usernameField.getText().toString().equals("guest")) {
+                Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            MyApplication.loggedInAsGuest = true;
+        }
 
         Intent intent = new Intent(this, HomeScreenActivity.class);
         startActivity(intent);
