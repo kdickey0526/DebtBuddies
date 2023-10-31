@@ -2,6 +2,7 @@ package onetoone.GameServer.Games;
 
 import com.google.gson.Gson;
 import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
 
 import java.util.*;
@@ -12,10 +13,14 @@ public abstract class Game<T> {
     protected int num_users;
     protected int queue_size;
 
-    protected List<T> users;
+    protected List<T> players;
+
+    protected List<User> users;
+
+    protected Map< User , T > userPlayerMap = new Hashtable<>();
     protected Gson gson = new Gson();
 
-    public Game(List<T> users, int gameId, int queue_size){
+    public Game(List<User> users, int gameId, int queue_size){
         this.gameId = gameId;
         this.users = new ArrayList<>(users);
         this.queue_size = queue_size;
@@ -36,14 +41,14 @@ public abstract class Game<T> {
 
     protected abstract void getResponse(T user, ServerEvent serverEvent);
 
-    protected abstract Game<T> getNewGame(List<T> queue, int gameId);
+    protected abstract Game<T> getNewGame(Group queue, int gameId);
 
     protected abstract T getNewUser(User user);
-
+/*
     protected void addUser(T player){
         users.add(player);
     }
-
+*/
     public int getGameId(){
         return gameId;
     }
@@ -54,7 +59,7 @@ public abstract class Game<T> {
 
     public List<User> getAllUsers(){
         List<User> all_users = new ArrayList<>();
-        for(T t_user : users){
+        for(T t_user : players){
             all_users.add((User) t_user);
         }
         return all_users;

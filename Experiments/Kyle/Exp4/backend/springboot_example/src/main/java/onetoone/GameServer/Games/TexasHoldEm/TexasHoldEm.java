@@ -13,6 +13,7 @@ import onetoone.GameServer.Games.Game;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
 import onetoone.GameServer.Games.GameInterface;
+import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
 
 public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<TexasHoldEmUser, TexasHoldEm> {
@@ -35,7 +36,8 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private UserInfo userInfo = new UserInfo();
 
     public TexasHoldEm(List<TexasHoldEmUser> users, int gameId){
-        super(users, gameId, 3);
+        //super(users, gameId, 3);
+        super(gameId);
     }
 
     public TexasHoldEm(){
@@ -53,15 +55,19 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         running = 1;
         stage = 0;
         pot = 0;
-        for(TexasHoldEmUser user : users){
-            user.clearInventory();
+        players.clear();
+        for(User user : users){
+            TexasHoldEmUser player = new TexasHoldEmUser(user);
+            players.add(player);
+            userPlayerMap.put(user, player);
         }
         deal_hole();
     }
 
     @Override
-    public TexasHoldEm getNewGame(List<TexasHoldEmUser> queue, int gameId){
-        return new TexasHoldEm(queue, gameId);
+    public TexasHoldEm getNewGame(Group queue, int gameId){
+        List<TexasHoldEmUser> temp = new ArrayList<>();
+        return new TexasHoldEm(temp, gameId);
     }
 
     @Override
@@ -76,7 +82,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         if(running == 0 && Objects.equals(serverEvent.getAction(), "start")){
 
             initializeGame();
-            for(TexasHoldEmUser other_user : users){
+            for(TexasHoldEmUser other_user : players){
                 sendUserUpdate(other_user);
             }
             smallAndBigBlind();
@@ -149,20 +155,20 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     private void newRound(){
-        for(TexasHoldEmUser user : users){
+        for(TexasHoldEmUser user : players){
             user.setAnte(0);
         }
         ante = BASE_ANTE;
     }
 
     private void smallAndBigBlind(){
-        users.get(p_index).placeBet(5);
+        players.get(p_index).placeBet(5);
         p_index++;
         if(p_index == users.size()){ p_index = 0; }
-        users.get(p_index).placeBet(10);
+        players.get(p_index).placeBet(10);
         pot = 15;
         ante = BASE_ANTE;
-        target_user = users.get(++p_index % num_users);
+        target_user = players.get(++p_index % num_users);
         final_user = target_user;
         gameInfo.setCurrentTurn(target_user.toString());
         gameInfo.setLastPlay("blind");
@@ -206,7 +212,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
     public void sendHands(){
 
-        for(TexasHoldEmUser user : users){
+        for(TexasHoldEmUser user : players){
             String message = "{\"card1\":\""+user.getHand().get(0).toString()+"\",\"card2\":\""+user.getHand().get(1).toString()+"\"}";
             Response.addMessage(user, "hole", message);
         }
@@ -217,7 +223,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private TexasHoldEmUser end_game(){
         running = 0;
         if(getActivePlayers() == 1){
-            for(TexasHoldEmUser user : users){
+            for(TexasHoldEmUser user : players){
                 if(!user.foldStatus()){
                     return user;
                 }
@@ -255,12 +261,12 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     private TexasHoldEmUser nextTargetPlayer(){
-        return users.get((users.indexOf(target_user) + 1) % users.size());
+        return players.get((players.indexOf(target_user) + 1) % players.size());
     }
 
     private int getActivePlayers(){
         int active = 0;
-        for(TexasHoldEmUser user : users){
+        for(TexasHoldEmUser user : players){
             if(!user.foldStatus()){ active++; }
         }
         return active;
@@ -269,7 +275,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     public void deal_hole(){
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < num_users; j++){
-                users.get(j).draw(deck);
+                players.get(j).draw(deck);
             }
         }
     }
@@ -290,14 +296,14 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         PokerHands high_hand = PokerHands.LOW;
 
         for(int i = 0; i < num_users; i++){
-            if(users.get(i).foldStatus()){ continue; }
+            if(players.get(i).foldStatus()){ continue; }
             PokerHands player_high = getHigh(i);
             if(player_high.getValue() > high_hand.getValue()){
                 high_index = i;
                 high_hand = player_high;
             }else if(player_high.getValue() == high_hand.getValue()){
-                TexasHoldEmUser player1 = users.get(high_index);
-                TexasHoldEmUser player2 = users.get(i);
+                TexasHoldEmUser player1 = players.get(high_index);
+                TexasHoldEmUser player2 = players.get(i);
                 //int winner = tiebreaker(player1, player2);
                 int winner = 1;
                 if(winner == 1){
@@ -305,7 +311,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                 }
             }
         }
-        return users.get(high_index);
+        return players.get(high_index);
     }
     private int tiebreaker(TexasHoldEmUser player1, TexasHoldEmUser player2){
         List<Card> p1_total = getTotal(player1.getHand(), pit);
@@ -331,7 +337,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
     private PokerHands getHigh(int index){
 
-        List<Card> handAndPit = getTotal(users.get(index).getHand(), pit);
+        List<Card> handAndPit = getTotal(players.get(index).getHand(), pit);
 
         Deck.CardManager.sortCards(handAndPit);
 

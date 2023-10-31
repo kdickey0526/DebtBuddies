@@ -44,13 +44,9 @@ public class GameServer {
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
 
-    private static Map < String, User> usernamePlayerMap = new Hashtable < > ();
-    private static Map < Session, User> sessionPlayerMap = new Hashtable < > ();
-    private static Map <User, Session > playerSessionMap = new Hashtable < > ();
-
-    private static Map < String, String > usernameGameMap = new Hashtable < > ();
-    private static List<User> users = new ArrayList<>();
-    private static int num_players = 0;
+    private static Map < Session , User > sessionUserMap = new Hashtable<>();
+    private static Map < User , Session > userSessionMap = new Hashtable<>();
+    private static Map < User , String > userGameMap = new Hashtable<>();
 
     private final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
@@ -66,30 +62,13 @@ public class GameServer {
         // server side log
         logger.info("[onOpen] " + username);
 
-        // Handle the case of a duplicate username
-        if (usernamePlayerMap.containsKey(username)) {
-            session.getBasicRemote().sendText("Username already exists");
+        if(sessionUserMap.containsKey(session)){
             session.close();
-        }
-        else {
+        }else{
             User user = new User(username);
-            num_players++;
-            users.add(user);
-
-            usernameGameMap.put(username, game);
-            // map current session with username
-            sessionPlayerMap.put(session, user);
-
-            // map current username with session
-            playerSessionMap.put(user, session);
-
-            usernamePlayerMap.put(username, user);
-
-            // send to the user joining in
-            sendMessageToParticularUser(username, "Welcome to the chat server, "+username);
-
-            // send to everyone in the chat
-            //broadcast("User: " + username + " has Joined the Chat");
+            sessionUserMap.put(session, user);
+            userSessionMap.put(user, session);
+            userGameMap.put(user, game);
         }
     }
 
@@ -106,26 +85,22 @@ public class GameServer {
          * {"event":*String event*,"action":*Action action*}
          */
 
-        User user = sessionPlayerMap.get(session);
+        User user = sessionUserMap.get(session);
 
         ServerEvent serverEvent = gson.fromJson(message, ServerEvent.class);
 
         logger.info(user.toString() + " sent " + message);
 
-        Manager.getResponse(usernameGameMap.get(user.toString()), user, serverEvent);
+        Manager.getResponse(userGameMap.get(user), user, serverEvent);
 
-        List<Message> messages = Response.getMessages();
-
-        for (Message value : messages) {
+        for (Message value : Response.getMessages()) {
             logger.info("[Message]: " + value.getMessage());
-            List<User> m_users = value.getPlayers();
-            for (User m_user : m_users) {
-                sendMessageToParticularUser(m_user.toString(), value.getMessage());
+            for (User m_user : value.getPlayers()) {
+                sendMessageToParticularUser(m_user, value.getMessage());
             }
         }
 
         Response.clearMessages();
-
     }
 
     /**
@@ -137,18 +112,15 @@ public class GameServer {
     public void onClose(Session session) throws IOException {
 
         // get the username from session-username mapping
-        User user = sessionPlayerMap.get(session);
+        User user = sessionUserMap.get(session);
 
         // server side log
         logger.info("[onClose] " + user.toString());
 
         // remove user from memory mappings
-        usernamePlayerMap.remove(user.toString());
-        sessionPlayerMap.remove(session);
-        playerSessionMap.remove(user);
-        users.remove(sessionPlayerMap.get(session));
-
-        num_players--;
+        sessionUserMap.remove(session);
+        userSessionMap.remove(user);
+        userGameMap.remove(user);
 
         // send the message to chat
         broadcast(user.toString() + " disconnected");
@@ -164,7 +136,7 @@ public class GameServer {
     public void onError(Session session, Throwable throwable) {
 
         // get the username from session-username mapping
-        String username = sessionPlayerMap.get(session).toString();
+        String username = sessionUserMap.get(session).toString();
 
         // do error handling here
         logger.info("[onError]" + username + ": " + throwable.getMessage());
@@ -173,12 +145,12 @@ public class GameServer {
     /**
      * Sends a message to a specific user in the chat (DM).
      *
-     * @param username The username of the recipient.
+     * @param user The username of the recipient.
      * @param message  The message to be sent.
      */
-    private void sendMessageToParticularUser(String username, String message) {
+    private void sendMessageToParticularUser(User user, String message) {
         try {
-            playerSessionMap.get(usernamePlayerMap.get(username)).getBasicRemote().sendText(message);
+            userSessionMap.get(user).getBasicRemote().sendText(message);
         } catch (IOException e) {
             logger.info("[DM Exception] " + e.getMessage());
         }
@@ -190,7 +162,7 @@ public class GameServer {
      * @param message The message to be broadcasted to all users.
      */
     private void broadcast(String message) {
-        sessionPlayerMap.forEach((session, player) -> {
+        sessionUserMap.forEach((session, user) -> {
             try {
                 session.getBasicRemote().sendText(message);
             } catch (IOException e) {
