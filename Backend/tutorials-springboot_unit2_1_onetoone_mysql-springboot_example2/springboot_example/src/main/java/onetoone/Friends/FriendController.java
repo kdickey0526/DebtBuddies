@@ -1,6 +1,8 @@
-package onetoone.Friends;
+package onetomany.Friends;
+
 
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,51 +13,63 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 /**
- * 
+ *
  * @author Vivek Bengre
- * 
- */ 
+ *
+ */
+
 
 @RestController
 public class FriendController {
 
+
     @Autowired
-    FriendRepository FriendRepository;
-    
+    FriendRepository Friendrepository;
+
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
 
-    @GetMapping(path = "/Friends")
-    List<Laptop> getAllLaptops(){
-        return FriendRepository.findAll();
+
+    @GetMapping(path = "/friends/{userName}")
+    List<friend> getAllfriends(){
+        return friendRepository.findAll(usrName);
     }
 
-    @GetMapping(path = "/Friend/{id}")
-    Laptop getLaptopById(@PathVariable int id){
-        return FriendRepository.findById(id);
+
+    @GetMapping(path = "/friends/{id}")
+    friend getfriendByUserName(@PathVariable User userName){
+        return friendRepository.findFriendByUserName(userName);
     }
 
-    @PostMapping(path = "/Friends")
-    String createLaptop(@RequestBody Friend Friend1){
-        if (Friend1 == null)
+
+    @PostMapping(path = "/friends/{userName1}/{userName2}")
+    String createfriend(@RequestBody User userName1, User userName2){
+        if (userName1 == null)
             return failure;
-        FriendRepository.save(Friend1);
+        if (userName2 == null)
+            return failure;
+        Friend friend1(userName1,userName2);
+        friendRepository.save(friend);
         return success;
     }
 
-    @PutMapping(path = "/Friend/{id}")
-    Laptop updateLaptop(@PathVariable int id, @RequestBody Friend request){
-        Friend Friend = FriendRepository.findById(id);
-        if(Friend == null)
+
+    @PutMapping(path = "/friends/{userName}")
+    friend updatefriend(@PathVariable Username, @RequestBody friend request){
+        friend friend = friendRepository.findByUserName(userName);
+        if(friend == null)
             return null;
         FriendRepository.save(request);
-        return FriendRepository.findById(id);
+        return FriendRepository.findFriendByUserName(id);
     }
 
-    @DeleteMapping(path = "/Friend/{id}")
-    String deleteLaptop(@PathVariable int id){
-        FriendRepository.deleteById(id);
+
+    @DeleteMapping(path = "/friends/{userName1}/{userName2}")
+    String deletefriend(@PathVariable String userName1, @PathVariable String userName2){
+        FriendRepository.deleteByUserName(userName1,userName2);
         return success;
     }
 }
+

@@ -1,7 +1,8 @@
-package onetoone.Friends;
+package onetomany.Friend;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * 
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */ 
 
-public interface FriendRepository extends JpaRepository<Friend, Long> {
-    Laptop findById(int id);
+public interface FriendRepository extends JpaRepository<Friend, String> {
+    Friend findFriendByUserName(User userName1,User userName2);
 
     @Transactional
-    void deleteById(int id);
+    void deleteByUserName(User userName1, User userName2);
 }

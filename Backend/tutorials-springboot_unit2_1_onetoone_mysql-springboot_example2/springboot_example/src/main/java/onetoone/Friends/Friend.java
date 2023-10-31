@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 import javax.persistence.OneToMany;
 
 import javax.persistence.JoinColumn;
@@ -27,13 +29,12 @@ public class Friend {
      * The annotation @ID marks the field below as the primary key for the table created by springboot
      * The @GeneratedValue generates a value if not already present, The strategy in this case is to start from 1 and increment for each table
      */
-    @Friend1
+    @Id
+    @Friend
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private User user1;
+    private int id;
 
-    private User user1;
-
-    @ManyToOne
+/*    @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user1;
@@ -41,7 +42,7 @@ public class Friend {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    private User user2;
+    private User user2;*/
 
     /*
      * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
@@ -49,14 +50,18 @@ public class Friend {
      */
     @OneToOne
     @JsonIgnore
-    private User user;
+    private User user1;
 
-    public Friend(String Friend1, String Friend2) {
+    @OneToOne
+    @JsonIgnore
+    private User user2;
+
+    public Friend(User Friend1, User Friend2) {
         this.user1 = Friend1;
         this.user2 = Friend2;
     }
 
-    public Laptop() {
+    public Friend() {
     }
 
     // =============================== Getters and Setters for each field ================================== //
@@ -69,20 +74,21 @@ public class Friend {
         this.id = id;
     }
 
-    public double getFriend1(){
+    public User setFriend1(){
         return user1;
     }
 
-    public void setFriend1(String Friend1){
-        this.user1 = Friend1;
+    public void setFriend1(User user){
+        this.user1 = user;
     }
 
-    public int getFriend2(){
+    public User setFriend2(){
         return user2;
     }
 
-    public void setFriend2(String Friend2){
-        this.user2 = Friend2;
+    public void setFriend2(User user){
+        this.user2 = user;
     }
+
 
 }
