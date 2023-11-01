@@ -20,7 +20,7 @@ public class Menu extends AppCompatActivity  {
         tv_username = findViewById(R.id.tv_username);
 
         b_back = findViewById(R.id.b_back);
-        b_menu = findViewById(R.id.b_menu);
+        b_menu = findViewById(R.id.b_main_menu);
 
     }
 
