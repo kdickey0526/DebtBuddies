@@ -65,7 +65,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     @Override
-    public TexasHoldEm getNewGame(Group queue, int gameId){
+    public TexasHoldEm getNewGame(Group lobby, int gameId){
         List<TexasHoldEmUser> temp = new ArrayList<>();
         return new TexasHoldEm(temp, gameId);
     }
@@ -73,6 +73,14 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     @Override
     public TexasHoldEmUser getNewUser(User user){
         return new TexasHoldEmUser(user);
+    }
+
+    @Override
+    public void convertUsers(List<User> users){
+        players.clear();
+        for(User user : users){
+            players.add(new TexasHoldEmUser(user));
+        }
     }
 
     public void getResponse(TexasHoldEmUser user, ServerEvent serverEvent){

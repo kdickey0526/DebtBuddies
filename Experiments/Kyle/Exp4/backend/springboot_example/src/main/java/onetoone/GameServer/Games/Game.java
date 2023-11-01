@@ -44,6 +44,9 @@ public abstract class Game<T> {
     protected abstract Game<T> getNewGame(Group queue, int gameId);
 
     protected abstract T getNewUser(User user);
+
+    protected abstract void convertUsers(List<User> users);
+
 /*
     protected void addUser(T player){
         users.add(player);

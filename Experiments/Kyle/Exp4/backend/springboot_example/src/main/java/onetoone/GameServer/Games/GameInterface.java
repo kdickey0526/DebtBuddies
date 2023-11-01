@@ -17,6 +17,8 @@ public interface GameInterface <T, K>{
 
     T getNewUser(User user);
 
+    void convertUsers(List<User> users);
+
     int getQueueSize();
 
 }

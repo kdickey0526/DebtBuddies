@@ -33,6 +33,14 @@ public class Group {
         return users;
     }
 
+    public int getNumUsers(){
+        return users.size();
+    }
+
+    public boolean isQueue(){
+        return groupId==0;
+    }
+
     public void add(User user){
         users.add(user);
     }
