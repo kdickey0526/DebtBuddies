@@ -16,7 +16,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
 
     protected int LobbyId = 0;
 
-    protected Group Queue = new Group(LobbyId++);
+    protected Group Queue = new Group(LobbyId);
 
     protected List<Group> Lobbies = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
 
     public GameManager(K dummyInstance){
         this.dummyInstance = dummyInstance;
-        lobbyIdLobbyMap.put(0, Queue);
+        lobbyIdLobbyMap.put(LobbyId, Queue);
     }
 
     public void getResponse(User user, ServerEvent serverEvent){
@@ -39,19 +39,29 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         }else{
             switch(action){
                 case "joinQueue":
+                    if(inLobby(user)){ return; }
                     joinQueue(user);
                     Response.addMessage(new Message(user, "joined queue"));
                     break;
                 case "joinLobby":
+                    if(inLobby(user)){ return; }
                     joinLobby(user, serverEvent.getValue());
+                    Response.addMessage(new Message(user, "joined lobby "+serverEvent.getValue()));
                     break;
                 case "createLobby":
+                    if(inLobby(user)){ return; }
                     createLobby(user);
+                    Response.addMessage(new Message(user, "Lobby "+userLobbyMap.get(user).getGroupId()+" created"));
                     break;
                 case "leaveLobby":
+                    if(!inLobby(user)){ return; }
+                    int l_id = userLobbyMap.get(user).getGroupId();
                     leaveLobby(user);
+                    Response.addMessage(new Message(user, "Left lobby " + l_id));
                     break;
                 case "start":
+                    if(!inLobby(user)){ return; }
+                    Response.addMessage(new Message(user, "Game starting"));
                     startGame(user);
                     break;
                 default:
@@ -73,12 +83,17 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         }
     }
 
+    public boolean inLobby(User user){
+        return userLobbyMap.containsKey(user);
+    }
+
     public boolean inGame(User user){
         return userGameIdMap.containsKey(user);
     }
 
     public void joinLobby(User user, int lobbyId){
         if(!lobbyIdLobbyMap.containsKey(lobbyId)){ return; }
+        if(lobbyIdLobbyMap.get(lobbyId).full()){ return; }
 
         Group current_lobby = lobbyIdLobbyMap.get(lobbyId);
         current_lobby.add(user);
@@ -96,7 +111,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
     }
 
     public void createLobby(User user){
-        Group new_lobby = new Group(user, LobbyId++);
+        Group new_lobby = new Group(user, ++LobbyId);
         Lobbies.add(new_lobby);
         userLobbyMap.put(user, new_lobby);
         lobbyIdLobbyMap.put(new_lobby.getGroupId(), new_lobby);

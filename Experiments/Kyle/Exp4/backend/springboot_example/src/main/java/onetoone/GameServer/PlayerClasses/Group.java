@@ -9,6 +9,8 @@ public class Group {
 
     private final int groupId;
 
+    private int maxPlayers = 4;
+
     public Group(List<User> users, int groupId){
         this.users = new ArrayList<>(users);
         this.groupId = groupId;
@@ -27,6 +29,18 @@ public class Group {
 
     public int getGroupId(){
         return groupId;
+    }
+
+    public int getMaxPlayers(){
+        return maxPlayers;
+    }
+
+    public boolean full(){
+        return (getNumUsers()==getMaxPlayers());
+    }
+
+    public void setMaxPlayers(int value){
+        maxPlayers = value;
     }
 
     public List<User> getUsers(){
