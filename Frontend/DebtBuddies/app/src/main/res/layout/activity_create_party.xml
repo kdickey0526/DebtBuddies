@@ -8,17 +8,6 @@
     android:background="@color/cardview_dark_background"
     tools:context=".LoginScreenActivity">
 
-    <Button
-        android:id="@+id/b_decline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="153dp"
-        android:layout_marginEnd="189dp"
-       android:onClick="onDeclineClicked"
-        android:text="Decline" />
-
     <ImageView
         android:id="@+id/icon"
         android:layout_width="50dp"
@@ -44,27 +33,47 @@
         android:textSize="32sp" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="307dp"
-        android:layout_height="82dp"
+        android:id="@+id/Username"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="78dp"
-        android:layout_marginEnd="99dp"
-        android:text="No Invites"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="143dp"
+        android:text="Enter Party Member"
         android:textColor="#FFFFFFFF"
-        android:textSize="20sp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/b_accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/Email"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="306dp"
-        android:onClick="onAcceptClicked"
-        android:text="Accept" />
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="210dp"
+        android:layout_marginEnd="136dp"
+        android:text="Enter Party Member"
+        android:textColor="#FFFFFFFF"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="154dp" />
+
+    <TextView
+        android:id="@+id/Password"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="291dp"
+        android:layout_marginEnd="138dp"
+        android:text="Enter Party Member"
+        android:textColor="#FFFFFFFF"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="263dp" />
+
 
     <Button
         android:id="@+id/b_back"
@@ -72,11 +81,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="237dp"
-        android:layout_marginEnd="252dp"
+        android:layout_marginTop="377dp"
+        android:layout_marginEnd="300dp"
         android:onClick="onBackClicked"
         android:text="Back" />
-
 
 </RelativeLayout>
 
