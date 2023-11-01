@@ -50,11 +50,31 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.Random;
 
 public class AcceptInvite extends AppCompatActivity {
+
+    TextView tv_username;
+    Button b_accept, b_decline, b_back;
+    ImageView icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_invite);
 
+        tv_username = findViewById(R.id.tv_username);
+        b_accept = findViewById(R.id.b_accept);
+        b_decline = findViewById(R.id.b_decline);
+        b_back = findViewById(R.id.b_back);
+        icon = findViewById(R.id.icon);
+    }
+
+    public void onAcceptClicked(View view) {
+
+    }
+    public void onDeclineClicked(View view) {
+
+    }
+    public void onBackClicked(View view) {
+        Intent intent = new Intent(this, Party.class);
+        startActivity(intent);
     }
 
 
