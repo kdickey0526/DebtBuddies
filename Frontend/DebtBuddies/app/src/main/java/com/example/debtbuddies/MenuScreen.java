@@ -29,7 +29,7 @@ public class MenuScreen extends Fragment {
 //        b_menu.findViewById(R.id.b_menu);
 //        tv_username.findViewById(R.id.tv_username);
 //        tv_username.setText("BoyInBlue");
-        return inflater.inflate(R.layout.fragment_menu_screen, container, false);
+        return inflater.inflate(R.layout.activity_menu, container, false);
     }
 
 

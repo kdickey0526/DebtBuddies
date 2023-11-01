@@ -1,18 +1,14 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -79,5 +75,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void leaderboardOnClickListener(View v) {
         Log.d(TAG, "leaderboardOnClickListener: clicked");
 
+    }
+
+    public void profileOnClickListener(View v) {
+        Log.d(TAG, "profileOnClickListener: clicked");
+        startActivity(new Intent(this, Menu.class));
     }
 }
