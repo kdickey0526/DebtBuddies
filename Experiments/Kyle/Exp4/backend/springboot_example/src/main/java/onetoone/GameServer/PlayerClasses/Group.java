@@ -39,6 +39,8 @@ public class Group {
         return (getNumUsers()==getMaxPlayers());
     }
 
+    public boolean empty(){ return (getNumUsers()==0); }
+
     public void setMaxPlayers(int value){
         maxPlayers = value;
     }

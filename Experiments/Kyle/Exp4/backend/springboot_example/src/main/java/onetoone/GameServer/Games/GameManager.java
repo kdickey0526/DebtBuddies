@@ -107,6 +107,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         userGameIdMap.remove(user);
         if(current_lobby.getNumUsers() == 0 && current_lobby.getGroupId() != 0){
             lobbyIdLobbyMap.remove(current_lobby.getGroupId());
+            Lobbies.remove(current_lobby);
         }
     }
 
