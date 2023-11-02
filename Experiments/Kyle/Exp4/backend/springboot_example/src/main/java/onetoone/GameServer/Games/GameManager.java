@@ -18,11 +18,13 @@ public class GameManager<T , K extends GameInterface<T, K>> {
 
     protected List<Group> Lobbies = new ArrayList<>();
 
+    protected List<K> Servers = new ArrayList<>();
+
     protected Map< User , Group > userLobbyMap = new Hashtable<>();
     protected Map < Integer , Group > lobbyIdLobbyMap = new Hashtable<>();
     protected Map < User , Integer > userGameIdMap = new Hashtable<>();
     protected Map < Integer , K > gameIdServerMap = new Hashtable<>();
-    protected Map < User, T > userPlayerMap = new Hashtable<>();
+    protected Map < Group, Integer > lobbyGameIdMap = new Hashtable<>();
     protected K dummyInstance;
 
     public GameManager(K dummyInstance){
@@ -33,6 +35,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
     public void getResponse(User user, ServerEvent serverEvent){
         String action = serverEvent.getAction();
         if(inGame(user)){
+            Response.addMessage(user, "confirm", "yerm");
             gameAction(user, serverEvent);
         }else{
             LobbyInfo lobbyInfo = new LobbyInfo("lobbyError");
@@ -65,7 +68,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
                 case "start":
                     if(!inLobby(user)){ return; }
                     //Response.addMessage(new Message(user, "Game starting"));
-                    lobbyInfo = new LobbyInfo("gameStart");
+                    lobbyInfo = new LobbyInfo("gameStart", userLobbyMap.get(user).getGroupId());
                     startGame(user);
                     break;
             }
@@ -75,7 +78,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
 
     public void gameAction(User user, ServerEvent serverEvent){
         K server = gameIdServerMap.get(userGameIdMap.get(user));
-        server.getResponse(userPlayerMap.get(user), serverEvent);
+        server.getResponse(user, serverEvent);
     }
 
     public void joinQueue(User user){
@@ -136,6 +139,10 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         }
 
         K new_game = dummyInstance.getNewGame(current_lobby, ++GameId);
+
+        Servers.add(new_game);
+
+        lobbyGameIdMap.put(current_lobby, GameId);
         gameIdServerMap.put(GameId, new_game);
 
         for(User current_user : current_lobby.getUsers()){

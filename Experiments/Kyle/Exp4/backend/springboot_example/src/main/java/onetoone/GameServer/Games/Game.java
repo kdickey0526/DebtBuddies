@@ -13,17 +13,24 @@ public abstract class Game<T> {
     protected int num_users;
     protected int queue_size;
 
-    protected List<T> players;
-
     protected List<User> users;
-
+    protected List<T> players = new ArrayList<>();
     protected Map< User , T > userPlayerMap = new Hashtable<>();
+
+    protected Map< T , User > playerUserMap = new Hashtable<>();
     protected Gson gson = new Gson();
 
     public Game(List<User> users, int gameId, int queue_size){
         this.gameId = gameId;
         this.users = new ArrayList<>(users);
         this.queue_size = queue_size;
+        num_users = users.size();
+        running = 0;
+    }
+
+    public Game(List<User> users, int gameId){
+        this.users = users;
+        this.gameId = gameId;
         num_users = users.size();
         running = 0;
     }
@@ -39,7 +46,7 @@ public abstract class Game<T> {
 
     }
 
-    protected abstract void getResponse(T user, ServerEvent serverEvent);
+    protected abstract void getResponse(User user, ServerEvent serverEvent);
 
     protected abstract Game<T> getNewGame(Group queue, int gameId);
 

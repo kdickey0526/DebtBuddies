@@ -11,6 +11,7 @@ import onetoone.GameServer.DeckLibrary.Suit;
 import onetoone.GameServer.Games.Game;
 import onetoone.GameServer.Communication.Response;
 import onetoone.GameServer.Games.GameInterface;
+import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmInfo.*;
 import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
 
@@ -24,18 +25,11 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private int ante;
     private int stage;
     private int p_index = 0;
-
-    private String last_turn;
     private TexasHoldEmUser target_user;
     private TexasHoldEmUser final_user;
 
-    private GameInfo gameInfo = new GameInfo();
-
-    private UserInfo userInfo = new UserInfo();
-
-    public TexasHoldEm(List<TexasHoldEmUser> users, int gameId){
-        //super(users, gameId, 3);
-        super(gameId);
+    public TexasHoldEm(List<User> users, int gameId){
+        super(users, gameId);
     }
 
     public TexasHoldEm(){
@@ -44,8 +38,12 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     @Override
+    public TexasHoldEm getNewGame(Group lobby, int gameId){
+        return new TexasHoldEm(lobby.getUsers(), gameId);
+    }
+
+    @Override
     protected void initializeGame(){
-        gameInfo.setPlayers(getUsernames());
         num_users = users.size();
         pit = new ArrayList<>();
         deck = new Deck();
@@ -53,19 +51,8 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         running = 1;
         stage = 0;
         pot = 0;
-        players.clear();
-        for(User user : users){
-            TexasHoldEmUser player = new TexasHoldEmUser(user);
-            players.add(player);
-            userPlayerMap.put(user, player);
-        }
+        convertUsers(users);
         deal_hole();
-    }
-
-    @Override
-    public TexasHoldEm getNewGame(Group lobby, int gameId){
-        List<TexasHoldEmUser> temp = new ArrayList<>();
-        return new TexasHoldEm(temp, gameId);
     }
 
     @Override
@@ -76,88 +63,102 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     @Override
     public void convertUsers(List<User> users){
         players.clear();
+        userPlayerMap.clear();
+        playerUserMap.clear();
         for(User user : users){
-            players.add(new TexasHoldEmUser(user));
+            TexasHoldEmUser player = new TexasHoldEmUser(user);
+            players.add(player);
+            userPlayerMap.put(user, player);
+            playerUserMap.put(player, user);
         }
     }
 
-    public void getResponse(TexasHoldEmUser user, ServerEvent serverEvent){
+    public void getResponse(User user, ServerEvent serverEvent){
 
-        String message;
+        TexasHoldEmUser player = userPlayerMap.get(user);
 
         if(running == 0 && Objects.equals(serverEvent.getAction(), "start")){
 
             initializeGame();
-            for(TexasHoldEmUser other_user : players){
-                sendUserUpdate(other_user);
-            }
             smallAndBigBlind();
-            sendGameUpdate("start");
+            for(TexasHoldEmUser o_player : players){
+                sendStartInfo(o_player);
+                sendPlayerInfo(o_player);
+            }
 
-        }else if(running == 1 && target_user == user){
+        }else if(running == 1 && target_user == player){
 
             switch(serverEvent.getAction()) {
                 case "fold":
-                    fold(user);
-                    gameInfo.setLastTurn(user.toString());
-                    gameInfo.setLastPlay("fold");
+                    fold(player);
                     break;
                 case "call":
-                    call(user);
-                    gameInfo.setLastTurn(user.toString());
-                    gameInfo.setLastPlay("call");
-                    gameInfo.setPot(pot);
+                    call(player);
                     break;
                 case "raise":
-                    raise(user, serverEvent.getValue());
-                    gameInfo.setLastTurn(user.toString());
-                    gameInfo.setLastPlay("raise");
-                    gameInfo.setPot(pot);
-                    gameInfo.setAnte(ante);
+                    raise(player, serverEvent.getValue());
                     break;
                 default:
-                    Response.addMessage(user, "message", "invalid move");
                     return;
             }
             if(getActivePlayers() == 1){
                 TexasHoldEmUser winner = end_game();
-                gameInfo.setLastTurn(winner.toString());
-                sendGameUpdate("end");
+                sendEndInfo(winner);
                 return;
             }else{
-                sendUserUpdate(user);
+                sendPlayerInfo(player);
             }
             int pre_stage = stage;
             if((Objects.equals(serverEvent.getAction(), "call") || Objects.equals(serverEvent.getAction(), "fold")) && nextTargetPlayer() == final_user) {
                 stage++;
                 if (stage == 1) {
                     flop();
-                    gameInfo.setPit(pit);
-                    sendGameUpdate("stage");
+                    sendStageInfo();
                 } else if (stage == 2) {
                     turn();
-                    gameInfo.setPit(pit);
-                    sendGameUpdate("stage");
+                    sendStageInfo();
                 } else if (stage == 3) {
                     river();
-                    gameInfo.setPit(pit);
-                    sendGameUpdate("stage");
+                    sendStageInfo();
                 } else {
                     TexasHoldEmUser winner = end_game();
-                    gameInfo.setLastTurn(winner.toString());
-                    sendGameUpdate("end");
+                    sendEndInfo(winner);
                     return;
                 }
             }
             target_user = nextTargetPlayer();
-            gameInfo.setCurrentTurn(target_user.toString());
             if(stage != pre_stage){
-                sendGameUpdate("stage");
+                sendStageInfo();
                 newRound();
             }else {
-                sendGameUpdate("turn");
+                sendTurnInfo();
             }
         }
+    }
+
+    private void sendPlayerInfo(TexasHoldEmUser player){
+        PlayerInfo playerInfo = new PlayerInfo(player.getBalance(), player.getBet(), player.getAnte());
+        Response.addMessage(playerUserMap.get(player), "playerInfo", playerInfo);
+    }
+
+    private void sendStartInfo(TexasHoldEmUser player){
+        StartInfo startInfo = new StartInfo(player.getHand(), target_user.toString(), pot, ante);
+        Response.addMessage(playerUserMap.get(player), "startInfo", startInfo);
+    }
+
+    private void sendEndInfo(TexasHoldEmUser winner){
+        EndInfo endInfo = new EndInfo(winner.toString(), "bruh", new ArrayList<>());
+        Response.addMessage(users, "endInfo", endInfo);
+    }
+
+    private void sendTurnInfo(){
+        TurnInfo turnInfo = new TurnInfo("birb", target_user.toString(), pot, ante);
+        Response.addMessage(users, "turnInfo", turnInfo);
+    }
+
+    private void sendStageInfo(){
+        StageInfo stageInfo = new StageInfo(pit);
+        Response.addMessage(users, "stageInfo", stageInfo);
     }
 
     private void newRound(){
@@ -176,54 +177,6 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         ante = BASE_ANTE;
         target_user = players.get(++p_index % num_users);
         final_user = target_user;
-        gameInfo.setCurrentTurn(target_user.toString());
-        gameInfo.setLastPlay("blind");
-        gameInfo.setPot(pot);
-        gameInfo.setAnte(ante);
-    }
-
-    public void sendGameUpdate(String update_type){
-        //Response.addMessage(getAllUsers(), update_type, gson.toJson(gameInfo));
-    }
-
-    public void sendUserUpdate(TexasHoldEmUser user){
-        userInfo.setInfo(user.getBalance(), user.getBet(), user.getAnte(), user.getHand().get(0), user.getHand().get(1));
-        Response.addMessage(user, "update", gson.toJson(userInfo));
-    }
-
-    private List<String> getUsernames(){
-        List<String> temp = new ArrayList<>();
-
-        for(User user : users){
-            temp.add(user.toString());
-        }
-
-        return temp;
-    }
-
-    public String getCommunityJson(){
-        StringBuilder sb = new StringBuilder("{");
-        for(int i = 0; i < pit.size(); i++){
-            sb.append("\"card").append(i).append("\":\"").append(pit.get(i).toString()).append("\"");
-            if(i != pit.size() - 1){
-                sb.append(",");
-            }
-        }
-        sb.append("}");
-        return sb.toString();
-    }
-
-    public int getPot(){
-        return pot;
-    }
-    public void sendHands(){
-
-        for(TexasHoldEmUser user : players){
-            String message = "{\"card1\":\""+user.getHand().get(0).toString()+"\",\"card2\":\""+user.getHand().get(1).toString()+"\"}";
-            Response.addMessage(user, "hole", message);
-        }
-
-        //Response.addMessage(getAllUsers(), "turn", target_user.toString());
     }
 
     private TexasHoldEmUser end_game(){
@@ -236,18 +189,6 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             }
         }
         return decideWinner();
-    }
-
-    public TexasHoldEmUser getFinalUser() {
-        return final_user;
-    }
-
-    public int getAnte(){
-        return ante;
-    }
-
-    public String getLastTurn(){
-        return last_turn;
     }
 
     private void fold(TexasHoldEmUser user){

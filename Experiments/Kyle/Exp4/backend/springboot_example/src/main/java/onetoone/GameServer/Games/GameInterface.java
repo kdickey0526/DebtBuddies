@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GameInterface <T, K>{
 
-    void getResponse(T player, ServerEvent serverEvent);
+    void getResponse(User user, ServerEvent serverEvent);
 
     K getNewGame(Group queue, int gameId);
 

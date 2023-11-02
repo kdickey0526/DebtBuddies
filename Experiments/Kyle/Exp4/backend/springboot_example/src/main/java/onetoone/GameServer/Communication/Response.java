@@ -15,6 +15,10 @@ public class Response {
         messages.add(new MessageBearer(users, type, obj));
     }
 
+    public static void addMessage(List<User> users, String type, Object obj){
+        messages.add(new MessageBearer(users, type, obj));
+    }
+
     public static List<MessageBearer> getMessages(){
         return messages;
     }
