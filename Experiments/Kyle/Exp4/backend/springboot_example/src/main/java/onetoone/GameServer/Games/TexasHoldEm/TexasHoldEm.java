@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import onetoone.GameServer.Communication.ServerEvent;
-import onetoone.GameServer.DeckLibrary.Card;
-import onetoone.GameServer.DeckLibrary.Deck;
-import onetoone.GameServer.DeckLibrary.Suit;
+import onetoone.GameServer.DeckLibrary.*;
 import onetoone.GameServer.Games.Game;
 import onetoone.GameServer.Communication.Response;
 import onetoone.GameServer.Games.GameInterface;

@@ -61,9 +61,9 @@ public class GameManager<T , K extends GameInterface<T, K>> {
                     lobbyInfo = new LobbyInfo("leaveLobby", l_id);
                     break;
                 case "start":
-                    if(!inLobby(user)){ return; }
-                    lobbyInfo = new LobbyInfo("gameStart", userLobbyMap.get(user).getGroupId());
+                    if(!inLobby(user) || userLobbyMap.get(user).getGroupId() == 0){ return; }
                     startGame(user);
+                    lobbyInfo = new LobbyInfo("gameStart", userLobbyMap.get(user).getGroupId());
                     break;
             }
             Response.addMessage(user, "lobbyEvent", lobbyInfo);
@@ -79,6 +79,8 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         Queue.add(user);
         userLobbyMap.put(user, Queue);
         if(Queue.getNumUsers() == dummyInstance.getQueueSize()){
+            LobbyInfo lobbyInfo = new LobbyInfo("gameFound", GameId + 1);
+            Response.addMessage(Queue.getUsers(), "lobbyEvent", lobbyInfo);
             startGame(user);
         }
     }
@@ -142,6 +144,8 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         for(User current_user : current_lobby.getUsers()){
             userGameIdMap.put(current_user, GameId);
         }
+
+        new_game.getResponse(user, new ServerEvent("start"));
     }
 
 }
