@@ -49,6 +49,14 @@ public class Group {
         return users;
     }
 
+    public List<String> getUsersString(){
+        List<String> users_string = new ArrayList<>();
+        for(User user: users){
+            users_string.add(user.toString());
+        }
+        return users_string;
+    }
+
     public int getNumUsers(){
         return users.size();
     }

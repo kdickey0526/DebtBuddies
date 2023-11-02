@@ -23,6 +23,11 @@ public class MessageBearer {
         this.message = new MessageWrapper(type, data);
     }
 
+    public MessageBearer(List<User> recipients, String type, Object info){
+        this.recipients = recipients;
+        this.message = new MessageWrapper(type, gson.toJson(info));
+    }
+
     public List<User> getRecipients() {
         return recipients;
     }

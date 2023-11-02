@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Communication.ServerEvent;
 import onetoone.GameServer.DeckLibrary.Card;
 import onetoone.GameServer.DeckLibrary.Deck;
 import onetoone.GameServer.DeckLibrary.Suit;
-import onetoone.GameServer.Communication.Events.GameEvent;
 import onetoone.GameServer.Games.Game;
-import onetoone.GameServer.Communication.Responses.Message;
-import onetoone.GameServer.Communication.Responses.Response;
+import onetoone.GameServer.Communication.Response;
 import onetoone.GameServer.Games.GameInterface;
 import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
@@ -185,7 +183,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     public void sendGameUpdate(String update_type){
-        Response.addMessage(getAllUsers(), update_type, gson.toJson(gameInfo));
+        //Response.addMessage(getAllUsers(), update_type, gson.toJson(gameInfo));
     }
 
     public void sendUserUpdate(TexasHoldEmUser user){
@@ -225,7 +223,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             Response.addMessage(user, "hole", message);
         }
 
-        Response.addMessage(getAllUsers(), "turn", target_user.toString());
+        //Response.addMessage(getAllUsers(), "turn", target_user.toString());
     }
 
     private TexasHoldEmUser end_game(){

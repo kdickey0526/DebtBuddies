@@ -1,7 +1,7 @@
 package onetoone.GameServer.Games;
 
 import com.google.gson.Gson;
-import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Communication.ServerEvent;
 import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
 

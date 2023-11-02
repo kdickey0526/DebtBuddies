@@ -1,12 +1,10 @@
 package onetoone.GameServer.Games;
 
-import onetoone.GameServer.Communication.Events.GameEvent;
-import onetoone.GameServer.Communication.Events.ServerEvent;
-import onetoone.GameServer.Communication.Responses.Message;
-import onetoone.GameServer.Communication.Responses.Response;
+import onetoone.GameServer.Communication.LobbyInfo;
+import onetoone.GameServer.Communication.ServerEvent;
+import onetoone.GameServer.Communication.Response;
 import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
-import onetoone.GameServer.Games.*;
 
 import java.util.*;
 
@@ -37,36 +35,41 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         if(inGame(user)){
             gameAction(user, serverEvent);
         }else{
+            LobbyInfo lobbyInfo = new LobbyInfo("lobbyError");
             switch(action){
                 case "joinQueue":
                     if(inLobby(user)){ return; }
                     joinQueue(user);
-                    Response.addMessage(new Message(user, "joined queue"));
+                    //Response.addMessage(new Message(user, "joined queue"));
+                    lobbyInfo = new LobbyInfo("joinQueue", userLobbyMap.get(user).getGroupId());
                     break;
                 case "joinLobby":
                     if(inLobby(user)){ return; }
                     joinLobby(user, serverEvent.getValue());
-                    Response.addMessage(new Message(user, "joined lobby "+serverEvent.getValue()));
+                    //Response.addMessage(new Message(user, "joined lobby "+serverEvent.getValue()));
+                    lobbyInfo = new LobbyInfo("joinLobby", userLobbyMap.get(user).getGroupId(), userLobbyMap.get(user).getUsersString());
                     break;
                 case "createLobby":
                     if(inLobby(user)){ return; }
                     createLobby(user);
-                    Response.addMessage(new Message(user, "Lobby "+userLobbyMap.get(user).getGroupId()+" created"));
+                    //Response.addMessage(new Message(user, "Lobby "+userLobbyMap.get(user).getGroupId()+" created"));
+                    lobbyInfo = new LobbyInfo("createLobby", userLobbyMap.get(user).getGroupId());
                     break;
                 case "leaveLobby":
                     if(!inLobby(user)){ return; }
                     int l_id = userLobbyMap.get(user).getGroupId();
                     leaveLobby(user);
-                    Response.addMessage(new Message(user, "Left lobby " + l_id));
+                    //Response.addMessage(new Message(user, "Left lobby " + l_id));
+                    lobbyInfo = new LobbyInfo("leaveLobby", l_id);
                     break;
                 case "start":
                     if(!inLobby(user)){ return; }
-                    Response.addMessage(new Message(user, "Game starting"));
+                    //Response.addMessage(new Message(user, "Game starting"));
+                    lobbyInfo = new LobbyInfo("gameStart");
                     startGame(user);
                     break;
-                default:
-                    return;
             }
+            Response.addMessage(user, "lobbyEvent", lobbyInfo);
         }
     }
 

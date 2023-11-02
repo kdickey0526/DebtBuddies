@@ -1,4 +1,4 @@
-package onetoone.GameServer.Communication.Events;
+package onetoone.GameServer.Communication;
 
 public class ServerEvent {
 

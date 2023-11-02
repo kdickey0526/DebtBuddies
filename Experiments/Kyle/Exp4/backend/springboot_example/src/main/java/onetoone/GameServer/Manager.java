@@ -1,6 +1,6 @@
 package onetoone.GameServer;
 
-import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Communication.ServerEvent;
 import onetoone.GameServer.Games.GameManager;
 import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEm;
 import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmUser;

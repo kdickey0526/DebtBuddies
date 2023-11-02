@@ -12,11 +12,10 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
-import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Communication.ServerEvent;
 import onetoone.GameServer.Communication.MessageBearer;
 import onetoone.GameServer.PlayerClasses.User;
-import onetoone.GameServer.Communication.Responses.Message;
-import onetoone.GameServer.Communication.Responses.Response;
+import onetoone.GameServer.Communication.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
