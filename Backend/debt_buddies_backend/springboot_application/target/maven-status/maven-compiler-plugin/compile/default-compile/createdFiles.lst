@@ -2,8 +2,7 @@ debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEm.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\StartInfo.class
 debtbuddies\GameServer\Games\GameManager.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\EndInfo.class
-debtbuddies\Users\UserController.class
-debtbuddies\Users\UserRepository.class
+debtbuddies\person\PersonController.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\TurnInfo.class
 debtbuddies\GameServer\PlayerClasses\CardUser.class
 debtbuddies\GameServer\PlayerClasses\Group.class
@@ -13,12 +12,13 @@ debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmUser.class
 debtbuddies\GameServer\Communication\MessageBearer.class
 debtbuddies\GameServer\DeckLibrary\Deck$CardManager.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\PlayerInfo.class
+debtbuddies\person\Person.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\StageInfo.class
 debtbuddies\GameServer\WebSocketConfig.class
 debtbuddies\GameServer\Communication\MessageWrapper.class
-debtbuddies\Users\User.class
 debtbuddies\GameServer\DeckLibrary\Deck.class
 debtbuddies\Main.class
+debtbuddies\person\PersonRepository.class
 debtbuddies\GameServer\Games\Game.class
 debtbuddies\GameServer\Games\TexasHoldEm\PokerHands.class
 debtbuddies\GameServer\Communication\LobbyInfo.class

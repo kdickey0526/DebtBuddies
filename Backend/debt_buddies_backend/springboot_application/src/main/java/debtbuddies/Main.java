@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-@ComponentScan(basePackages = {"debtbuddies.GameServer", "debtbuddies.Users"})
+@ComponentScan(basePackages = {"debtbuddies.GameServer", "debtbuddies.person"})
 class Main {
 
     public static void main(String[] args) {
