@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:gravity="bottom|left"
-            android:text="The global chat's messages will appear here."
+            android:text="Sorry! The global chat server is not currently running. Try again later."
             android:textColor="@color/white"
             android:textSize="20sp" />
     </ScrollView>
