@@ -93,10 +93,10 @@ public class GameServer {
 
         Manager.getResponse(userGameMap.get(user), user, serverEvent);
 
-        for (MessageBearer message_value : Response.getMessages()) {
+        for (MessageBearer messageBearer : Response.getMessages()) {
             logger.info("[Message]: " + message);
-            for (User recipient : message_value.getRecipients()) {
-                sendMessageToParticularUser(recipient, message_value.getMessageString());
+            for (User recipient : messageBearer.getRecipients()) {
+                sendMessageToParticularUser(recipient, messageBearer.getMessageString());
             }
         }
 

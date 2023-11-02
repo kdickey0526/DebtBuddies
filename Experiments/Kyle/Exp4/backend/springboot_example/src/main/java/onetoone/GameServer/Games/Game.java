@@ -2,6 +2,7 @@ package onetoone.GameServer.Games;
 
 import com.google.gson.Gson;
 import onetoone.GameServer.Communication.ServerEvent;
+import onetoone.GameServer.Games.TexasHoldEm.TexasHoldEmUser;
 import onetoone.GameServer.PlayerClasses.Group;
 import onetoone.GameServer.PlayerClasses.User;
 
@@ -18,15 +19,6 @@ public abstract class Game<T> {
     protected Map< User , T > userPlayerMap = new Hashtable<>();
 
     protected Map< T , User > playerUserMap = new Hashtable<>();
-    protected Gson gson = new Gson();
-
-    public Game(List<User> users, int gameId, int queue_size){
-        this.gameId = gameId;
-        this.users = new ArrayList<>(users);
-        this.queue_size = queue_size;
-        num_users = users.size();
-        running = 0;
-    }
 
     public Game(List<User> users, int gameId){
         this.users = users;
@@ -35,16 +27,9 @@ public abstract class Game<T> {
         running = 0;
     }
 
-    public Game(int gameId){
-        this.gameId = gameId;
-        users = new ArrayList<>();
-        num_users = 0;
-        running = 0;
-    }
+    public Game(){}
 
-    public Game(){
-
-    }
+    protected abstract void initializeGame();
 
     protected abstract void getResponse(User user, ServerEvent serverEvent);
 
@@ -52,13 +37,6 @@ public abstract class Game<T> {
 
     protected abstract T getNewUser(User user);
 
-    protected abstract void convertUsers(List<User> users);
-
-/*
-    protected void addUser(T player){
-        users.add(player);
-    }
-*/
     public int getGameId(){
         return gameId;
     }
@@ -67,14 +45,16 @@ public abstract class Game<T> {
         return queue_size;
     }
 
-    public List<User> getAllUsers(){
-        List<User> all_users = new ArrayList<>();
-        for(T t_user : players){
-            all_users.add((User) t_user);
+    public void convertUsers(){
+        players.clear();
+        userPlayerMap.clear();
+        playerUserMap.clear();
+        for(User user : users){
+            T player = getNewUser(user);
+            players.add(player);
+            userPlayerMap.put(user, player);
+            playerUserMap.put(player, user);
         }
-        return all_users;
     }
-
-    protected abstract void initializeGame();
 
 }

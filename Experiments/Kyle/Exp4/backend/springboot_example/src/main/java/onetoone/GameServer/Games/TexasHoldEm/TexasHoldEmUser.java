@@ -22,18 +22,6 @@ public class TexasHoldEmUser extends User {
         fold = false;
     }
 
-    public TexasHoldEmUser(String username){
-        super(username);
-        bet = 0;
-        fold = false;
-    }
-
-    public TexasHoldEmUser(){
-        super();
-        bet = 0;
-        fold = false;
-    }
-
     public Card draw(Deck deck){
         Card pick = deck.draw();
         hand.add(pick);
@@ -42,14 +30,6 @@ public class TexasHoldEmUser extends User {
 
     public List<Card> getHand(){
         return hand;
-    }
-
-    public String handToString(){
-        StringBuilder s = new StringBuilder("\n");
-        for(Card card : hand){
-            s.append(card.toString()).append("\n");
-        }
-        return s.toString();
     }
 
     public void clearInventory(){

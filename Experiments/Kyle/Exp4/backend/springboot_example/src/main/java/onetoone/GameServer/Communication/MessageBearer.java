@@ -13,16 +13,6 @@ public class MessageBearer {
 
     private MessageWrapper message;
 
-    public MessageBearer(List<User> recipients, MessageWrapper message){
-        this.recipients = recipients;
-        this.message = message;
-    }
-
-    public MessageBearer(List<User> recipients, String type, String data){
-        this.recipients = recipients;
-        this.message = new MessageWrapper(type, data);
-    }
-
     public MessageBearer(List<User> recipients, String type, Object info){
         this.recipients = recipients;
         this.message = new MessageWrapper(type, gson.toJson(info));
@@ -30,10 +20,6 @@ public class MessageBearer {
 
     public List<User> getRecipients() {
         return recipients;
-    }
-
-    public MessageWrapper getMessage(){
-        return message;
     }
 
     public String getMessageString(){
