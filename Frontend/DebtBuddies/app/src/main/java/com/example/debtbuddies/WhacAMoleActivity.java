@@ -1,9 +1,12 @@
 package com.example.debtbuddies;
 
+import static java.lang.Math.floor;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,7 +19,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Random;
@@ -52,6 +63,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
     private final int DEFAULT_DURATION = 2000;
     private boolean gameStarted = false;
     private double targetDuration = DEFAULT_DURATION;
+    private boolean leaving;
+
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,16 @@ public class WhacAMoleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_whac_amole);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.pewpew);
+
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                SERVER_URL += MyApplication.currentUser.getString("userName");
+            } catch (Exception e) {
+                Log.d(TAG, "Not logged in as guest, failed to get userName field from currentUser");
+            }
+        }
+
+        leaving = false;
 
         // instantiate views & such
         startBtn = (Button) findViewById(R.id.startBtn);
@@ -185,6 +209,24 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
     public void onStartBtnClicked(View view) {
         if (!gameStarted) {
+
+            // make sure user is logged in and has enough coins to play
+            if (!MyApplication.loggedInAsGuest) {
+                try {
+                    int adjCoinCount = MyApplication.currentUser.getInt("coins");
+                    if (adjCoinCount >= 5) { // user needs 5 coins to play
+                        adjCoinCount = adjCoinCount - 5;
+                        MyApplication.currentUser.put("coins", adjCoinCount);
+                        postRequest();
+                    } else {
+                        Toast.makeText(this, "You need at least 5 coins to play. You have " + adjCoinCount + ".", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "Failed to get user's coins");
+                }
+            }
+
             startTime = SystemClock.uptimeMillis();
 
             startBtn.setText(R.string.stop);
@@ -227,7 +269,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
         int rand = random.nextInt(12);
         currentMole = moles[rand];
 
-        handler.postDelayed(gameRunnable, 500); // starts game 500ms after clicking start
+        handler.postDelayed(gameRunnable, 1000); // starts game 1s after clicking start
     }
 
     private void resetGame() {
@@ -246,6 +288,26 @@ public class WhacAMoleActivity extends AppCompatActivity {
         gameStarted = false;
         currentMole = null;
         targetDuration = DEFAULT_DURATION;
+
+        if (!leaving) {
+            if (!MyApplication.loggedInAsGuest) {
+                // give user appropriate # of coins back based on performance
+                try {
+                    int newCoins = MyApplication.currentUser.getInt("coins");
+                    newCoins = newCoins + ((level / 5 + 1) / 2); // ((level/5 + 1) / 2) is the amt of coins user gets
+                    // (simply the displayed level / 2)
+                    MyApplication.currentUser.put("coins", newCoins);
+                    postRequest();
+                    Toast.makeText(this, "Congratulations! You won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Log.d(TAG, "Failed getting coins in resetGame().");
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(this, "Congratulations! You would have won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         level = 1;
         missed = 0;
 
@@ -266,8 +328,45 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
+        leaving = true;
         resetGame();
         super.onStop();
+    }
+
+    private void postRequest() {
+
+        // Convert input to JSONObject
+        JSONObject postBody = null;
+        try{
+            // etRequest should contain a JSON object string as your POST body
+            // similar to what you would have in POSTMAN-body field
+            // and the fields should match with the object structure of @RequestBody on sb
+            postBody = new JSONObject(MyApplication.currentUser.toString());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PUT,
+                SERVER_URL,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Volley: ", "coins deposited");
+                        Toast.makeText(getApplicationContext(), "Deposited 5 coins to play.", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                }
+        );
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
 
