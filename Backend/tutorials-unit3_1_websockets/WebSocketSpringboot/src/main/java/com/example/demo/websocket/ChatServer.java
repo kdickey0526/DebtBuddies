@@ -72,7 +72,7 @@ public class ChatServer { // should be named ChatController
             sendMessageToPArticularUser(username, "Welcome to the global chat, "+username + "!");
 
             // send to everyone in the chat
-            broadcast("Server: " + username + " has joined the chat.");
+            broadcast("[Server]: " + username + " has joined the chat.");
         }
     }
 
