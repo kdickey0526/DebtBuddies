@@ -13,6 +13,7 @@ import javax.websocket.server.ServerEndpoint;
 import com.google.gson.Gson;
 
 import onetoone.GameServer.Communication.Events.ServerEvent;
+import onetoone.GameServer.Communication.MessageBearer;
 import onetoone.GameServer.PlayerClasses.User;
 import onetoone.GameServer.Communication.Responses.Message;
 import onetoone.GameServer.Communication.Responses.Response;
@@ -93,10 +94,10 @@ public class GameServer {
 
         Manager.getResponse(userGameMap.get(user), user, serverEvent);
 
-        for (Message value : Response.getMessages()) {
-            logger.info("[Message]: " + value.getMessage());
-            for (User m_user : value.getPlayers()) {
-                sendMessageToParticularUser(m_user, value.getMessage());
+        for (MessageBearer message_value : Response.getMessages()) {
+            logger.info("[Message]: " + message);
+            for (User recipient : message_value.getRecipients()) {
+                sendMessageToParticularUser(recipient, message_value.getMessageString());
             }
         }
 
