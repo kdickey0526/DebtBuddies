@@ -197,6 +197,13 @@ public class War extends AppCompatActivity {
        // PlayerStats p = new PlayerStats();
     }
 
+    public void onMenuClicked(View view) {
+        if (gameOver == true) {
+            Intent intent = new Intent(this, Menu.class);
+            startActivity(intent);
+        }
+    }
+
     public Boolean getWin() {
         return win;
     }

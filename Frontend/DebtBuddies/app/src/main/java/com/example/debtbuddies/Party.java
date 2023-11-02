@@ -50,16 +50,11 @@ import java.util.Random;
 
 public class Party extends AppCompatActivity {
 
-    String username = "BoyInBlue";
-    String icon = "icon3";
-
+    String username = "Brock";
+    String icon = "icon4";
     ImageView playerIcon;
-
     TextView playerUsername;
-
     Button joinParty, createParty;
-
-    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +69,12 @@ public class Party extends AppCompatActivity {
         int image = getResources().getIdentifier(icon, "drawable", getPackageName());
         playerIcon.setImageResource(image);
 
-        playerIcon.setImageResource(image);
-
         playerUsername.setText(username);
     }
 
     public void onCreate(View v){
-
+        Intent intent = new Intent(this, CreateParty.class);
+        startActivity(intent);
     }
     public void onJoin(View v){
         Intent intent = new Intent(this, AcceptInvite.class);

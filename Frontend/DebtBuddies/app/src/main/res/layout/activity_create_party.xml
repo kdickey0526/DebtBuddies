@@ -32,8 +32,8 @@
         android:textColor="#FFFFFFFF"
         android:textSize="32sp" />
 
-    <TextView
-        android:id="@+id/Username"
+    <EditText
+        android:id="@+id/member1"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -46,8 +46,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Email"
+    <EditText
+        android:id="@+id/member2"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -60,8 +60,8 @@
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="154dp" />
 
-    <TextView
-        android:id="@+id/Password"
+    <EditText
+        android:id="@+id/member3"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -85,6 +85,17 @@
         android:layout_marginEnd="300dp"
         android:onClick="onBackClicked"
         android:text="Back" />
+
+    <Button
+        android:id="@+id/b_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="377dp"
+        android:layout_marginEnd="150dp"
+        android:onClick="onSendClicked"
+        android:text="Send Invites" />
 
 </RelativeLayout>
 

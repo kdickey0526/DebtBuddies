@@ -34,7 +34,7 @@ public class BlackJack extends AppCompatActivity {
     Button b_deal, b_stand, b_double, b_replay, b_menu;
     ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
         dealerCard2, dealerCard3, dealerCard4, dealerCard5;
-    boolean gameOver, doubleClick;
+    boolean gameOver, doubleClick, hitPlayer;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
     int i, bal, bet;
@@ -99,11 +99,13 @@ public class BlackJack extends AppCompatActivity {
        temp2 += bet;
        tvBet.setText(temp2);
         i = 2;
+        doubleClick = false;
+        hitPlayer = false;
     }
 
 
     public void onDoubleClicked(View view) {
-        if (gameOver == false && doubleClick == false) {
+        if (gameOver == false && doubleClick == false && hitPlayer == false) {
 
 
             bet = bet * 2;
@@ -128,42 +130,44 @@ public class BlackJack extends AppCompatActivity {
             tvPlayer.setText(String.valueOf(playerNumH));
             tvBet.setText("Bet: " + String.valueOf(bet));
             doubleClick = true;
+
         }
     }
 
     public void onDealClicked(View view) {
-        i++;
+        if (doubleClick == false) {
+            i++;
 
-        String card = hitPlayer();
-        int image = getResources().getIdentifier(card, "drawable", getPackageName());
-        if (i == 3) {
-            playerCard3.setImageResource(image);
-        } else if (i  == 4) {
-            playerCard4.setImageResource(image);
-        } else if (i  == 5) {
-            playerCard5.setImageResource(image);
+            String card = hitPlayer();
+            int image = getResources().getIdentifier(card, "drawable", getPackageName());
+            if (i == 3) {
+                playerCard3.setImageResource(image);
+            } else if (i == 4) {
+                playerCard4.setImageResource(image);
+            } else if (i == 5) {
+                playerCard5.setImageResource(image);
+            }
+
+            if (playerNumH <= 21) {
+                String display = Integer.toString(playerNumH);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else if (playerNumL <= 21) {
+                playerNumH = playerNumL;
+                String display = Integer.toString(playerNumL);
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            } else {
+                String display = "BUST";
+                Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
+            }
+
+            tvPlayer.setText(String.valueOf(playerNumH));
         }
-
-        if (playerNumH <= 21) {
-            String display = Integer.toString(playerNumH);
-            Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
-        } else if (playerNumL <= 21) {
-            playerNumH = playerNumL;
-            String display = Integer.toString(playerNumL);
-            Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
-        } else {
-            String display = "BUST";
-            Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
-        }
-
-        tvPlayer.setText(String.valueOf(playerNumH));
     }
     public void onReplayClicked(View view) {
         if (bet > bal || gameOver == false) {
 
         } else {
-            doubleClick = false;
-            gameOver = false;
+
             String card;
             bet = 5;
 
@@ -210,6 +214,9 @@ public class BlackJack extends AppCompatActivity {
             temp2 += bet;
             tvBet.setText(temp2);
             i = 2;
+            doubleClick = false;
+            gameOver = false;
+            hitPlayer = false;
         }
     }
     public void onStandClicked (View view) {
@@ -275,6 +282,7 @@ public class BlackJack extends AppCompatActivity {
 
     public String hitPlayer() {
 
+        hitPlayer = true;
         Random r = new Random();
 
         int card =  r.nextInt(13) + 2;
@@ -306,6 +314,7 @@ public class BlackJack extends AppCompatActivity {
         }
         String cards = suit + Integer.toString(card);
         return cards;
+
     }
     public String hitDealer() {
 

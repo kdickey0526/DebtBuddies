@@ -12,11 +12,17 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.util.ArrayList;
 import java.util.Random;
+import android.util.Log;
 public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
 
     boolean gameOver;
+
+    int cardVal;
+    String cards;
+
+    String serverUrl = "";  //need the correct URL
 
     private String BASE_URL = "ws://10.0.2.2:8080/chat/";
 
@@ -41,106 +47,35 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
 
         gameOver = false;
 
+        WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
 
-        for (int i = 1; i <= 4; i ++) {
-            if (i == 1) {
-                suit = "heart";
-            } else if (i == 2) {
-                suit = "diamond";
-            } if (i == 3) {
-                suit = "club";
-            } else {
-                suit = "spade";
-            }
-            for(int j = 2; j <= 14; j ++) {
-                Card c = new Card();
-                c.createCard(suit, j, suit + j);
-                deck.add(c);
-            }
-        }
-        int temp;
-        Random r = new Random();
-        for (int i = 52; i > 3; i --) { //change back to 26
-            temp = r.nextInt(i);
-            player1.add(deck.get(temp));
-            deck.remove(temp);
 
-        }
-        player2 = deck;
-
-        tvPlayer1.setText(String.valueOf(player2.size()));
-        tvPlayer2.setText(String.valueOf(player1.size()));
     }
 
     public void onDealClicked (View view) {
-        if (gameOver = true) {
-            int player1val;
-            int player2val;
+        if (gameOver != true) {
+            int player1val = 0;
+            int player2val = 0;
             int image;
-            String card = player1.get(0).getID();
-            image = getResources().getIdentifier(card, "drawable", getPackageName());
+
+
+            try {
+                // send message
+                WebSocketManager.getInstance().sendMessage("Deal");
+            } catch (Exception e) {
+                Log.d("ExceptionSendMessage:", e.getMessage().toString());
+            }
+
+
+
+            image = getResources().getIdentifier(Integer.toString(player1val), "drawable", getPackageName());
             cardPlayer1.setImageResource(image);
-            player1val = player1.get(0).value;
 
 
-            card = player2.get(0).getID();
-            image = getResources().getIdentifier(card, "drawable", getPackageName());
+            image = getResources().getIdentifier(Integer.toString(player2val), "drawable", getPackageName());
             cardPlayer2.setImageResource(image);
-            player2val = player2.get(0).value;
 
-
-            if (player1val > player2val) {  // 1 > 2
-                player1.add(player1.get(0));
-                player1.add(player2.get(0));
-            } else if (player2val == player1val) {  // 1 = 2 war
-                if (player1.size() < 3 || player2.size() < 3) {
-                    gameOver();
-                }
-                if (player1.get(4).value > player2.get(4).value) {
-                    player1.add(player1.get(0));
-                    player1.add(player2.get(0));
-                    player1.add(player1.get(1));
-                    player1.add(player2.get(1));
-                    player1.add(player1.get(2));
-                    player1.add(player2.get(2));
-                    player1.add(player1.get(3));
-                    player1.add(player2.get(3));
-                    player1.add(player1.get(4));
-                    player1.add(player2.get(4));
-                } else {
-                    player2.add(player1.get(0));
-                    player2.add(player2.get(0));
-                    player2.add(player1.get(1));
-                    player2.add(player2.get(1));
-                    player2.add(player1.get(2));
-                    player2.add(player2.get(2));
-                    player2.add(player1.get(3));
-                    player2.add(player2.get(3));
-                    player2.add(player1.get(4));
-                    player2.add(player2.get(4));
-                }
-                player1.remove(4);
-                player1.remove(3);
-                player1.remove(2);
-                player1.remove(1);
-                player2.remove(4);
-                player2.remove(3);
-                player2.remove(2);
-                player2.remove(1);
-            } else {    // 1 < 2
-                player2.add(player1.get(0));
-                player2.add(player2.get(0));
-            }
-
-            player1.remove(0);
-            player2.remove(0);
-
-            if (player1.size() == 0 || player2.size() == 0) {
-                gameOver();
-            }
-
-            tvPlayer1.setText(String.valueOf(player2.size()));
-            tvPlayer2.setText(String.valueOf(player1.size()));
         }
     }
 
@@ -161,15 +96,14 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
          * is used to post a runnable to the UI thread's message queue, allowing UI updates
          * to occur safely from a background or non-UI thread.
          */
-        runOnUiThread(() -> {
-
+        runOnUiThread(() -> {   // data from server
+            cards = "";
         });
     }
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
 
         runOnUiThread(() -> {
-
 
         });
     }
