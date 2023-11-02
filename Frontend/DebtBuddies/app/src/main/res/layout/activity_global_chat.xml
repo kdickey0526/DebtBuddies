@@ -28,7 +28,7 @@
         android:layout_width="341dp"
         android:layout_height="63dp"
         android:ems="10"
-        android:fontFamily="@font/indie_flower"
+        android:fontFamily="sans-serif"
         android:gravity="left|center_vertical"
         android:hint="Your message"
         android:inputType="text"
@@ -42,23 +42,22 @@
         app:layout_constraintVertical_bias="0.062" />
 
     <ScrollView
-        android:layout_width="391dp"
-        android:layout_height="484dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:id="@+id/scrollView"
+        android:layout_width="379dp"
+        android:layout_height="258dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_userMsg"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.054">
 
         <TextView
             android:id="@+id/tv_globalChat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/indie_flower"
-            android:gravity="top|left"
+            android:fontFamily="sans-serif"
+            android:gravity="bottom|left"
             android:text="The global chat's messages will appear here."
             android:textColor="@color/white"
             android:textSize="20sp" />

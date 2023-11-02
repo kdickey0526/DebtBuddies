@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,6 +65,8 @@ public class LoginScreenActivity extends AppCompatActivity {
                 Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            Log.d(TAG, "loginBtnOnClickListener: logged in as guest");
             MyApplication.loggedInAsGuest = true;
         }
 

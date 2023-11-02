@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.java_websocket.handshake.ServerHandshake;
@@ -18,8 +19,9 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
     private static final String TAG = "GlobalChatActivity";
     private EditText userMsg;
     private TextView currentChat;
+    private ScrollView scrollView;
     private String userText = "";
-    private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/chat/";
+    private String baseURL = "ws://10.0.2.2:8080/chat/"; // "ws://coms-309-048.class.las.iastate.edu:8080/chat/";
     private String connectedURL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
 
         // connect to websocket
         try {
-            connectedURL = baseURL + MyApplication.currentUser.getString("userName");
+            connectedURL = baseURL + "jimmy";//MyApplication.currentUser.getString("userName");
             WebSocketManager.getInstance().connectWebSocket(connectedURL);
             WebSocketManager.getInstance().setWebSocketListener(GlobalChatActivity.this);
         } catch (Exception e) {
@@ -38,8 +40,11 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
 
         // instantiate user input text (& chat) and allow messages to be sent by pressing enter
         currentChat = findViewById(R.id.tv_globalChat);
+        scrollView = findViewById(R.id.scrollView);
+        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
         userMsg = findViewById(R.id.et_userMsg);
         userMsg.setFocusableInTouchMode(true);
+        userMsg.setFocusable(true);
         userMsg.requestFocus();
         userMsg.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -53,12 +58,14 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
                         // send the message
                         try {
                             WebSocketManager.getInstance().sendMessage(userText);
+                            Log.d(TAG, "onKey: message successful");
                         } catch (Exception e) {
                             // shouldn't throw any exceptions, but just in case
                             Log.d(TAG, "onKey: Exception when sending message");
                             e.printStackTrace();
                         }
                         userMsg.setText("");
+                        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
                     }
                     return true;
                 }
@@ -69,16 +76,25 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
     }
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
-        Log.d(TAG, "onWebSocketOpen: websocket opened");
+        Log.d(TAG, "Global Chat: websocket opened");
+        currentChat.setText(""); // get rid of the "The global chat's messages will appear here" msg
+        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+        scrollView.setFocusable(ScrollView.NOT_FOCUSABLE);
     }
 
     @Override
     public void onWebSocketMessage(String message) {
+        Log.d(TAG, "onWebSocketMessage: sent message");
         runOnUiThread(() -> {
             // store the current chat into temp variable s
             String s = currentChat.getText().toString();
             // update the chat to display s and the new message
-            currentChat.setText(s + "\n" + message);
+            if (!currentChat.getText().toString().equals("")) {
+                currentChat.setText(s + "\n" + message);
+            } else {
+                currentChat.setText(message);
+            }
+            scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
         });
     }
 
@@ -88,14 +104,20 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         runOnUiThread(() -> {
             // store current chat into temp variable s
             String s = currentChat.getText().toString();
-            currentChat.setText(s + "\n--- Chat closed by " + closedBy + " due to " + reason);
+            currentChat.setText(s + "\n--- Chat closed by " + closedBy + " due to " + reason + "---");
         });
     }
 
     @Override
     public void onWebSocketError(Exception ex) {
-        Log.e(TAG, "onWebSocketError: error occured");
+        Log.e(TAG, "Global Chat: websocket error occured");
         ex.printStackTrace();
+    }
+
+    @Override
+    public void onPause() {
+        WebSocketManager.getInstance().disconnectWebSocket();
+        super.onPause();
     }
 
 }
