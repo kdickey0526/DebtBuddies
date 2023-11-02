@@ -51,6 +51,9 @@
             android:name=".War"
             android:exported="false" />
         <activity
+            android:name=".WarMultiplayer"
+            android:exported="true" />
+        <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />
         <activity
