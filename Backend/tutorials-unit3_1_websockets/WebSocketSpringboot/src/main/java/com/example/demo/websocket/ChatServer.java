@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+
 /**
  * Represents a WebSocket chat server for handling real-time communication
  * between users. Each user connects to the server using their unique
@@ -32,8 +33,9 @@ import org.springframework.stereotype.Component;
  */
 @ServerEndpoint("/chat/{username}")
 @Component
-public class ChatServer {
+public class ChatServer { // should be named ChatController
 
+    // maps are global in the sense that they hold info for all users on server
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
     private static Map < Session, String > sessionUsernameMap = new Hashtable < > ();
@@ -56,7 +58,7 @@ public class ChatServer {
 
         // Handle the case of a duplicate username
         if (usernameSessionMap.containsKey(username)) {
-            session.getBasicRemote().sendText("Username already exists");
+            session.getBasicRemote().sendText("You are already logged into the chat!");
             session.close();
         }
         else {
@@ -67,10 +69,10 @@ public class ChatServer {
             usernameSessionMap.put(username, session);
 
             // send to the user joining in
-            sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
+            sendMessageToPArticularUser(username, "Welcome to the global chat, "+username + "!");
 
             // send to everyone in the chat
-            broadcast("User: " + username + " has Joined the Chat");
+            broadcast("Server: " + username + " has joined the chat.");
         }
     }
 
@@ -102,8 +104,8 @@ public class ChatServer {
             }
             String destUserName = split_msg[0].substring(1);    //@username and get rid of @
             String actualMessage = actualMessageBuilder.toString();
-            sendMessageToPArticularUser(destUserName, "[DM from " + username + "]: " + actualMessage);
-            sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
+            sendMessageToPArticularUser(destUserName, "[" + username + " whispers to you]: " + actualMessage);
+            sendMessageToPArticularUser(username, "[You whisper to " + destUserName + "]: " + actualMessage);
         }
         else { // Message to whole chat
             broadcast(username + ": " + message);
@@ -129,7 +131,7 @@ public class ChatServer {
         usernameSessionMap.remove(username);
 
         // send the message to chat
-        broadcast(username + " disconnected");
+        broadcast(username + " has disconnected.");
     }
 
     /**
