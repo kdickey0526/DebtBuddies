@@ -87,7 +87,7 @@ public class Party extends AppCompatActivity implements WebSocketListener {
 
         try {
             // send message
-            WebSocketManager.getInstance().sendMessage("member Joingit ");
+            WebSocketManager.getInstance().sendMessage("member Join ");
         } catch (Exception e) {
             Log.d("ExceptionSendMessage:", e.getMessage().toString());
         }

@@ -58,7 +58,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 //            MyApplication.loggedInAsGuest = true;
 //        }
 
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser;
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + requestedUser;
         makeJsonObjReq();
 
         // at this point (no pass detection) should not occur so long as the provided

@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,9 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AcceptInvite extends AppCompatActivity {
+public class AcceptInvite extends AppCompatActivity implements WebSocketListener {
 
-    TextView tv_username;
+    TextView tv_username, status;
     Button b_accept, b_decline, b_back;
     String SERVER_URL = " ";
     ImageView icon;
@@ -37,83 +38,53 @@ public class AcceptInvite extends AppCompatActivity {
         b_decline = findViewById(R.id.b_decline);
         b_back = findViewById(R.id.b_submit);
         icon = findViewById(R.id.icon);
+        status = findViewById(R.id.textView2);
+        WebSocketManager.getInstance().connectWebSocket(SERVER_URL);
+        WebSocketManager.getInstance().setWebSocketListener(AcceptInvite.this);
     }
 
     public void onAcceptClicked(View view) {
         result = "accept";
-        postRequest();
     }
     public void onDeclineClicked(View view) {
         result = "decline";
-        postRequest();
+
     }
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, Party.class);
         startActivity(intent);
     }
-    private void postRequest() {
 
-        // Convert input to JSONObject
-        JSONObject postBody;
-        String temp =
-                "{" +
-                        "\"result\":\"" + result + "\"" +
-                        "}";
 
-        try {
-            postBody = new JSONObject(temp);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    public void onWebSocketMessage(String message) {
 
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
 
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
+        /**
+         * In Android, all UI-related operations must be performed on the main UI thread
+         * to ensure smooth and responsive user interfaces. The 'runOnUiThread' method
+         * is used to post a runnable to the UI thread's message queue, allowing UI updates
+         * to occur safely from a background or non-UI thread.
+         */
+        runOnUiThread(() -> {   // data from server
+            status.setText(message);
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
-                SERVER_URL,
-                postBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //  tvResponse.setText(response.toString());
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //tvResponse.setText(error.getMessage());
-                    }
-                }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
-                //                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                //                params.put("param1", "value1");
-                //                params.put("param2", "value2");
-                return params;
-            }
-        };
-
-        // Adding request to request queue
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
+        });
     }
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        runOnUiThread(() -> {
+        });
+    }
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
+
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+
+    }
+
 
 }

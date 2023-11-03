@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +16,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-public class CreateParty extends AppCompatActivity {
+public class CreateParty extends AppCompatActivity implements WebSocketListener {
     Button b_back;
     String member1, member2, member3;
 
@@ -35,6 +37,8 @@ public class CreateParty extends AppCompatActivity {
         tv_member1 = findViewById(R.id.member1);
         tv_member2 = findViewById(R.id.member2);
         tv_member3 = findViewById(R.id.member3);
+        WebSocketManager.getInstance().connectWebSocket(SERVER_URL);
+        WebSocketManager.getInstance().setWebSocketListener(CreateParty.this);
     }
 
     public void onBackClicked(View view) {
@@ -49,81 +53,50 @@ public class CreateParty extends AppCompatActivity {
 
         if (!(member1.equals("Enter Party Member"))) {
             Toast.makeText(this,"Invited " + member1 ,Toast.LENGTH_SHORT).show();
-            postRequest();
+            try {
+                // send message
+                WebSocketManager.getInstance().sendMessage(member1);
+            } catch (Exception e) {
+                Log.d("ExceptionSendMessage:", e.getMessage().toString());
+            }
         }
         if (!(member2.equals("Enter Party Member"))) {
             Toast.makeText(this,"Invited " + member2 ,Toast.LENGTH_SHORT).show();
-            member1 = member2;
-            postRequest();
+            try {
+                // send message
+                WebSocketManager.getInstance().sendMessage(member2);
+            } catch (Exception e) {
+                Log.d("ExceptionSendMessage:", e.getMessage().toString());
+            }
         }
         if (!(member2.equals("Enter Party Member"))) {
-            member1 = member2;
             Toast.makeText(this,"Invited " + member3 ,Toast.LENGTH_SHORT).show();
-            postRequest();
+            try {
+                // send message
+                WebSocketManager.getInstance().sendMessage(member3);
+            } catch (Exception e) {
+                Log.d("ExceptionSendMessage:", e.getMessage().toString());
+            }
         }
     }
-    private void postRequest() {
 
-        // Convert input to JSONObject
-        JSONObject postBody;
-        String temp =
-                "{" +
-                        "\"result\":\"" + member1 + "\"" +
-                        "}";
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
 
-        try {
-            postBody = new JSONObject(temp);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
+    @Override
+    public void onWebSocketMessage(String message) {
 
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
+    }
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
 
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
-                SERVER_URL,
-                postBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //  tvResponse.setText(response.toString());
+    }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //tvResponse.setText(error.getMessage());
-                    }
-                }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
-                //                headers.put("Content-Type", "application/json");
-                return headers;
-            }
+    @Override
+    public void onWebSocketError(Exception ex) {
 
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                //                params.put("param1", "value1");
-                //                params.put("param2", "value2");
-                return params;
-            }
-        };
-
-        // Adding request to request queue
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 }
