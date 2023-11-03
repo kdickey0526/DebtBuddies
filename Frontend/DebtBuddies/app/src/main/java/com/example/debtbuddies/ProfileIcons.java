@@ -28,7 +28,7 @@ public class ProfileIcons extends AppCompatActivity {
     CardView playerIcon0, playerIcon1, playerIcon2, playerIcon3, playerIcon4,
             playerIcon5, playerIcon6, playerIcon7, playerIcon8;
 
-    String SERVER_URL = "";
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUser;
 
     Button b_icon0, b_icon1, b_icon2, b_icon3, b_icon4, b_icon5, b_icon6, b_icon7,
             b_icon8, b_frag;
@@ -68,7 +68,12 @@ public class ProfileIcons extends AppCompatActivity {
 //        getSupportFragmentManager().beginTransaction().add(R.id.frag_menu, new FirstFragment()),commit();
     }
     public void menu(View view) {
-
+        try {
+            MyApplication.currentUser.put("Profile", icon);
+            // postRequest();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
     }
@@ -126,7 +131,7 @@ public class ProfileIcons extends AppCompatActivity {
 
     public void onMenuClicked(View view) {
         try {
-            MyApplication.currentUser.put("icon", icon);
+            MyApplication.currentUser.put("Profile", icon);
            // postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,7 +146,7 @@ public class ProfileIcons extends AppCompatActivity {
         JSONObject postBody;
         String temp =
                 "{" +
-                        "\"icon\":\"" + icon + "\"" +
+                        "\"Profile\":\"" + icon + "\"" +
                         "}";
 
         try {

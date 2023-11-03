@@ -2,6 +2,7 @@ package com.example.debtbuddies;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class Menu extends AppCompatActivity  {
     Button b_back, b_menu,b_party;
     ImageView icon;
-    String serverUrl = "";
+    String serverUrl = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUser;
     TextView tv_username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,6 @@ public class Menu extends AppCompatActivity  {
 
 
         icon = findViewById(R.id.icon);
-
-        Account t = new Account();
 
         makeJsonObjReq();
 
@@ -69,10 +68,7 @@ public class Menu extends AppCompatActivity  {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
-                    String temp = response.getString("icon");
-
-                    // grab other fields here
-                    // {"icon":"icon5"}
+                    String temp = response.getString("Profile");
                     int image = getResources().getIdentifier(temp, "drawable", getPackageName());
                     icon.setImageResource(image);
 
