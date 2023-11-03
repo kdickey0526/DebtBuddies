@@ -3,7 +3,9 @@ debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\StartInfo.class
 debtbuddies\GameServer\Games\GameManager.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\EndInfo.class
 debtbuddies\person\PersonController.class
+debtbuddies\websocket\WebSocketConfig.class
 debtbuddies\GameServer\Games\TexasHoldEm\TexasHoldEmInfo\TurnInfo.class
+debtbuddies\websocket\ChatServer.class
 debtbuddies\GameServer\PlayerClasses\CardUser.class
 debtbuddies\GameServer\PlayerClasses\Group.class
 debtbuddies\GameServer\DeckLibrary\Suit.class
