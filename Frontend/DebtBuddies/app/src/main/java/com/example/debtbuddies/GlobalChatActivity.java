@@ -31,7 +31,7 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
 
         // connect to websocket
         try {
-            connectedURL = baseURL + MyApplication.currentUser.getString("name");
+            connectedURL = baseURL + MyApplication.currentUser.getString("userName");
             WebSocketManager.getInstance().connectWebSocket(connectedURL);
             WebSocketManager.getInstance().setWebSocketListener(GlobalChatActivity.this);
         } catch (Exception e) {

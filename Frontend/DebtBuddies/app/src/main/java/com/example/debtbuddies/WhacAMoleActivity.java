@@ -65,7 +65,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
     private double targetDuration = DEFAULT_DURATION;
     private boolean leaving;
 
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         if (!MyApplication.loggedInAsGuest) {
             try {
-                SERVER_URL += MyApplication.currentUser.getString("name");
+                SERVER_URL += MyApplication.currentUser.getString("userName");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
@@ -309,7 +309,11 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     // (simply the displayed level / 2)
                     MyApplication.currentUser.put("coins", newCoins);
                     postRequest();
-                    Toast.makeText(this, "Congratulations! You won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
+                    if ((level/5 + 1)/2 != 0) {
+                        Toast.makeText(this, "Congratulations! You won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "No coins, huh. Better luck next time kiddo.", Toast.LENGTH_SHORT);
+                    }
                 } catch (Exception e) {
                     Log.d(TAG, "Failed getting coins in resetGame().");
                     e.printStackTrace();
@@ -328,13 +332,13 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
             // update on backend
             if (!MyApplication.loggedInAsGuest) {
-                try {
-                    MyApplication.currentUser.put("whack", highscore);
-                    postRequest();
-                } catch (Exception e) {
-                    Log.e(TAG, "Error updating the highscore on the backend");
-                    e.printStackTrace();
-                }
+//                try {
+//                    MyApplication.currentUser.put("whack", highscore);
+//                    postRequest();
+//                } catch (Exception e) {
+//                    Log.e(TAG, "Error updating the highscore on the backend");
+//                    e.printStackTrace();
+//                }
             }
 
             // update highscore
