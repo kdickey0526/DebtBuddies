@@ -64,8 +64,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
     private boolean gameStarted = false;
     private double targetDuration = DEFAULT_DURATION;
     private boolean leaving;
+    private boolean depositingCoins;
 
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         if (!MyApplication.loggedInAsGuest) {
             try {
-                SERVER_URL += MyApplication.currentUser.getString("userName");
+                SERVER_URL += MyApplication.currentUser.getString("name");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
@@ -227,6 +228,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     int adjCoinCount = MyApplication.currentUser.getInt("coins");
                     if (adjCoinCount >= 5) { // user needs 5 coins to play
                         adjCoinCount = adjCoinCount - 5;
+                        depositingCoins = true;
                         MyApplication.currentUser.put("coins", adjCoinCount);
                         postRequest();
                     } else {
@@ -333,13 +335,13 @@ public class WhacAMoleActivity extends AppCompatActivity {
             // update on backend
             if (!MyApplication.loggedInAsGuest) {
                 // UNCOMMENT WHEN THE "WHACK" FIELD IS FIXED
-//                try {
-//                    MyApplication.currentUser.put("whack", highscore);
-//                    postRequest();
-//                } catch (Exception e) {
-//                    Log.e(TAG, "Error updating the highscore on the backend");
-//                    e.printStackTrace();
-//                }
+                try {
+                    MyApplication.currentUser.put("whack", highscore);
+                    postRequest();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating the highscore on the backend");
+                    e.printStackTrace();
+                }
             }
 
             // update highscore
@@ -376,8 +378,13 @@ public class WhacAMoleActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("Volley: ", "coins deposited");
-                        Toast.makeText(getApplicationContext(), "Deposited 5 coins to play.", Toast.LENGTH_SHORT).show();
+                        if (depositingCoins) {
+                            Log.d("Volley: ", "coins deposited");
+                            Toast.makeText(getApplicationContext(), "Deposited 5 coins to play.", Toast.LENGTH_SHORT).show();
+                            depositingCoins = false;
+                        } else {
+                            Log.d("Volley: ", "updating highscore");
+                        }
                     }
                 },
                 new Response.ErrorListener() {

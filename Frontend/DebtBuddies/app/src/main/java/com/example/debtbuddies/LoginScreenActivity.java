@@ -68,7 +68,8 @@ public class LoginScreenActivity extends AppCompatActivity {
 
             // allow to login as "guest" for special purposes
             if (!usernameField.getText().toString().equals("guest")) {
-                Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
+                loginBtn.setText("Login");
                 return;
             }
 
@@ -96,7 +97,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
                     // grab fields here
-                    String username = response.getString("userName");
+                    String username = response.getString("name");
                     String coins = response.getString("coins");
 
                     MyApplication.currentUser = response; // store json object
