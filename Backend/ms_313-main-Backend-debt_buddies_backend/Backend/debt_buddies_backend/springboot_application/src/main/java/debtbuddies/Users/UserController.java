@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
+ *
  * @author Vivek Bengre
- * 
- */ 
+ *
+ */
 
 @RestController
 public class UserController {
@@ -52,8 +52,8 @@ public class UserController {
             return null;
         userRepository.save(request);
         return userRepository.findById(id);
-    }   
-    
+    }
+
     /*@PutMapping("/users/{userId}/laptops/{laptopId}")
     String assignLaptopToUser(@PathVariable int userId,@PathVariable int laptopId){
         User user = userRepository.findById(userId);

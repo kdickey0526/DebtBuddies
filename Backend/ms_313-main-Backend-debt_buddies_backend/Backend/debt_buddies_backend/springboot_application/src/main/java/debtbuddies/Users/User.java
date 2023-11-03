@@ -12,15 +12,15 @@ import java.security.NoSuchAlgorithmException;
 import java.io.*;
 
 /**
- * 
+ *
  * @author Vivek Bengre
- * 
- */ 
+ *
+ */
 
 @Entity
 public class User {
 
-     /* 
+     /*
      * The annotation @ID marks the field below as the primary key for the table created by springboot
      * The @GeneratedValue generates a value if not already present, The strategy in this case is to start from 1 and increment for each table
      */
@@ -134,5 +134,5 @@ public class User {
     public void setLaptop(Laptop laptop){
         this.laptop = laptop;
     }*/
-    
+
 }
