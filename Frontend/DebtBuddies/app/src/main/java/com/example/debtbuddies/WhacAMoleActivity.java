@@ -332,6 +332,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
             // update on backend
             if (!MyApplication.loggedInAsGuest) {
+                // UNCOMMENT WHEN THE "WHACK" FIELD IS FIXED
 //                try {
 //                    MyApplication.currentUser.put("whack", highscore);
 //                    postRequest();
