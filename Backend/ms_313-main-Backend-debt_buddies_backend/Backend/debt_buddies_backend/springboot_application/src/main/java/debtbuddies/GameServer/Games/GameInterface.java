@@ -10,7 +10,7 @@ public interface GameInterface <T, K>{
 
     void getResponse(User user, ServerEvent serverEvent);
 
-    K getNewGame(Group queue, int gameId);
+    K getNewGame(Group lobby, int gameId);
 
     T getNewUser(User user);
 

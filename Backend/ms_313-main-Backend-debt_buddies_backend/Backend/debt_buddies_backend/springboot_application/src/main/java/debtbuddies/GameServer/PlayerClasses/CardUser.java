@@ -16,6 +16,8 @@ public class CardUser extends User {
         super(username);
     }
 
+    public CardUser(User user){ super(user.toString()); }
+
     public CardUser(){
         super();
     }

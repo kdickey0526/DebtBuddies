@@ -23,6 +23,9 @@ public class MessageBearer {
     }
 
     public String getMessageString(){
+        if(Objects.equals(message.getType(), "playInfo")){
+            return message.getData();
+        }
         return gson.toJson(message);
     }
 
