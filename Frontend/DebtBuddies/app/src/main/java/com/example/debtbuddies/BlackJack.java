@@ -419,7 +419,6 @@ public class BlackJack extends AppCompatActivity {
                 //                headers.put("Content-Type", "application/json");
                 return headers;
             }
-
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
@@ -428,7 +427,6 @@ public class BlackJack extends AppCompatActivity {
                 return params;
             }
         };
-
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
