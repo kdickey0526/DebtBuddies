@@ -1,14 +1,21 @@
 package onetoone.Users;
 
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import onetoone.Laptops.Laptop;
+import onetoone.Friends.Friend;
+
 
 /**
  * 
@@ -43,15 +50,20 @@ public class User {
     @JoinColumn(name = "laptop_id")
     private Laptop laptop;*/
 
+    @OneToMany
+    private List<Friend> friends;
+
     public User(String userName, String email, String password) {
         this.userName = userName;
         this.Coins = 0;
         this.email = email;
         this.password = password;
         this.isOnline = true;
+        friends = new ArrayList<>();
     }
 
     public User() {
+        /*friend = new ArrayList<>();*/
     }
 
     // =============================== Getters and Setters for each field ================================== //
@@ -98,6 +110,18 @@ public class User {
     }
     public void setPassword(String password){
         this.password = password;
+    }
+
+/*    public List<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setPhones(List<Friend> phones) {
+        this.friends = friends;
+    }
+
+    public void addPhones(Friend friend){
+        this.friends.add(friend);
     }
 
     /*public Laptop getLaptop(){

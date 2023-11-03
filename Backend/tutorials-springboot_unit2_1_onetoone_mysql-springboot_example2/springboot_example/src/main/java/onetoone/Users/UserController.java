@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import onetoone.Laptops.Laptop;
-import onetoone.Laptops.LaptopRepository;
+//import onetoone.Friend.FriendRepository;
 
 /**
  * 
@@ -25,10 +24,6 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    LaptopRepository laptopRepository;
-
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
 
@@ -37,9 +32,9 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping(path = "/users/{id}")
-    User getUserById( @PathVariable int id){
-        return userRepository.findById(id);
+    @GetMapping(path = "/users/{userName}")
+    User getUserByUserName( @PathVariable String userName){
+        return userRepository.findByUserName(userName);
     }
 
     @PostMapping(path = "/users")
@@ -50,13 +45,13 @@ public class UserController {
         return success;
     }
 
-    @PutMapping("/users/{id}")
-    User updateUser(@PathVariable int id, @RequestBody User request){
-        User user = userRepository.findById(id);
+    @PutMapping("/users/{userName}")
+    User updateUser(@PathVariable String userName, @RequestBody User request){
+        User user = userRepository.findByUserName(userName);
         if(user == null)
             return null;
         userRepository.save(request);
-        return userRepository.findById(id);
+        return userRepository.findByUserName(userName);
     }   
     
     /*@PutMapping("/users/{userId}/laptops/{laptopId}")
@@ -71,9 +66,9 @@ public class UserController {
         return success;
     }*/
 
-    @DeleteMapping(path = "/users/{id}")
-    String deleteUser(@PathVariable int id){
-        userRepository.deleteById(id);
+    @DeleteMapping(path = "/users/{userName}")
+    String deleteUser(@PathVariable String userName){
+        userRepository.deleteByUserName(userName);
         return success;
     }
 }

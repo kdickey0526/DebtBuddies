@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */ 
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findById(int id);
+public interface UserRepository extends JpaRepository<User, String> {
+    User findByUserName(String userName);
 
     @Transactional
-    void deleteById(int id);
+    void deleteByUserName(String userName);
 }

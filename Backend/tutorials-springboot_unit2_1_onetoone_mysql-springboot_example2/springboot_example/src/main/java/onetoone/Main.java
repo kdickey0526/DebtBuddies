@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import onetoone.Laptops.Laptop;
-import onetoone.Laptops.LaptopRepository;
 import onetoone.Users.User;
 import onetoone.Users.UserRepository;
+import onetoone.Friends.Friend;
+import onetoone.Friends.FriendRepository;
 
 /**
  * 
@@ -40,8 +40,8 @@ class Main {
             User user2 = new User("Kyle", "kyle@iastate.edu", "MS313Kyle");
             User user3 = new User("Kevin", "Kevin@iastate.edu", "MS313Kevin");
             User user4 = new User("Brock", "Brock@iastate.edu", "MS313Brock");
-            /*Laptop laptop1 = new Laptop( 2.5, 4, 8, "Lenovo", 300);
-            Laptop laptop2 = new Laptop( 4.1, 8, 16, "Hp", 800);
+            //Friend friend1 = new Friend(user1,user2);
+            /*Laptop laptop2 = new Laptop( 4.1, 8, 16, "Hp", 800);
             Laptop laptop3 = new Laptop( 3.5, 32, 32, "Dell", 2300); */
             /*user1.setLaptop(laptop1);
             user2.setLaptop(laptop2);
