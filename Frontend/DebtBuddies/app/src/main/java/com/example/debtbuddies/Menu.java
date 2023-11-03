@@ -3,7 +3,6 @@ package com.example.debtbuddies;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
@@ -22,7 +21,7 @@ public class Menu extends AppCompatActivity  {
 
         tv_username = findViewById(R.id.tv_username);
 
-        b_back = findViewById(R.id.b_back);
+        b_back = findViewById(R.id.b_submit);
         b_menu = findViewById(R.id.b_main_menu);
 
         icon = findViewById(R.id.icon);

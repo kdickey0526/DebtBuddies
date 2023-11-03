@@ -2,10 +2,8 @@ package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +30,7 @@ public class CreateParty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
 
-        b_back = findViewById(R.id.b_back);
+        b_back = findViewById(R.id.b_submit);
 
         tv_member1 = findViewById(R.id.member1);
         tv_member2 = findViewById(R.id.member2);

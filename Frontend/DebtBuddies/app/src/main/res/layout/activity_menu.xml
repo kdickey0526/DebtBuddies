@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/b_back"
+        android:id="@+id/b_submit"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
