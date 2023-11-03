@@ -112,7 +112,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
          * to occur safely from a background or non-UI thread.
          */
         runOnUiThread(() -> {   // data from server
-            cards = "message";
+            cards = message;
 
             String[] temp  = cards.split(" ");
             int image = getResources().getIdentifier(temp[0], "drawable", getPackageName());

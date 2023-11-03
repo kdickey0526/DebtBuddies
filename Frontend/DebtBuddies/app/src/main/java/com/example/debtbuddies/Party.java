@@ -33,6 +33,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,13 +49,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Random;
 
-public class Party extends AppCompatActivity {
+public class Party extends AppCompatActivity implements WebSocketListener {
 
     String username = "Brock";
     String icon = "icon4";
-    ImageView playerIcon;
+    ImageView playerIcon, member1, member2,member3,member4;
     TextView playerUsername;
     Button joinParty, createParty;
+
+    String serverUrl = "";
+
+    String webIcon;
+    int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +72,25 @@ public class Party extends AppCompatActivity {
         joinParty = findViewById(R.id.b_join);
         createParty = findViewById(R.id.b_create);
 
+        member1 = findViewById(R.id.icon);
+        member2 = findViewById(R.id.icon2);
+        member3 = findViewById(R.id.icon3);
+        member4 = findViewById(R.id.icon4);
+
+
         int image = getResources().getIdentifier(icon, "drawable", getPackageName());
         playerIcon.setImageResource(image);
 
         playerUsername.setText(username);
+        WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        WebSocketManager.getInstance().setWebSocketListener(Party.this);
+
+        try {
+            // send message
+            WebSocketManager.getInstance().sendMessage("member Joingit ");
+        } catch (Exception e) {
+            Log.d("ExceptionSendMessage:", e.getMessage().toString());
+        }
     }
 
     public void onCreate(View v){
@@ -80,6 +101,36 @@ public class Party extends AppCompatActivity {
         Intent intent = new Intent(this, AcceptInvite.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+
+
+        /**
+         * In Android, all UI-related operations must be performed on the main UI thread
+         * to ensure smooth and responsive user interfaces. The 'runOnUiThread' method
+         * is used to post a runnable to the UI thread's message queue, allowing UI updates
+         * to occur safely from a background or non-UI thread.
+         */
+        runOnUiThread(() -> {   // data from server
+            webIcon = message;
+            int image = getResources().getIdentifier(message, "drawable", getPackageName());
+            i++;
+            if (i == 1) {
+                member1.setImageResource(image);
+            }
+        });
+    }
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        runOnUiThread(() -> {
+        });
+    }
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {}
+
+    @Override
+    public void onWebSocketError(Exception ex) {}
 }
 
 
