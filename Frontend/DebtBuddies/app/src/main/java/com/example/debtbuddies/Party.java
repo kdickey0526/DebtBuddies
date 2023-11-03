@@ -127,10 +127,14 @@ public class Party extends AppCompatActivity implements WebSocketListener {
         });
     }
     @Override
-    public void onWebSocketOpen(ServerHandshake handshakedata) {}
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
+
+    }
 
     @Override
-    public void onWebSocketError(Exception ex) {}
+    public void onWebSocketError(Exception ex) {
+
+    }
 }
 
 
