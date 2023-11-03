@@ -1,0 +1,97 @@
+package onetoone.Friends;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import onetoone.Users.User;
+
+
+/**
+ * 
+ * @author Vivek Bengre
+ */ 
+
+@Entity
+public class Friend {
+    
+    /* 
+     * The annotation @ID marks the field below as the primary key for the table created by springboot
+     * The @GeneratedValue generates a value if not already present, The strategy in this case is to start from 1 and increment for each table
+     */
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_userName")
+    @JsonIgnore
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "user_userName")
+    @JsonIgnore
+    private User user2;
+
+/*    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user2;*/
+
+    /*
+     * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
+     * @JsonIgnore is to assure that there is no infinite loop while returning either user/laptop objects (laptop->user->laptop->...)
+     */
+/*    @OneToOne
+    @JsonIgnore
+    private User user1;
+
+    @OneToOne
+    @JsonIgnore
+    private User user2;*/
+    public Friend() {
+
+    }
+    public Friend(User Friend1, User Friend2) {
+        this.user1 = Friend1;
+        this.user2 = Friend2;
+    }
+
+    // =============================== Getters and Setters for each field ================================== //
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public User setFriend1(){
+        return user1;
+    }
+
+    public void setFriend1(User user){
+        this.user1 = user;
+    }
+
+    public User setFriend2(){
+        return user2;
+    }
+
+    public void setFriend2(User user){
+        this.user2 = user;
+    }
+
+
+}
