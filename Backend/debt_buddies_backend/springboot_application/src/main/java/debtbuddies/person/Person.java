@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -46,19 +46,19 @@ public class Person {
 	private int whack;
 	private int WarWon;
 	private int WarLost;
-	private int Profile;
+	private String Profile;
 
 
 	@ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="friends_with",
 	joinColumns={@JoinColumn(name="person_id")},
 	inverseJoinColumns={@JoinColumn(name="friend_id")})
-	@JsonIgnore
-	private Set<Person> friends = new HashSet<Person>();
+	//@JsonIgnore
+	private Set<Person> friends/* = new HashSet<Person>()*/;
 	
 	@ManyToMany(mappedBy="friends")
-	@JsonIgnore
-	private Set<Person> friendsOf = new HashSet<Person>();
+	//@JsonIgnore
+	private Set<Person> friendsOf/* = new HashSet<Person>()*/;
 
 	public Person(String userName, String email, String password) {
 		this.name = userName;
@@ -69,7 +69,7 @@ public class Person {
 		this.whack = 0;
 		this.WarWon = 0;
 		this.WarLost = 0;
-		this.Profile = 0;
+		this.Profile = "icon0";
 	}
 
 	public Person() {
@@ -136,10 +136,10 @@ public class Person {
 	public void setWarLost(int email){
 		this.WarLost = WarLost;
 	}
-	public int getProfile(){
+	public String getProfile(){
 		return Profile;
 	}
-	public void setProfile(int Profile){
+	public void setProfile(String Profile){
 		this.Profile = Profile;
 	}
 
