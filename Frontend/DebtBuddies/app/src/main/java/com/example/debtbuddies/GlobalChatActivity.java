@@ -96,7 +96,9 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
             } else {
                 currentChat.setText(message);
             }
+            scrollView.setFocusable(ScrollView.NOT_FOCUSABLE);
             scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+            scrollView.setFocusable(ScrollView.NOT_FOCUSABLE);
         });
     }
 

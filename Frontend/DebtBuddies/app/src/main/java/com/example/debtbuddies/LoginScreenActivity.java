@@ -68,7 +68,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
             // allow to login as "guest" for special purposes
             if (!usernameField.getText().toString().equals("guest")) {
-                Toast.makeText(this, "No user found. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -105,7 +105,6 @@ public class LoginScreenActivity extends AppCompatActivity {
                     coinCount.setText("Coins: " + coins);
                     loggedIn = true;
                 } catch (JSONException e) {
-                    Log.e(TAG, "Failed getting username and coins fields from backend.");
                     e.printStackTrace();
                 }
             }
