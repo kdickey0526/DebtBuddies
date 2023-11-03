@@ -32,6 +32,7 @@ public class User {
     private String email;
     private String password;
     private int Coins;
+    private String icon;
 
     /*
      * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
@@ -50,6 +51,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.isOnline = true;
+        this.icon = "icon0";
     }
 
     public User() {
@@ -98,7 +100,13 @@ public class User {
     public void setUserName(String userName){
         this.userName = userName;
     }
+    public String getIcon(){
+        return icon;
+    }
 
+    public void setIcon(String icon){
+        this.icon = icon;
+    }
     public int getCoins(){
         return Coins;
     }
