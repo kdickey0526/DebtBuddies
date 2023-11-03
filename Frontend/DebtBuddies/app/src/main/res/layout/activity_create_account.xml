@@ -107,7 +107,7 @@
         android:textSize="32sp" />
 
     <Button
-        android:id="@+id/b_confirm"
+        android:id="@+id/b_save"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="108dp"
         android:layout_height="wrap_content"
@@ -115,13 +115,12 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="263dp"
         android:layout_marginBottom="76dp"
-        android:onClick="onSubmitClicked"
-        android:text="Submit"
+        android:text="Save"
         android:textColor="@color/black"
         android:textSize="16dp" />
 
     <Button
-        android:id="@+id/b_back"
+        android:id="@+id/b_submit"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="108dp"
         android:layout_height="wrap_content"
@@ -130,7 +129,7 @@
         android:layout_marginEnd="83dp"
         android:layout_marginBottom="74dp"
         android:onClick="onBackClicked"
-        android:text="back"
+        android:text="Submit"
         android:textColor="@color/black"
         android:textSize="16dp" />
 

@@ -53,7 +53,7 @@ public class LoginScreenActivity extends AppCompatActivity {
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser; // URL is set by serveraddress/<given username>
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + requestedUser; // URL is set by serveraddress/<given username>
         makeJsonObjReq();
 
 
@@ -70,8 +70,8 @@ public class LoginScreenActivity extends AppCompatActivity {
             MyApplication.loggedInAsGuest = true;
         }
 
-        Intent intent = new Intent(this, HomeScreenActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, HomeScreenActivity.class);
+//        startActivity(intent);
     }
 
     public void createAcctButtonListener(View view) {
@@ -90,7 +90,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
                     // grab fields here
-                    String username = response.getString("userName");
+                    String username = response.getString("name");
                     String coins = response.getString("coins");
 
                     MyApplication.currentUser = response; // store json object
