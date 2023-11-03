@@ -17,16 +17,13 @@ import android.util.Log;
 public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
-
     boolean gameOver;
-    private String baseURL = "ws://10.0.2.2:8080/idkman/";
+    private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/gameserver/war/";
     int cardVal;
     String cards;
-
+    boolean gameStart;
     String serverUrl = "";  //need the correct URL
-
     private String BASE_URL = "ws://10.0.2.2:8080/chat/";
-
     ArrayList<Card> player1 = new ArrayList<Card>();
     ArrayList<Card> player2 = new ArrayList<Card>();
     @SuppressLint("MissingInflatedId")
@@ -44,12 +41,19 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         cardPlayer1 = findViewById(R.id.id_player1);
         cardPlayer2 = findViewById(R.id.id_player2);
 
+        try {
+            // send message
+            WebSocketManager.getInstance().sendMessage("{\"action\":\"joinQueue\"}");
+        } catch (Exception e) {
+            Log.d("ExceptionSendMessage:", e.getMessage().toString());
+        }
+
 //        tvPlayer1.setText(String.valueOf(player2.size()));
 //        tvPlayer2.setText(String.valueOf(player1.size()));
 
         gameOver = false;
 
-        WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        WebSocketManager.getInstance().connectWebSocket(baseURL + MyApplication.currentUser);
         WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
 
 
@@ -60,23 +64,13 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             int player1val = 0;
             int player2val = 0;
             int image;
-            String player1Card;
-            String card = player1.get(0).getID();
-            image = getResources().getIdentifier(card, "drawable", getPackageName());
-            cardPlayer1.setImageResource(image);
-            player1val = player1.get(0).value;
 
-            player1Card = card;
-            card = player2.get(0).getID();
-            image = getResources().getIdentifier(card, "drawable", getPackageName());
-            cardPlayer2.setImageResource(image);
-            player2val = player2.get(0).value;
 
 
 
             try {
                 // send message
-                WebSocketManager.getInstance().sendMessage("Deal");
+                WebSocketManager.getInstance().sendMessage("deal");
             } catch (Exception e) {
                 Log.d("ExceptionSendMessage:", e.getMessage().toString());
             }
@@ -105,21 +99,25 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     public void onWebSocketMessage(String message) {
 
 
-        /**
+        /**wert
          * In Android, all UI-related operations must be performed on the main UI thread
          * to ensure smooth and responsive user interfaces. The 'runOnUiThread' method
          * is used to post a runnable to the UI thread's message queue, allowing UI updates
          * to occur safely from a background or non-UI thread.
          */
         runOnUiThread(() -> {   // data from server
-            cards = message;
+            if (gameStart == true) {
+                cards = message;
 
-            String[] temp  = cards.split(" ");
-            int image = getResources().getIdentifier(temp[0], "drawable", getPackageName());
-            cardPlayer1.setImageResource(image);
+                String[] temp = cards.split(" ");
+                int image = getResources().getIdentifier(temp[0], "drawable", getPackageName());
+                cardPlayer1.setImageResource(image);
 
-            image = getResources().getIdentifier(temp[1], "drawable", getPackageName());
-            cardPlayer2.setImageResource(image);
+                image = getResources().getIdentifier(temp[1], "drawable", getPackageName());
+                cardPlayer2.setImageResource(image);
+            } else {
+                gameStart = true;
+            }
             
         });
     }

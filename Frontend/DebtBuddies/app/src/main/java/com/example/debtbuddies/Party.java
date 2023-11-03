@@ -93,6 +93,11 @@ public class Party extends AppCompatActivity implements WebSocketListener {
         }
     }
 
+    public void onMenuClicked(View view) {
+        Intent intent = new Intent(this, Menu.class);
+        startActivity(intent);
+    }
+
     public void onCreate(View v){
         Intent intent = new Intent(this, CreateParty.class);
         startActivity(intent);
