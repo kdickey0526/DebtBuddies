@@ -3,15 +3,18 @@ package debtbuddies.GameServer.Games.War;
 import debtbuddies.GameServer.Communication.Response;
 import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.DeckLibrary.Card;
+import debtbuddies.GameServer.DeckLibrary.Deck;
 import debtbuddies.GameServer.Games.Game;
 import debtbuddies.GameServer.Games.GameInterface;
 import debtbuddies.GameServer.Games.War.WarInfo.EndInfo;
 import debtbuddies.GameServer.Games.War.WarInfo.PlayInfo;
+import debtbuddies.GameServer.Games.War.WarInfo.RoundInfo;
 import debtbuddies.GameServer.Games.War.WarInfo.StartInfo;
 import debtbuddies.GameServer.PlayerClasses.CardUser;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -27,6 +30,10 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
     private CardUser p1, p2;
 
     private int p_index = 0;
+
+    private Deck deck;
+
+    private String ltm;
 
     public War(List<User> users, int gameId){super(users, gameId);}
 
@@ -46,16 +53,21 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         }
         last_suit = last_card.getSuit().toString();
         last_rank = last_card.getRank();
-        PlayInfo playInfo = new PlayInfo(player.toString(), last_suit, last_rank);
+        PlayInfo playInfo = new PlayInfo(target_player.toString(), player.toString(), last_suit, last_rank);
         Response.addMessage(users, "playInfo", playInfo);
     }
     private void sendStartInfo(CardUser player){
-        StartInfo startInfo = new StartInfo();
+        StartInfo startInfo = new StartInfo(player.toString());
         Response.addMessage(playerUserMap.get(player), "startInfo", startInfo);
     }
     private void sendEndInfo(){
         EndInfo endInfo = new EndInfo();
         Response.addMessage(users, "endInfo", endInfo);
+    }
+
+    private void sendRoundInfo(String info){
+        RoundInfo roundInfo = new RoundInfo(info);
+        Response.addMessage(users, "roundInfo", roundInfo);
     }
 
     private CardUser nextTargetPlayer(){
@@ -69,6 +81,14 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         target_player = players.get(p_index++ % players.size());
         p1 = target_player;
         p2 = nextTargetPlayer();
+        p1stack = new ArrayList<>();
+        p2stack = new ArrayList<>();
+        deck = new Deck();
+        for(int i = 0; i < 26; i++){
+            for(CardUser player : players){
+                player.draw(deck);
+            }
+        }
     }
 
     @Override
@@ -80,9 +100,7 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
 
             initializeGame();
 
-            for(CardUser o_player : players){
-                sendStartInfo(o_player);
-            }
+            sendStartInfo(target_player);
 
         }else if(running == 1 && player == target_player){
             switch(serverEvent.getAction()){
@@ -97,10 +115,13 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
                         if(p2stack.size() > 1){
                             p2stack.add(player.play());
                         }
-                        compareCards();
+                        //compareCards();
                     }
-                    sendPlayInfo(player);
                     target_player = nextTargetPlayer();
+                    sendPlayInfo(player);
+                    if(player == p2){
+                        sendRoundInfo("winner: "+ltm);
+                    }
                     break;
                 default:
             }
@@ -114,10 +135,12 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         last2 = p2stack.get(p2stack.size()-1);
         if(last1.getRank() > last2.getRank()){
             reward(p1);
+            ltm = p1.toString();
         }else if(last2.getRank() > last1.getRank()){
             reward(p2);
+            ltm = p2.toString();
         }else{
-
+            ltm = "war";
         }
     }
 
@@ -128,6 +151,8 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         for(Card card : p2stack){
             player.giveCard(card);
         }
+        p1stack.clear();
+        p2stack.clear();
     }
 
     @Override
