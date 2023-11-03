@@ -115,7 +115,7 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
                         if(p2stack.size() > 1){
                             p2stack.add(player.play());
                         }
-                        //compareCards();
+                        compareCards();
                     }
                     target_player = nextTargetPlayer();
                     sendPlayInfo(player);
@@ -134,10 +134,10 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         last1 = p1stack.get(p1stack.size()-1);
         last2 = p2stack.get(p2stack.size()-1);
         if(last1.getRank() > last2.getRank()){
-            reward(p1);
+            //reward(p1);
             ltm = p1.toString();
         }else if(last2.getRank() > last1.getRank()){
-            reward(p2);
+            //reward(p2);
             ltm = p2.toString();
         }else{
             ltm = "war";
