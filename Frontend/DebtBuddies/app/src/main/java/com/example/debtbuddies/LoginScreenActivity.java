@@ -53,16 +53,22 @@ public class LoginScreenActivity extends AppCompatActivity {
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + requestedUser; // URL is set by serveraddress/<given username>
+
+//        if (requestedUser.equals("guest")) {
+//            MyApplication.loggedInAsGuest = true;
+//        }
+
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/" + requestedUser;
         makeJsonObjReq();
 
-
+        // at this point (no pass detection) should not occur so long as the provided
+        // username exists and is found.
         if (MyApplication.currentUser == null) {
             Log.d(TAG, "loginBtnOnClickListener: currentUser was null");
 
             // allow to login as "guest" for special purposes
             if (!usernameField.getText().toString().equals("guest")) {
-                Toast.makeText(this, "Username/password was incorrect or no user entered. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No user found. Please try again.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -70,8 +76,8 @@ public class LoginScreenActivity extends AppCompatActivity {
             MyApplication.loggedInAsGuest = true;
         }
 
-//        Intent intent = new Intent(this, HomeScreenActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, HomeScreenActivity.class);
+        startActivity(intent);
     }
 
     public void createAcctButtonListener(View view) {
@@ -90,7 +96,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
                     // grab fields here
-                    String username = response.getString("name");
+                    String username = response.getString("userName");
                     String coins = response.getString("coins");
 
                     MyApplication.currentUser = response; // store json object
@@ -99,6 +105,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     coinCount.setText("Coins: " + coins);
                     loggedIn = true;
                 } catch (JSONException e) {
+                    Log.e(TAG, "Failed getting username and coins fields from backend.");
                     e.printStackTrace();
                 }
             }
