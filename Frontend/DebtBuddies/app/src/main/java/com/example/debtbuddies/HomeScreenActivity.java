@@ -54,7 +54,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void warOnClickListener(View v) {
         Log.d(TAG, "warOnClickListener: clicked");
-        startActivity(new Intent(this, War.class));
+        startActivity(new Intent(this, WarMultiplayer.class));
     }
 
     public void friendsListOnClickListener(View v) {
