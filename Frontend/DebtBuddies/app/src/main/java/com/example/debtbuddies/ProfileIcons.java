@@ -51,6 +51,7 @@ public class ProfileIcons extends AppCompatActivity {
 //        getSupportFragmentManager().beginTransaction().add(R.id.frag_menu, new FirstFragment()),commit();
     }
     public void menu(View view) {
+
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
     }
@@ -58,18 +59,26 @@ public class ProfileIcons extends AppCompatActivity {
     public void onButtonClick0(View view) {
         image = getResources().getIdentifier("icon0", "drawable", getPackageName());
         playerIcon.setImageResource(image);
+        Account t = new Account();
+        t.setIcon("icon0");
     }
     public void onButtonClick1(View view) {
         image = getResources().getIdentifier("icon1", "drawable", getPackageName());
         playerIcon.setImageResource(image);
+        Account t = new Account();
+        t.setIcon("icon1");
     }
     public void onButtonClick2(View view) {
         image = getResources().getIdentifier("icon2", "drawable", getPackageName());
         playerIcon.setImageResource(image);
+        Account t = new Account();
+        t.setIcon("icon2");
     }
     public void onButtonClick3(View view) {
         image = getResources().getIdentifier("icon3", "drawable", getPackageName());
         playerIcon.setImageResource(image);
+        Account t = new Account();
+        t.setIcon("icon3");
     }
     public void onButtonClick4(View view) {
         image = getResources().getIdentifier("icon4", "drawable", getPackageName());
@@ -90,6 +99,11 @@ public class ProfileIcons extends AppCompatActivity {
     public void onButtonClick8(View view) {
         image = getResources().getIdentifier("icon8", "drawable", getPackageName());
         playerIcon.setImageResource(image);
+    }
+
+    public void onMenuClicked(View view) {
+            Intent intent = new Intent(this, Menu.class);
+            startActivity(intent);
     }
 
 }
