@@ -3,6 +3,7 @@ package debtbuddies.person;
 import java.util.List;
 import java.util.Set;
 
+import debtbuddies.Users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,15 @@ public class PersonController {
 		}
 	}
 
+	@PutMapping("/{name}")
+	Person updatePerson(@PathVariable String name, @RequestBody Person request){
+		Person user = personRepo.findByName(name);
+		if(user == null)
+			return null;
+		personRepo.save(request);
+		return personRepo.findByName(name);
+	}
+
 	@GetMapping(path = "/{name}")
 	public Person getPersonByName(@PathVariable String name){
 		return personRepo.findByName(name);
@@ -39,7 +49,7 @@ public class PersonController {
 	}
 
 
-	@DeleteMapping(path = "/users/{name}")
+	@DeleteMapping(path = "/{name}")
 	public void deleteFriend(@PathVariable String name){
 		personRepo.deleteByName(name);
 	}
