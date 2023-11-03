@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
     private TextView currentChat;
     private ScrollView scrollView;
     private String userText = "";
-    private String baseURL = "ws://10.0.2.2:8080/chat/"; // "ws://coms-309-048.class.las.iastate.edu:8080/chat/";
+    private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/chat/"; //"ws://10.0.2.2:8080/chat/";
     private String connectedURL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
 
         // connect to websocket
         try {
-            connectedURL = baseURL + "jimmy";//MyApplication.currentUser.getString("userName");
+            connectedURL = baseURL + MyApplication.currentUser.getString("name");
             WebSocketManager.getInstance().connectWebSocket(connectedURL);
             WebSocketManager.getInstance().setWebSocketListener(GlobalChatActivity.this);
         } catch (Exception e) {
@@ -74,6 +75,7 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         });
 
     }
+
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "Global Chat: websocket opened");

@@ -68,7 +68,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     public void onBackClicked(View v) {
 
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";// + requestedUser;
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";// + requestedUser;
         if (createAccount = true) {
             postRequest();
 
@@ -83,7 +83,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
-                    String username = response.getString("userName");
+                    String username = response.getString("name");
                     // grab other fields here
 
                 } catch (JSONException e) {
@@ -104,10 +104,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         JSONObject postBody;
         String temp =
                 "{" +
-                        "\"userName\":\"" + username + "\"," +
+                        "\"name\":\"" + username + "\"," +
                         "\"email\":\"" + email +"\"," +
-                        "\"password\":\"" + password + "\"" +
-                        "}";
+                        "\"password\":\"" + password + "\"," +
+                        "\"person_id\":\"" + 3 + "\"" + "}";
 
 
         //\"password\":\"MS313Owen\"}";

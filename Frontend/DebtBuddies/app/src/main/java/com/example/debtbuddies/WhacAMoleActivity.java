@@ -48,8 +48,8 @@ public class WhacAMoleActivity extends AppCompatActivity {
     private String key_highscore = "key";
     private Mole[] moles;
     private Mole currentMole;
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+//    private SharedPreferences pref;
+//    private SharedPreferences.Editor editor;
     private MediaPlayer mediaPlayer;
     private int highscore;
 //    private long hours;
@@ -65,7 +65,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
     private double targetDuration = DEFAULT_DURATION;
     private boolean leaving;
 
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         if (!MyApplication.loggedInAsGuest) {
             try {
-                SERVER_URL += MyApplication.currentUser.getString("userName");
+                SERVER_URL += MyApplication.currentUser.getString("name");
             } catch (Exception e) {
-                Log.d(TAG, "Not logged in as guest, failed to get userName field from currentUser");
+                Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
         }
 
@@ -149,9 +149,20 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         // continue instantiating
         level_ui.setText("Level: " + level);
-        pref = getSharedPreferences(key_highscore, Context.MODE_PRIVATE);
-        editor = pref.edit();
-        highscore = pref.getInt(key_highscore, 0);
+//        pref = getSharedPreferences(key_highscore, Context.MODE_PRIVATE);
+//        editor = pref.edit();
+//        highscore = pref.getInt(key_highscore, 0);
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                highscore = MyApplication.currentUser.getInt("whack");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed getting current user's whac-a-mole highscore.");
+                e.printStackTrace();
+            }
+        } else {
+            highscore = 0;
+        }
+
         highscore_ui.setText("High Score\n" + highscore);
         curMissed.setText("Missed: " + missed);
 
@@ -315,9 +326,16 @@ public class WhacAMoleActivity extends AppCompatActivity {
         if (curScore > highscore) {
             highscore = curScore;
 
-            // update local saved data
-            editor.putInt(key_highscore, highscore);
-            editor.apply();
+            // update on backend
+            if (!MyApplication.loggedInAsGuest) {
+                try {
+                    MyApplication.currentUser.put("whack", highscore);
+                    postRequest();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating the highscore on the backend");
+                    e.printStackTrace();
+                }
+            }
 
             // update highscore
             highscore_ui.setText("High Score\n" + highscore);
