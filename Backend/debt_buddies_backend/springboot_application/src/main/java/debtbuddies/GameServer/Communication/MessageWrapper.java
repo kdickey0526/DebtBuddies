@@ -7,4 +7,12 @@ public class MessageWrapper {
         this.type = type;
         this.data = data;
     }
+
+    public String getType(){
+        return type;
+    }
+
+    public String getData(){
+        return data;
+    }
 }

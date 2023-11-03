@@ -53,8 +53,9 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
         }
         last_suit = last_card.getSuit().toString();
         last_rank = last_card.getRank();
-        PlayInfo playInfo = new PlayInfo(target_player.toString(), player.toString(), last_suit, last_rank);
-        //Response.addMessage(users, "playInfo", playInfo);
+        //PlayInfo playInfo = new PlayInfo(target_player.toString(), player.toString(), last_suit, last_rank);
+        String playInfo = last_suit + last_rank;
+        Response.addMessage(users, "playInfo", playInfo);
     }
     private void sendStartInfo(CardUser player){
         StartInfo startInfo = new StartInfo(player.toString());
