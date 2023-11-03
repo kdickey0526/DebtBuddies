@@ -5,20 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -53,11 +44,16 @@ public class Person {
 	@JoinTable(name="friends_with",
 	joinColumns={@JoinColumn(name="person_id")},
 	inverseJoinColumns={@JoinColumn(name="friend_id")})
-	//@JsonIgnore
+	@JsonIgnore
 	private Set<Person> friends/* = new HashSet<Person>()*/;
-	
+
+	/*@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JoinTable(name = "friends_with", joinColumns = {@JoinColumn(name = "person_id")}, inverseJoinColumns = {@JoinColumn(name = "friend_id")})
+	private Set<Person> friends;*/
+
+
 	@ManyToMany(mappedBy="friends")
-	//@JsonIgnore
+	@JsonIgnore
 	private Set<Person> friendsOf/* = new HashSet<Person>()*/;
 
 
