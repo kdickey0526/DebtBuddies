@@ -46,7 +46,7 @@ public class Group {
     }
 
     public List<User> getUsers(){
-        return users;
+        return new ArrayList<>(users);
     }
 
     public List<String> getUsersString(){

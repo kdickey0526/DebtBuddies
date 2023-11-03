@@ -53,6 +53,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         pot = 0;
         convertUsers();
         deal_hole();
+        smallAndBigBlind();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         if(running == 0 && Objects.equals(serverEvent.getAction(), "start")){
 
             initializeGame();
-            smallAndBigBlind();
+
             for(TexasHoldEmUser o_player : players){
                 sendStartInfo(o_player);
                 sendPlayerInfo(o_player);
