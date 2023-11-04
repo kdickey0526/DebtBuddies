@@ -1,9 +1,24 @@
 <resources>
     <string name="app_name">login-screen</string>
-    <string name="login">Login</string>
+    <string name="login">Confirm</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="remUser">Remember Username</string>
     <string name="remPass">Remember Password</string>
     <string name="noAcct">Don\'t have an account? Click here.</string>
+    <string name="debtBuddies">Debt Buddies</string>
+    <string name="games">Games</string>
+    <string name="coins">Coins</string>
+    <string name="whacamole">Whac-A-Mole</string>
+    <string name="blackjack">Blackjack</string>
+    <string name="war">War</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+    <string name="score">Score\n0</string>
+    <string name="highscore">High Score\n0</string>
+    <string name="missed">Missed: 0</string>
+    <string name="globalchat">Global Chat</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

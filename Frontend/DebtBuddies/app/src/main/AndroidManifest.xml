@@ -2,21 +2,65 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/debt_buddies_launcher"
+        android:label="@string/debtBuddies"
+        android:roundIcon="@mipmap/debt_buddies_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DebtBuddies"
+        android:theme="@style/Base.Theme.DebtBuddies"
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
+        android:windowSoftInputMode="stateVisible|adjustResize"
         tools:targetApi="31">
+        <activity
+            android:name=".GlobalChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FriendsListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu"
+            android:exported="false" />
+        <activity
+            android:name=".WhacAMoleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BlackJack"
+            android:exported="true" />
+        <activity
+            android:name=".Party"
+            android:exported="true" />
+        <activity
+            android:name=".AcceptInvite"
+            android:exported="false" />
+        <activity
+            android:name=".CreateParty"
+            android:exported="false" />
+        <activity
+            android:name=".GameOver"
+            android:exported="false" />
+        <activity
+            android:name=".War"
+            android:exported="true" />
+        <activity
+            android:name=".WarMultiplayer"
+            android:exported="true" />
         <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ProfileIcons"
+            android:exported="true" />
+        <activity
+            android:name=".LoginScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +68,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

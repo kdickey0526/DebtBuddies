@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#DFDCDC</color>
+    <color name="whacamole">#DAA182</color>
+    <color name="whacaccentcolor">#AF7C60</color>
+    <color name="brockbackground">#FF424242</color>
 </resources>
