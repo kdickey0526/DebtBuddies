@@ -30,8 +30,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         // this code will only work when server is running and logged into an actual user
         if (!MyApplication.loggedInAsGuest) {
             try {
-                usernameField.setText(MyApplication.currentUser.getString("userName"));
-                coinsField.setText(MyApplication.currentUser.getString("coins") + " coins");
+                usernameField.setText(MyApplication.currentUser.getString("name"));
+                coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
                 Log.e(TAG, "failed setting username and coins in text views");
                 e.printStackTrace();

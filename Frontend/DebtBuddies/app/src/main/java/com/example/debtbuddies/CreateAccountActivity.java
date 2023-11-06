@@ -32,7 +32,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     EditText tv_username,tv_email,tv_password,tv_confirmPassword;
     Button b_save, b_submit;
     String username, email, password, confirmPassword;
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/add";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/add/";
     private String tag_string_req = "string_req";
     private String TAG = LoginScreenActivity.class.getSimpleName();
     private ProgressDialog pDialog;
@@ -140,7 +140,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                 "{" +
                         "\"email\":\"" + email + "\"," +
                         "\"userName\":\"" + username +"\"," +
-                        "\"password\":\"" + password + "\"" +
+                        "\"password\":\"" + password + "\"," +
+                        "\"person_id\":\"" + 8 +
                         "}";
 
         try {
