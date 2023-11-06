@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +16,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import android.util.Log;
 public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
+
+    private static final String TAG = "WarMultiplayer";
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
     boolean gameOver;
     private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/gameserver/war/";
+    String connectedURL;
     int cardVal;
     String cards;
     boolean gameStart;
@@ -41,22 +45,16 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         cardPlayer1 = findViewById(R.id.id_player1);
         cardPlayer2 = findViewById(R.id.id_player2);
 
+        // connect to websocket
         try {
-            // send message
-            WebSocketManager.getInstance().sendMessage("{\"action\":\"joinQueue\"}");
+            connectedURL = baseURL + MyApplication.currentUser.getString("userName");
+            WebSocketManager.getInstance().connectWebSocket(connectedURL);
+            WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
         } catch (Exception e) {
-            Log.d("ExceptionSendMessage:", e.getMessage().toString());
+            e.printStackTrace();
         }
 
-//        tvPlayer1.setText(String.valueOf(player2.size()));
-//        tvPlayer2.setText(String.valueOf(player1.size()));
-
         gameOver = false;
-
-        WebSocketManager.getInstance().connectWebSocket(baseURL + MyApplication.currentUser);
-        WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
-
-
     }
 
     public void onDealClicked (View view) {
@@ -64,10 +62,6 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             int player1val = 0;
             int player2val = 0;
             int image;
-
-
-
-
             try {
                 // send message
                 WebSocketManager.getInstance().sendMessage("deal");
@@ -94,17 +88,12 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             whoWin.setText("player 2 wins");
         }
     }
-
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
+        Log.d(TAG, "War: websocket opened");
+    }
     @Override
     public void onWebSocketMessage(String message) {
-
-
-        /**wert
-         * In Android, all UI-related operations must be performed on the main UI thread
-         * to ensure smooth and responsive user interfaces. The 'runOnUiThread' method
-         * is used to post a runnable to the UI thread's message queue, allowing UI updates
-         * to occur safely from a background or non-UI thread.
-         */
         runOnUiThread(() -> {   // data from server
             if (gameStart == true) {
                 cards = message;
@@ -128,8 +117,6 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
 
         });
     }
-    @Override
-    public void onWebSocketOpen(ServerHandshake handshakedata) {}
 
     @Override
     public void onWebSocketError(Exception ex) {}
