@@ -54,10 +54,6 @@ public class LoginScreenActivity extends AppCompatActivity {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
 
-//        if (requestedUser.equals("guest")) {
-//            MyApplication.loggedInAsGuest = true;
-//        }
-
         SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + requestedUser;
         makeJsonObjReq();
 
@@ -75,6 +71,17 @@ public class LoginScreenActivity extends AppCompatActivity {
 
             Log.d(TAG, "loginBtnOnClickListener: logged in as guest");
             MyApplication.loggedInAsGuest = true;
+        }
+
+        // set the user as online (if not logged in as guest)
+        if (!usernameField.getText().toString().equals("guest")) {
+            try {
+                MyApplication.currentUser.put("is_online", loggedIn);
+                postRequest();
+            } catch (Exception e) {
+                Log.e(TAG, "Error setting the user as online.");
+                e.printStackTrace();
+            }
         }
 
         Intent intent = new Intent(this, HomeScreenActivity.class);
@@ -158,6 +165,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                         try {
                             Log.d("Volley: ", "object PUT");
                             coinCount.setText("Coins: " + response.getInt("coins"));
+                            // could add & update some visual indicator that user is online here
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

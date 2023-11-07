@@ -8,12 +8,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView usernameField;
     private TextView coinsField;
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     private static final String TAG = "HomeScreenActivity";
 
     @Override
@@ -30,6 +37,29 @@ public class HomeScreenActivity extends AppCompatActivity {
         // this code will only work when server is running and logged into an actual user
         if (!MyApplication.loggedInAsGuest) {
             try {
+                // re-fetch user information to update fields
+                SERVER_URL += MyApplication.currentUser.getString("name").toString();
+                makeJsonObjReq(); // should update currentUser
+                usernameField.setText(MyApplication.currentUser.getString("name"));
+                coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
+            } catch (JSONException e) {
+                Log.e(TAG, "failed getting/setting username and coins in text views");
+                e.printStackTrace();
+            }
+        } else {
+            usernameField.setText("Guest");
+            coinsField.setText("No coins");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                // re-fetch user information to update fields
+                SERVER_URL += MyApplication.currentUser.getString("name").toString();
+                makeJsonObjReq(); // should update currentUser
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
@@ -81,4 +111,24 @@ public class HomeScreenActivity extends AppCompatActivity {
         Log.d(TAG, "profileOnClickListener: clicked");
         startActivity(new Intent(this, Menu.class));
     }
+    /**
+     * Making json object request
+     **/
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                MyApplication.currentUser = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
 }

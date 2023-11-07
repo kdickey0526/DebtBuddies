@@ -228,7 +228,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     int adjCoinCount = MyApplication.currentUser.getInt("coins");
                     if (adjCoinCount >= 5) { // user needs 5 coins to play
                         adjCoinCount = adjCoinCount - 5;
-                        depositingCoins = true;
+                        if (startBtn.getText().equals("START")) {
+                            depositingCoins = true;
+                        }
                         MyApplication.currentUser.put("coins", adjCoinCount);
                         postRequest();
                     } else {
