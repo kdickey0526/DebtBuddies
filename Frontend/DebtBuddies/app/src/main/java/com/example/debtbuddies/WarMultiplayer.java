@@ -59,19 +59,14 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
 
     public void onDealClicked (View view) {
         if (gameOver != true) {
-            int player1val = 0;
-            int player2val = 0;
-            int image;
             try {
-                // send message
                 WebSocketManager.getInstance().sendMessage("deal");
+                Log.d(TAG, "onKey: message successful");
             } catch (Exception e) {
-                Log.d("ExceptionSendMessage:", e.getMessage().toString());
+                // shouldn't throw any exceptions, but just in case
+                Log.d(TAG, "onKey: Exception when sending message");
+                e.printStackTrace();
             }
-
-//            tvPlayer1.setText(String.valueOf(player2.size()));
-//            tvPlayer2.setText(String.valueOf(player1.size()));
-
         }
     }
     public void onMenuClicked(View view) {
@@ -93,7 +88,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         Log.d(TAG, "War: websocket opened");
     }
     @Override
-    public void onWebSocketMessage(String message) {
+    public void onWebSocketMessage(String message) {    //THIS WILL NEED CHANGES
         runOnUiThread(() -> {   // data from server
             if (gameStart == true) {
                 cards = message;

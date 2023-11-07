@@ -1,7 +1,5 @@
 package com.example.debtbuddies;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,9 +26,11 @@ import java.util.Map;
 
 
 public class Menu extends AppCompatActivity  {
+
+    private static final String TAG = "Menu";
     Button b_back, b_menu,b_party;
     ImageView icon;
-    String serverUrl = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUser;
+    String serverUrl = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     TextView tv_username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,13 @@ public class Menu extends AppCompatActivity  {
 
         icon = findViewById(R.id.icon);
 
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                serverUrl += MyApplication.currentUser.getString("name");
+            } catch (Exception e) {
+                Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
+            }
+        }
         makeJsonObjReq();
 
     }
@@ -71,6 +78,8 @@ public class Menu extends AppCompatActivity  {
                     String temp = response.getString("Profile");
                     int image = getResources().getIdentifier(temp, "drawable", getPackageName());
                     icon.setImageResource(image);
+
+                    MyApplication.currentUser = response;
 
                 } catch (JSONException e) {
                     e.printStackTrace();

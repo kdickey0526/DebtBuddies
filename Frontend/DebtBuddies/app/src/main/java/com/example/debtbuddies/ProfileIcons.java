@@ -1,6 +1,7 @@
 package com.example.debtbuddies;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,12 +24,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfileIcons extends AppCompatActivity {
+    private static final String TAG = "ProfileIcons";
     String icon;
     ImageView playerIcon;
     CardView playerIcon0, playerIcon1, playerIcon2, playerIcon3, playerIcon4,
             playerIcon5, playerIcon6, playerIcon7, playerIcon8;
 
-    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUser;
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
     Button b_icon0, b_icon1, b_icon2, b_icon3, b_icon4, b_icon5, b_icon6, b_icon7,
             b_icon8, b_frag;
@@ -62,6 +64,14 @@ public class ProfileIcons extends AppCompatActivity {
         b_icon8 = findViewById(R.id.b_icon8);
         b_frag = findViewById(R.id.b_menu);
 
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                SERVER_URL += MyApplication.currentUser.getString("name");
+            } catch (Exception e) {
+                Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
+            }
+        }
+        makeJsonObjReq();
 
 
 
@@ -132,7 +142,7 @@ public class ProfileIcons extends AppCompatActivity {
     public void onMenuClicked(View view) {
         try {
             MyApplication.currentUser.put("Profile", icon);
-           // postRequest();
+            postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -140,66 +150,64 @@ public class ProfileIcons extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                try {
+                    // grab fields here
+                    String profileIcon = response.getString("Profile");
+                    image = getResources().getIdentifier(profileIcon, "drawable", getPackageName());
+                    playerIcon.setImageResource(image);
+
+                    MyApplication.currentUser = response; // store json object
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
     private void postRequest() {
 
         // Convert input to JSONObject
-        JSONObject postBody;
-        String temp =
-                "{" +
-                        "\"Profile\":\"" + icon + "\"" +
-                        "}";
-
-        try {
-            postBody = new JSONObject(temp);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
-
+        JSONObject postBody = null;
         try{
             // etRequest should contain a JSON object string as your POST body
             // similar to what you would have in POSTMAN-body field
             // and the fields should match with the object structure of @RequestBody on sb
-
+            postBody = new JSONObject(MyApplication.currentUser.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
 
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.PUT,
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //  tvResponse.setText(response.toString());
-
+                        Log.d("Volley: ", "object PUT");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //tvResponse.setText(error.getMessage());
+                        Log.e("Volley Error", error.toString());
                     }
                 }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
-                //                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                //                params.put("param1", "value1");
-                //                params.put("param2", "value2");
-                return params;
-            }
-        };
+        );
 
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
