@@ -18,7 +18,7 @@ import android.util.Log;
 public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
 
     private static final String TAG = "WarMultiplayer";
-    TextView tvPlayer1, tvPlayer2, whoWin;
+    TextView tvPlayer1, tvPlayer2, whoWin,tv_temp;
     ImageView cardPlayer1, cardPlayer2;
     boolean gameOver;
     private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/gameserver/war/";
@@ -33,6 +33,17 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // connect to websocket
+        try {
+            connectedURL = baseURL + MyApplication.currentUser.getString("name");
+            WebSocketManager.getInstance().connectWebSocket(connectedURL);
+            WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
+            Log.d(TAG, "onKey: message successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         String suit;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_war);
@@ -45,14 +56,11 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         cardPlayer1 = findViewById(R.id.id_player1);
         cardPlayer2 = findViewById(R.id.id_player2);
 
-        // connect to websocket
-        try {
-            connectedURL = baseURL + MyApplication.currentUser.getString("userName");
-            WebSocketManager.getInstance().connectWebSocket(connectedURL);
-            WebSocketManager.getInstance().setWebSocketListener(WarMultiplayer.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        tv_temp = findViewById(R.id.tv_temp);
+
+
+
+        WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "joinQueue" + "\"}");
 
         gameOver = false;
     }
@@ -60,7 +68,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     public void onDealClicked (View view) {
         if (gameOver != true) {
             try {
-                WebSocketManager.getInstance().sendMessage("deal");
+                WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "deal" + "\"}");
                 Log.d(TAG, "onKey: message successful");
             } catch (Exception e) {
                 // shouldn't throw any exceptions, but just in case
@@ -75,14 +83,6 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             startActivity(intent);
         }
     }
-    public void gameOver() {
-        gameOver = true;
-        if (player1.size() > player2.size()) {  //player1 wins
-            whoWin.setText("player 1 wins");
-        } else {    //player2 wins
-            whoWin.setText("player 2 wins");
-        }
-    }
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "War: websocket opened");
@@ -92,13 +92,28 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
         runOnUiThread(() -> {   // data from server
             if (gameStart == true) {
                 cards = message;
+                if (message.charAt(0) != '{') {
+                    String hold = "";
 
-                String[] temp = cards.split(" ");
-                int image = getResources().getIdentifier(temp[0], "drawable", getPackageName());
-                cardPlayer1.setImageResource(image);
+                    String[] temp = cards.split(" ");
+                    tv_temp.setText(message);
 
-                image = getResources().getIdentifier(temp[1], "drawable", getPackageName());
-                cardPlayer2.setImageResource(image);
+                    for (int i = 1; i < temp[0].length(); i ++) {
+                        hold += temp[0].charAt(i);
+                    }
+                    int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+                    cardPlayer1.setImageResource(image);
+
+                    hold = "";
+                    for (int i = 0; i < temp[1].length() - 1; i ++) {
+                        hold += temp[1].charAt(i);
+                    }
+                    image = getResources().getIdentifier(hold, "drawable", getPackageName());
+                    cardPlayer2.setImageResource(image);
+
+                } else {
+
+                }
             } else {
                 gameStart = true;
             }
