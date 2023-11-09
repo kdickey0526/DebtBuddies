@@ -58,8 +58,6 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
 
         tv_temp = findViewById(R.id.tv_temp);
 
-
-
         WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "joinQueue" + "\"}");
 
         gameOver = false;

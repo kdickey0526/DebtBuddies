@@ -80,7 +80,7 @@ public class ProfileIcons extends AppCompatActivity {
     public void menu(View view) {
         try {
             MyApplication.currentUser.put("Profile", icon);
-            // postRequest();
+            postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
         }

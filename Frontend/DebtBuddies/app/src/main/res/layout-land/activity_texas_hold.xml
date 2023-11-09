@@ -8,9 +8,9 @@
     tools:context=".LoginScreenActivity"
     tools:ignore="MissingDefaultResource">
 
+
     <ImageView
         android:id="@+id/id_community1"
-
         android:layout_width="50dp"
         android:layout_height="75dp"
         android:layout_alignParentTop="true"
@@ -118,9 +118,8 @@
         android:layout_height="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="215dp"
-        android:layout_marginEnd="50dp"
         android:layout_weight="2"
         android:gravity="left"
         android:text="Player1"
@@ -133,7 +132,7 @@
         android:layout_height="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="230dp"
         android:layout_marginEnd="50dp"
         android:layout_weight="2"
@@ -223,6 +222,156 @@
         android:text="Bal: 0"
         android:textColor="#FFFFFFFF"
         android:textSize="12sp" />
+
+
+
+
+
+
+
+    <ImageView
+        android:id="@+id/player3_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="400dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon3"></ImageView>
+
+    <ImageView
+        android:id="@+id/id_player3_1"
+
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="350dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/cardback"></ImageView>
+
+    <ImageView
+        android:id="@+id/id_player3_2"
+
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="330dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/cardback"></ImageView>
+
+    <TextView
+        android:id="@+id/tv_player3_username"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="50dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Player2"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_player3_bal"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Bal: 0"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
+
+
+
+
+
+
+
+
+    <ImageView
+        android:id="@+id/player4_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="150dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon3"></ImageView>
+
+    <ImageView
+        android:id="@+id/id_player4_1"
+
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="100dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/cardback"></ImageView>
+
+    <ImageView
+        android:id="@+id/id_player4_2"
+
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="80dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/cardback"></ImageView>
+
+    <TextView
+        android:id="@+id/tv_player4_username"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="545dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="50dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Player2"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_player4_bal"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="545dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Bal: 0"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
+
 
 
 
