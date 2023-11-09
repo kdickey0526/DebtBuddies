@@ -21,7 +21,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-
+// blah blah
 public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
@@ -100,6 +100,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     String username = response.getString("name");
                     String coins = response.getString("coins");
 
+                    // insert code here to save the response into a text file
                     MyApplication.currentUser = response; // store json object
 
                     msgResponse.setText("Logged in as: " + username);
