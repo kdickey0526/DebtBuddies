@@ -63,6 +63,9 @@ public class Party extends AppCompatActivity implements WebSocketListener {
     int i;
 
     @Override
+    /**
+     *
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party);
@@ -93,15 +96,28 @@ public class Party extends AppCompatActivity implements WebSocketListener {
         }
     }
 
+    /**
+     * goes to the menu
+     * @param view
+     */
     public void onMenuClicked(View view) {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
     }
 
+    /**
+     * goes to the create party screen
+     * @param v
+     */
     public void onCreate(View v){
         Intent intent = new Intent(this, CreateParty.class);
         startActivity(intent);
     }
+
+    /**
+     * goes to the join party screen
+     * @param v
+     */
     public void onJoin(View v){
         Intent intent = new Intent(this, AcceptInvite.class);
         startActivity(intent);

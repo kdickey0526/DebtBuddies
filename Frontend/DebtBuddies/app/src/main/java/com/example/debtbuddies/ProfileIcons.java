@@ -36,6 +36,10 @@ public class ProfileIcons extends AppCompatActivity {
             b_icon8, b_frag;
     int image;
 
+    /**
+     * initlize
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,11 @@ public class ProfileIcons extends AppCompatActivity {
 
 //        getSupportFragmentManager().beginTransaction().add(R.id.frag_menu, new FirstFragment()),commit();
     }
+
+    /**
+     * save the icon choice and leave
+     * @param view
+     */
     public void menu(View view) {
         try {
             MyApplication.currentUser.put("Profile", icon);
@@ -88,57 +97,98 @@ public class ProfileIcons extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * pick icon  0
+     * @param view
+     */
     public void onButtonClick0(View view) {
         image = getResources().getIdentifier("icon0", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon0";
 
     }
+    /**
+     * pick icon 1
+     * @param view
+     */
     public void onButtonClick1(View view) {
         image = getResources().getIdentifier("icon1", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon1";
 
     }
+    /**
+     * pick icon 2
+     * @param view
+     */
     public void onButtonClick2(View view) {
         image = getResources().getIdentifier("icon2", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon2";
 
     }
+    /**
+     * pick icon 3
+     * @param view
+     */
     public void onButtonClick3(View view) {
         image = getResources().getIdentifier("icon3", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon3";
 
     }
+    /**
+     * pick icon 4
+     * @param view
+     */
     public void onButtonClick4(View view) {
         image = getResources().getIdentifier("icon4", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon4";
     }
+    /**
+     * pick icon 5
+     * @param view
+     */
     public void onButtonClick5(View view) {
         image = getResources().getIdentifier("icon5", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon5";
     }
+    /**
+     * pick icon 6
+     * @param view
+     */
     public void onButtonClick6(View view) {
         image = getResources().getIdentifier("icon6", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon6";
     }
+    /**
+     * pick icon 7
+     * @param view
+     */
     public void onButtonClick7(View view) {
         image = getResources().getIdentifier("icon7", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon7";
 
     }
+    /**
+     * pick icon 8
+     * @param view
+     */
     public void onButtonClick8(View view) {
         image = getResources().getIdentifier("icon8", "drawable", getPackageName());
         playerIcon.setImageResource(image);
         icon = "icon8";
     }
 
+    /**
+     * sends the icon to the server
+     * goes to the menu
+     * @param view
+     */
     public void onMenuClicked(View view) {
         try {
             MyApplication.currentUser.put("Profile", icon);

@@ -57,6 +57,9 @@ public class War extends AppCompatActivity {
     ArrayList<Card> player2 = new ArrayList<Card>();
     @SuppressLint("MissingInflatedId")
     @Override
+    /**
+     * creates the deck and each player's cards
+     */
     protected void onCreate(Bundle savedInstanceState) {
         p = new PlayerStats();
         String suit;
@@ -106,6 +109,11 @@ public class War extends AppCompatActivity {
         tvPlayer2.setText(String.valueOf(player1.size()));
     }
 
+    /**
+     * deals the card to each player
+     * if a war similates the war
+     * @param view
+     */
     public void onDealClicked (View view) {
         if (gameOver != true) {
             int player1val;
@@ -180,6 +188,9 @@ public class War extends AppCompatActivity {
         }
     }
 
+    /**
+     * displays the winner of the game
+     */
     public void gameOver() {
         gameOver = true;
         if (player1.size() > player2.size()) {  //player1 wins
@@ -197,6 +208,11 @@ public class War extends AppCompatActivity {
        // PlayerStats p = new PlayerStats();
     }
 
+    /**
+     * leaves the game
+     * game must be over
+     * @param view
+     */
     public void onMenuClicked(View view) {
         if (gameOver == true) {
             Intent intent = new Intent(this, Menu.class);
