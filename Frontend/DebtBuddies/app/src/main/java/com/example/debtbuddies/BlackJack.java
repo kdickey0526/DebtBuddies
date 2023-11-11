@@ -41,6 +41,9 @@ public class BlackJack extends AppCompatActivity {
 
 
     @Override
+    /**
+     * on creation fills in all data
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackjack);
@@ -103,6 +106,12 @@ public class BlackJack extends AppCompatActivity {
         hitPlayer = false;
     }
 
+    /**
+     * When double is clicked
+     * Similates a double hit
+     * - you must stand after a double
+     * @param view
+     */
 
     public void onDoubleClicked(View view) {
         if (gameOver == false && doubleClick == false && hitPlayer == false) {
@@ -134,6 +143,11 @@ public class BlackJack extends AppCompatActivity {
         }
     }
 
+    /**
+     * When deal is clicked the dealer deals an additional card
+     * - can't double after
+     * @param view
+     */
     public void onDealClicked(View view) {
         if (doubleClick == false) {
             i++;
@@ -163,6 +177,9 @@ public class BlackJack extends AppCompatActivity {
             tvPlayer.setText(String.valueOf(playerNumH));
         }
     }
+    /**
+     * Restarts the hand
+     */
     public void onReplayClicked(View view) {
         if (bet > bal || gameOver == false) {
 
@@ -219,6 +236,12 @@ public class BlackJack extends AppCompatActivity {
             hitPlayer = false;
         }
     }
+
+    /**
+     * ends your turn and the dealer goes
+     * You win if you are closer than the dealer to 21 without going over
+     * @param view
+     */
     public void onStandClicked (View view) {
         if (gameOver == true) {
 
@@ -279,7 +302,10 @@ public class BlackJack extends AppCompatActivity {
     }
     }
 
-
+    /**
+     * gives a card to the player
+     * @return
+     */
     public String hitPlayer() {
 
         hitPlayer = true;
@@ -316,6 +342,11 @@ public class BlackJack extends AppCompatActivity {
         return cards;
 
     }
+
+    /**
+     * gives a card to the dealer
+     * @return
+     */
     public String hitDealer() {
 
         Random r = new Random();
@@ -354,6 +385,11 @@ public class BlackJack extends AppCompatActivity {
         return cards;
     }
 
+    /**
+     * leave the game
+     * game has to be over to leave
+     * @param view
+     */
     public void onMenuClicked(View view) {
         if (gameOver == true) {
             Intent intent = new Intent(this, Menu.class);

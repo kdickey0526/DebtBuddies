@@ -30,6 +30,11 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     private String BASE_URL = "ws://10.0.2.2:8080/chat/";
     ArrayList<Card> player1 = new ArrayList<Card>();
     ArrayList<Card> player2 = new ArrayList<Card>();
+
+    /**
+     * initilize the layout
+     * @param savedInstanceState
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +63,15 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
 
         tv_temp = findViewById(R.id.tv_temp);
 
-
-
         WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "joinQueue" + "\"}");
 
         gameOver = false;
     }
 
+    /**
+     * sends a deal request to the server
+     * @param view
+     */
     public void onDealClicked (View view) {
         if (gameOver != true) {
             try {
@@ -77,6 +84,11 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             }
         }
     }
+
+    /**
+     * leave the game
+     * @param view
+     */
     public void onMenuClicked(View view) {
         if (gameOver == true) {
             Intent intent = new Intent(this, Menu.class);
