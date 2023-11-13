@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import org.java_websocket.handshake.ServerHandshake;
 
+/**
+ * Class representing the Global Chat. Connects to the global chat over websockets based on the current user.
+ */
 public class GlobalChatActivity extends AppCompatActivity implements WebSocketListener {
 
     private static final String TAG = "GlobalChatActivity";
@@ -24,6 +27,11 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
     private String userText = "";
     private String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/chat/"; //"ws://10.0.2.2:8080/chat/";
     private String connectedURL;
+
+    /**
+     * Runs when starting the global chat. Initializes UI elements, listeners, and connects the websockets.
+     * @param savedInstanceState the current instance of the app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,14 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         userMsg.setFocusable(true);
         userMsg.requestFocus();
         userMsg.setOnKeyListener(new View.OnKeyListener() {
+            /**
+             * Listener for the chat message box that takes user input. Listens for the enter/return key to be pressed,
+             * and then sends the message typed into the box.
+             * @param view the EditText message textbox
+             * @param i the keycode/key pressed
+             * @param keyEvent the state of the key (pressed/down)
+             * @return true if enter is pressed false otherwise
+             */
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 // if user presses enter, send message
@@ -76,6 +92,10 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
 
     }
 
+    /**
+     * Initializes the view where the global chat appears.
+     * @param handshakedata Information about the server handshake.
+     */
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "Global Chat: websocket opened");
@@ -84,6 +104,10 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         scrollView.setFocusable(ScrollView.NOT_FOCUSABLE);
     }
 
+    /**
+     * Updates the global chat box and scrolls down to most recent messages.
+     * @param message The received WebSocket message.
+     */
     @Override
     public void onWebSocketMessage(String message) {
         Log.d(TAG, "onWebSocketMessage: sent message");
@@ -102,6 +126,12 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         });
     }
 
+    /**
+     * Updates the chat box to reflect the fact that the web socket has closed.
+     * @param code   The status code indicating the reason for closure.
+     * @param reason A human-readable explanation for the closure.
+     * @param remote Indicates whether the closure was initiated by the remote endpoint.
+     */
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
         String closedBy = remote ? "server" : "local";
@@ -112,12 +142,19 @@ public class GlobalChatActivity extends AppCompatActivity implements WebSocketLi
         });
     }
 
+    /**
+     * Outputs information to Logcat about the websocket error.
+     * @param ex The exception that describes the error.
+     */
     @Override
     public void onWebSocketError(Exception ex) {
         Log.e(TAG, "Global Chat: websocket error occured");
         ex.printStackTrace();
     }
 
+    /**
+     * Disconnects the websocket and runs regular onPause functions.
+     */
     @Override
     public void onPause() {
         WebSocketManager.getInstance().disconnectWebSocket();

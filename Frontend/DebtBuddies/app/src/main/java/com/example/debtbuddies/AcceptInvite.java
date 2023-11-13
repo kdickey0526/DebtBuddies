@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Screen for accepting an invite.
+ */
 public class AcceptInvite extends AppCompatActivity implements WebSocketListener {
 
     TextView tv_username, status;
@@ -29,6 +32,9 @@ public class AcceptInvite extends AppCompatActivity implements WebSocketListener
     ImageView icon;
     String result;
     @Override
+    /**
+     * On creation initlizes data
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_invite);
@@ -44,6 +50,7 @@ public class AcceptInvite extends AppCompatActivity implements WebSocketListener
     }
 
     public void onAcceptClicked(View view) {
+
         result = "accept";
     }
     public void onDeclineClicked(View view) {
