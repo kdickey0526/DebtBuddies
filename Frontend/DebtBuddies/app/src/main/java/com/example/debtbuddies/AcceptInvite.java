@@ -22,7 +22,7 @@ import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- *
+ * 
  */
 public class AcceptInvite extends AppCompatActivity implements WebSocketListener {
 
