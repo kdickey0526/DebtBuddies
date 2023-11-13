@@ -45,7 +45,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         // this code will only work when server is running and logged into an actual user
         if (!MyApplication.loggedInAsGuest) {
             try {
-<<<<<<< HEAD
                 // re-fetch user information to update fields
                 SERVER_URL += MyApplication.currentUser.getString("name").toString();
                 makeJsonObjReq(); // should update currentUser
@@ -69,9 +68,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 // re-fetch user information to update fields
                 SERVER_URL += MyApplication.currentUser.getString("name").toString();
                 makeJsonObjReq(); // should update currentUser
-=======
                 // best to re-fetch the user information here, add soon
->>>>>>> FrontDev
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
