@@ -49,6 +49,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Random;
 
+/**
+ * Party screen. A party can hold up to 4 users, who join multiplayer games together in a lobby.
+ */
 public class Party extends AppCompatActivity implements WebSocketListener {
 
     String username = "Brock";
@@ -64,7 +67,7 @@ public class Party extends AppCompatActivity implements WebSocketListener {
 
     @Override
     /**
-     *
+     * Initialization of UI and websocket connection.
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

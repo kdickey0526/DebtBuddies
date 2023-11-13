@@ -13,12 +13,21 @@ import android.widget.TextView;
 
 import org.java_websocket.handshake.ServerHandshake;
 
+/**
+ * Activity for the Texas Hold 'Em game.
+ * See "https://en.wikipedia.org/wiki/Texas_hold_%27em" for more information on how the game works.
+ */
 public class TexasHoldem extends AppCompatActivity implements WebSocketListener {
     private static final String TAG = "TexasHoldem";
     String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/gameserver/IDK";
     String connectedURL;
     Boolean gameStart;
     int players;
+
+    /**
+     * Instantiates the websocket connection with the backend for the game.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,10 +49,20 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
     }
 
 
+    /**
+     * Required function for implementing websockets. Doesn't do much.
+     * @param handshakedata Information about the server handshake.
+     */
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
 
     }
+
+    /**
+     * What to do on the front-end for each response from backend. Updates UI to represent
+     * state of game. WIP.
+     * @param message The received WebSocket message.
+     */
     @Override
     public void onWebSocketMessage(String message) {    //THIS WILL NEED CHANGES
         runOnUiThread(() -> {   // data from server
@@ -66,11 +85,21 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
     }
 
 
+    /**
+     * Actions to complete on web socket closing. WIP.
+     * @param code   The status code indicating the reason for closure.
+     * @param reason A human-readable explanation for the closure.
+     * @param remote Indicates whether the closure was initiated by the remote endpoint.
+     */
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
 
     }
 
+    /**
+     * Actions to complete on web socket error. WIP.
+     * @param ex The exception that describes the error.
+     */
     @Override
     public void onWebSocketError(Exception ex) {
 

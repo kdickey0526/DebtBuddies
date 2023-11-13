@@ -15,6 +15,11 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.util.ArrayList;
 import java.util.Random;
 import android.util.Log;
+
+/**
+ * Activity for the multiplayer war game.
+ * See "https://en.wikipedia.org/wiki/War_(card_game)" for information on how the game works.
+ */
 public class WarMultiplayer extends AppCompatActivity implements WebSocketListener {
 
     private static final String TAG = "WarMultiplayer";
@@ -95,6 +100,15 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
             startActivity(intent);
         }
     }
+    public void gameOver() {
+        gameOver = true;
+        if (player1.size() > player2.size()) {  //player1 wins
+            whoWin.setText("player 1 wins");
+
+        } else {    //player2 wins
+            whoWin.setText("player 2 wins");
+        }
+    }
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "War: websocket opened");
@@ -134,7 +148,7 @@ public class WarMultiplayer extends AppCompatActivity implements WebSocketListen
     }
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
-
+        String closedBy = remote ? "server" : "local";
         runOnUiThread(() -> {
 
         });

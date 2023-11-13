@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * Game over screen.
+ */
 public class GameOver extends AppCompatActivity {
     TextView tv_status;
     War w = new War();
