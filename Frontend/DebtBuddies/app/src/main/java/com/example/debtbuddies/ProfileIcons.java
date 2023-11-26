@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Screen showing the different profile icons a user can select. Currently 9 options.
+ */
 public class ProfileIcons extends AppCompatActivity {
     private static final String TAG = "ProfileIcons";
     String icon;

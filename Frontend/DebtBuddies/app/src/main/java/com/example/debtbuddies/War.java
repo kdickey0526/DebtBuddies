@@ -45,6 +45,11 @@ import java.util.Map;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+/**
+ * Activiy for the single-player war game.
+ * See "https://en.wikipedia.org/wiki/War_(card_game)" for more information on how the game works.
+ */
 public class War extends AppCompatActivity {
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
@@ -220,6 +225,10 @@ public class War extends AppCompatActivity {
         }
     }
 
+    /**
+     * Returns who won the game.
+     * @return true if player1 won, false if player2 won
+     */
     public Boolean getWin() {
         return win;
     }

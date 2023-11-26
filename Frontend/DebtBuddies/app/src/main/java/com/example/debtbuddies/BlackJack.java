@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Activity for Blackjack. For more information on the game, see "https://en.wikipedia.org/wiki/Blackjack"
+ */
 public class BlackJack extends AppCompatActivity {
     int id;
     String username, email, password;

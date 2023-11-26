@@ -32,6 +32,12 @@ import org.w3c.dom.Text;
 
 import java.util.Random;
 
+/**
+ * Activity for the Whac-A-Mole game. The user is allowed to miss three times, the every 5 moles the game gets harder
+ * (spawnrate of moles increases and time to click decreases) by 15% (linearly). Requires 5 coins to play. Payout is
+ * defined by the level that the user reaches, wherein every two levels earns the user a coin, rounded down if you lose
+ * on an odd-numbered level.
+ */
 public class WhacAMoleActivity extends AppCompatActivity {
 
     private static final String TAG = "WhacAMoleActivity";
@@ -68,6 +74,11 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
+    /**
+     * Initializes UI elements, runnables, handlers, sound effects, the moles, etc. Also supports saving
+     * data to the device (highscore), but is currently disabled.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +115,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
 //            }
 //        };
         gameRunnable = new Runnable() {
+            /**
+             * Runnable for the game logic. Determines if the game should continue or stop. Increments level
+             * and difficulty when necessary. Called initially at the start and after the target duration has expired.
+             */
             @Override
             public void run() {
                 if (missed > MAX_MISSED) { // game ends
@@ -194,6 +209,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
 //        model.getCurrentTime().observe(this, timeObserver);
 }
 
+    /**
+     * Runs whenever a mole is clicked. Updates the Mole object's variables accordingly.
+     * @param view the mole clicked
+     */
     public void onMoleClicked(View view) {
         mediaPlayer.start();
         if (gameStarted) {
@@ -219,6 +238,12 @@ public class WhacAMoleActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Listener for the start button. Takes 5 coins from the current user (if not logged in as guest).
+     * Initializes the clock, updates UI elements, posts the user's new amount of coins to the backend, and runs
+     * startGame().
+     * @param view the start button
+     */
     public void onStartBtnClicked(View view) {
         if (!gameStarted) {
 
@@ -261,6 +286,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Listener for the android built-in back button (shaped like a sideways triangle). Calls resetGame() then
+     * regular onBackPressed() functions.
+     */
     @Override
     public void onBackPressed() {
         // add code here to update database and SharedPreferences (probably call to resetGame)
@@ -268,6 +297,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    /**
+     * Sets up the Moles for the game, as well as other UI elements. Starts the gameRunnable after 1s.
+     */
     private void startGame() {
         Log.d(TAG, "startGame called");
         score.setText("Score\n0");
@@ -285,6 +317,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
         handler.postDelayed(gameRunnable, 1000); // starts game 1s after clicking start
     }
 
+    /**
+     * Removes callbacks on the gameRunnable, resets moles to initial state, updates variables, updates the
+     * current user's coins and highscore when necessary.
+     */
     private void resetGame() {
         Log.d(TAG, "resetGame called");
         startBtn.setText(R.string.start);
@@ -351,6 +387,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
         curScore = 0;
     }
 
+    /**
+     * Updates variables and calls resetGame(), then calls super.onStop().
+     */
     @Override
     public void onStop() {
         leaving = true;
@@ -358,6 +397,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    /**
+     * Posts updates to the backend (coin count and highscore).
+     */
     private void postRequest() {
 
         // Convert input to JSONObject

@@ -21,7 +21,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-// blah blah
+/**
+ * The login screen. Takes a user's username and password and sends it to the database to login. Checking done in the backend.
+ */
 public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
@@ -35,7 +37,10 @@ public class LoginScreenActivity extends AppCompatActivity {
     private boolean passFailed = false;
     private boolean loggedIn;
 
-
+    /**
+     *  Initializes UI elements of the login screen.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,10 @@ public class LoginScreenActivity extends AppCompatActivity {
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
     }
 
+    /**
+     * Listener for the "Login"/"Save" button.
+     * @param view the button
+     */
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
@@ -81,6 +90,10 @@ public class LoginScreenActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Listener for the create account button. Launches the create account screen.
+     * @param view the button
+     */
     public void createAcctButtonListener(View view) {
         // switch to the create account activity
         Intent intent = new Intent(this, CreateAccountActivity.class);
@@ -88,10 +101,15 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Making json object request
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
      **/
     private void makeJsonObjReq() {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
@@ -111,6 +129,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                 }
             }
         }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley Error", error.toString());
@@ -120,6 +142,11 @@ public class LoginScreenActivity extends AppCompatActivity {
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Listener for the "+" button. Increments the user's coin value and sends the updated value to the backend.
+     * Just used for debugging, not part of the final product.
+     * @param view
+     */
     public void onIncrementCoinListener(View view) {
         if (loggedIn) {
             int coins;
@@ -136,6 +163,9 @@ public class LoginScreenActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sends a JSONObject to the backend. Updates values based on the currentUser.
+     */
     private void postRequest() {
 
         // Convert input to JSONObject
@@ -154,6 +184,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
+                    /**
+                     * Updates the text field "Coins: " when the response is received.
+                     * @param response the response from the backend
+                     */
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -165,6 +199,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                     }
                 },
                 new Response.ErrorListener() {
+                    /**
+                     * Sends the volley error to Logcat.
+                     * @param error the error
+                     */
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley Error", error.toString());

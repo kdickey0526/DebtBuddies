@@ -22,12 +22,21 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * Screen for creating a party.
+ */
 public class CreateParty extends AppCompatActivity implements WebSocketListener {
     Button b_back;
     String member1, member2, member3;
 
     String SERVER_URL= "";
     EditText tv_member1, tv_member2, tv_member3;
+
+    /**
+     * Initialization of the screen and websocket connection
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
@@ -41,11 +50,19 @@ public class CreateParty extends AppCompatActivity implements WebSocketListener 
         WebSocketManager.getInstance().setWebSocketListener(CreateParty.this);
     }
 
+    /**
+     * Navigates back to the party screen.
+     * @param view
+     */
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, Party.class);
         startActivity(intent);
     }
 
+    /**
+     * Listener for adding a user to the party.
+     * @param v
+     */
     public void onSendClicked(View v) {
         member1 = tv_member1.getText().toString();
         member2 = tv_member2.getText().toString();
