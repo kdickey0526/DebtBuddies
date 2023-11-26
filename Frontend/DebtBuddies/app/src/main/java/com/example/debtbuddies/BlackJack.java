@@ -2,6 +2,7 @@ package com.example.debtbuddies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ public class BlackJack extends AppCompatActivity {
     int id;
     String username, email, password;
     String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
+    private static final String TAG = "BlackJack";
     int playerNumH;
     int playerNumL;
     int dealerNumH;
@@ -47,6 +49,15 @@ public class BlackJack extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackjack);
+
+
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                SERVER_URL += MyApplication.currentUser.getString("name");
+            } catch (Exception e) {
+                Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
+            }
+        }
 
 
         b_deal = findViewById(R.id.b_deal);
@@ -181,8 +192,24 @@ public class BlackJack extends AppCompatActivity {
      * Restarts the hand
      */
     public void onReplayClicked(View view) {
-        if (bet > bal || gameOver == false) {
-
+        int adjCoinCount = 0;
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                adjCoinCount = MyApplication.currentUser.getInt("coins");
+                if (adjCoinCount >= 5) { // user needs 5 coins to play
+                    adjCoinCount = adjCoinCount - 5;
+                    MyApplication.currentUser.put("coins", adjCoinCount);
+                    postRequest();
+                } else {
+                    Toast.makeText(this, "You need at least 5 coins to play. You have " + adjCoinCount + ".", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "Failed to get user's coins");
+            }
+        }
+        if (bet > bal || gameOver == false || adjCoinCount < 5) { //this should work at least I think
+            Toast.makeText(this, "Game could not start", Toast.LENGTH_SHORT).show();
         } else {
 
             String card;
@@ -291,6 +318,8 @@ public class BlackJack extends AppCompatActivity {
             }
             tvDealer.setText(String.valueOf(dealerNumH));
         }
+
+        postRequest(); //honestly idk if this works
 
         String temp = "Balance: ";
         temp += bal;

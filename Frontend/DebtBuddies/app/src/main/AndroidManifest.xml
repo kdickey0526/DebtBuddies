@@ -36,6 +36,9 @@
             android:name=".BlackJack"
             android:exported="true" />
         <activity
+            android:name=".TexasHoldem"
+            android:exported="ture" />
+        <activity
             android:name=".Party"
             android:exported="true" />
         <activity
