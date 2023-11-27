@@ -27,15 +27,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
     EditText tv_raise;
     String player2, player3, player4;
     int players;
-<<<<<<< HEAD
+
     int pot, ante;
-=======
 
     /**
      * Instantiates the websocket connection with the backend for the game.
      * @param savedInstanceState
      */
->>>>>>> a55b152655cd925096ea9351d3503fd754f20c03
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

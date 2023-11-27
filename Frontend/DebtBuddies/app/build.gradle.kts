@@ -6,6 +6,9 @@ import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
 
+
+
+
 plugins {
     id("com.android.application")
 }
@@ -32,6 +35,7 @@ android {
     namespace = "com.example.debtbuddies"
     compileSdk = 33
 
+
     defaultConfig {
         applicationId = "com.example.debtbuddies"
         minSdk = 33
@@ -41,6 +45,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -103,8 +108,13 @@ dependencies {
         "include" to listOf("*.aar", "*.jar")
 //        "exclude" to listOf()
     )))
+    implementation("com.google.android.gms:play-services-tflite-acceleration-service:16.0.0-beta01")
+    implementation("com.google.ar.sceneform:filament-android:1.17.1")
+    implementation("androidx.leanback:leanback:1.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.cardview:cardview:1.0.0")
+
+
 }
