@@ -5,30 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9db3bca4-a6ec-4437-8061-4ce617ad76a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/Backend/debt_buddies_backend/springboot_application/src/main/java/debtbuddies/person/Person.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/Backend/debt_buddies_backend/springboot_application/src/main/java/debtbuddies/person/PersonController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/Backend/debt_buddies_backend/springboot_application/src/main/java/debtbuddies/person/PersonRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/Readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/ManytomanyApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/post/Post.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/post/PostController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/post/PostRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/post/Tag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/java/com/cs309/demo/post/TagRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ms_313-main-Backend-debt_buddies_backend-springboot_application/ManyToMany/demo/src/test/java/com/cs309/demo/ManytomanyApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/debt_buddies_backend/springboot_application/src/main/java/debtbuddies/Users/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../spring-boot-hello-world-example/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../spring-boot-hello-world-example/src/main/java/com/javatpoint/controller/HelloWorldController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-hello-world-example/src/main/java/com/javatpoint/controller/HelloWorldController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../spring-boot-hello-world-example/target/classes/com/javatpoint/controller/HelloWorldController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-hello-world-example/target/classes/com/javatpoint/controller/HelloWorldController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +13,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2XeWabKs2iUco0qXVCRiN6XIeDH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -55,9 +32,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Owen",
     "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "/Users/owenparker/Downloads/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/src/main/java/debtbuddies",
+    "last_opened_file_path": "/Users/owenparker/ms_313/Backend/ms_313-main-Backend-debt_buddies_backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -91,6 +68,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698990090779</updated>
       <workItem from="1698990091680" duration="17558000" />
+      <workItem from="1701205308301" duration="784000" />
     </task>
     <servers />
   </component>
