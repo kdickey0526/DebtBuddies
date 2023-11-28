@@ -21,7 +21,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-
+/**
+ * The login screen. Takes a user's username and password and sends it to the database to login. Checking done in the backend.
+ */
 public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
@@ -35,7 +37,10 @@ public class LoginScreenActivity extends AppCompatActivity {
     private boolean passFailed = false;
     private boolean loggedIn;
 
-
+    /**
+     *  Initializes UI elements of the login screen.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +55,13 @@ public class LoginScreenActivity extends AppCompatActivity {
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
     }
 
+    /**
+     * Listener for the "Login"/"Save" button.
+     * @param view the button
+     */
     public void loginBtnOnClickListener(View view) {
         // set SERVER_URL
         String requestedUser = (String) usernameField.getText().toString();
-
-//        if (requestedUser.equals("guest")) {
-//            MyApplication.loggedInAsGuest = true;
-//        }
 
         SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + requestedUser;
         makeJsonObjReq();
@@ -77,10 +82,25 @@ public class LoginScreenActivity extends AppCompatActivity {
             MyApplication.loggedInAsGuest = true;
         }
 
+        // set the user as online (if not logged in as guest)
+        if (!usernameField.getText().toString().equals("guest")) {
+            try {
+                MyApplication.currentUser.put("is_online", loggedIn);
+                postRequest();
+            } catch (Exception e) {
+                Log.e(TAG, "Error setting the user as online.");
+                e.printStackTrace();
+            }
+        }
+
         Intent intent = new Intent(this, HomeScreenActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Listener for the create account button. Launches the create account screen.
+     * @param view the button
+     */
     public void createAcctButtonListener(View view) {
         // switch to the create account activity
         Intent intent = new Intent(this, CreateAccountActivity.class);
@@ -88,10 +108,15 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Making json object request
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
      **/
     private void makeJsonObjReq() {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
@@ -100,6 +125,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     String username = response.getString("name");
                     String coins = response.getString("coins");
 
+                    // insert code here to save the response into a text file
                     MyApplication.currentUser = response; // store json object
 
                     msgResponse.setText("Logged in as: " + username);
@@ -110,6 +136,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                 }
             }
         }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley Error", error.toString());
@@ -119,6 +149,11 @@ public class LoginScreenActivity extends AppCompatActivity {
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Listener for the "+" button. Increments the user's coin value and sends the updated value to the backend.
+     * Just used for debugging, not part of the final product.
+     * @param view
+     */
     public void onIncrementCoinListener(View view) {
         if (loggedIn) {
             int coins;
@@ -135,6 +170,9 @@ public class LoginScreenActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sends a JSONObject to the backend. Updates values based on the currentUser.
+     */
     private void postRequest() {
 
         // Convert input to JSONObject
@@ -153,17 +191,26 @@ public class LoginScreenActivity extends AppCompatActivity {
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
+                    /**
+                     * Updates the text field "Coins: " when the response is received.
+                     * @param response the response from the backend
+                     */
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             Log.d("Volley: ", "object PUT");
                             coinCount.setText("Coins: " + response.getInt("coins"));
+                            // could add & update some visual indicator that user is online here
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
+                    /**
+                     * Sends the volley error to Logcat.
+                     * @param error the error
+                     */
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Volley Error", error.toString());

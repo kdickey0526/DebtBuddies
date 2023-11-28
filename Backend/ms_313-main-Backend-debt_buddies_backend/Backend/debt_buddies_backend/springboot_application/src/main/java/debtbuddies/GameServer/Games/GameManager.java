@@ -79,7 +79,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         Queue.add(user);
         userLobbyMap.put(user, Queue);
         if(Queue.getNumUsers() == dummyInstance.getQueueSize()){
-            LobbyInfo lobbyInfo = new LobbyInfo("gameFound", GameId + 1);
+            LobbyInfo lobbyInfo = new LobbyInfo("gameFound", GameId + 1, Queue.getUsersString());
             Response.addMessage(Queue.getUsers(), "lobbyEvent", lobbyInfo);
             startGame(user);
         }

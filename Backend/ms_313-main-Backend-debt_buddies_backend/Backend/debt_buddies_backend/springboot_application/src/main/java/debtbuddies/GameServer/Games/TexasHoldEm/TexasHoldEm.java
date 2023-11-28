@@ -1,6 +1,7 @@
 package debtbuddies.GameServer.Games.TexasHoldEm;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,7 +139,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     private void sendEndInfo(TexasHoldEmUser winner){
-        EndInfo endInfo = new EndInfo(winner.toString(), "bruh", new ArrayList<>());
+        EndInfo endInfo = new EndInfo(winner.toString(), winner.getHigh_hand().toString(), winner.getHand());
         Response.addMessage(users, "endInfo", endInfo);
     }
 
@@ -221,6 +222,16 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return active;
     }
 
+    private List<TexasHoldEmUser> getActiveUsers(){
+        List<TexasHoldEmUser> active = new ArrayList<>();
+        for(TexasHoldEmUser user : players){
+            if(!user.foldStatus()){
+                active.add(user);
+            }
+        }
+        return active;
+    }
+
     public void deal_hole(){
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < num_users; j++){
@@ -240,6 +251,26 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         pit.add(deck.draw());
     }
 
+    public List<TexasHoldEmUser> decideWinners(){
+        List<TexasHoldEmUser> activePlayers = getActiveUsers();
+        if(activePlayers.size() == 1){
+            return activePlayers;
+        }
+
+        int high_index = 0;
+        PokerHands high_hand = PokerHands.LOW;
+
+        for(int i = 0; i < activePlayers.size(); i++){
+            PokerHands player_high = getHigh(i);
+            if(player_high.getValue() > high_hand.getValue()){
+                high_index = i;
+                high_hand = player_high;
+            }else if(player_high.getValue() == high_hand.getValue()){
+
+            }
+        }
+    }
+
     public TexasHoldEmUser decideWinner(){
         int high_index = 0;
         PokerHands high_hand = PokerHands.LOW;
@@ -253,10 +284,16 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             }else if(player_high.getValue() == high_hand.getValue()){
                 TexasHoldEmUser player1 = players.get(high_index);
                 TexasHoldEmUser player2 = players.get(i);
-                //int winner = tiebreaker(player1, player2);
-                int winner = 1;
-                if(winner == 1){
-                    high_index = i;
+                try {
+                    int winner = tiebreaker(player1, player2);
+                    if(winner == 0){
+                        high_index = players.indexOf(player1);
+                    }else if(winner == 1){
+                        high_index = players.indexOf(player2);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -267,6 +304,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         List<Card> p2_total = getTotal(player2.getHand(), pit);
         Deck.CardManager.sortCards(p1_total);
         Deck.CardManager.sortCards(p2_total);
+        removeDuplicates(p1_total, p2_total);
         for(int i = p1_total.size() - 1; i >= 0; i--){
             if(p1_total.get(i).getRank() > p2_total.get(i).getRank()){
                 return 0;
@@ -275,6 +313,28 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             }
         }
         return 2;
+    }
+
+    private void removeDuplicates(List<Card> l0, List<Card> l1){
+        List<Card> overlap = new ArrayList<>();
+        for(Card card : l0){
+            for(int i = 0; i < l1.size(); i++){
+                if(card.getRank() == l1.get(i).getRank()){
+                    overlap.add(l1.get(i));
+                    l1.remove(l1.get(i));
+                    break;
+                }
+            }
+        }
+        if(overlap.isEmpty()){ return;}
+        for(Card card : overlap){
+            for(int i = 0; i < l0.size(); i++){
+                if(card.getRank() == l0.get(i).getRank()){
+                    l0.remove(l0.get(i));
+                    break;
+                }
+            }
+        }
     }
 
     private List<Card> getTotal(List<Card> deck1, List<Card> deck2){
@@ -290,7 +350,11 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         Deck.CardManager.sortCards(handAndPit);
 
-        return convertHigh(handAndPit);
+        PokerHands hh = convertHigh(handAndPit);
+
+        players.get(index).setHigh_hand(hh);
+
+        return hh;
     }
 
     private List<Integer> countNumbers(List<Card> cards){
@@ -346,6 +410,19 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return straightFlush(temp);
     }
 
+    private List<Card> checkRoyalFlush(List<Card> cards){
+        List<Card> temp = new ArrayList<>();
+        for(Card card : cards){
+            if(card.getRank() >= 10){
+                temp.add(card);
+            }
+        }
+        if(temp.size() < 5){
+            return new ArrayList<>();
+        }
+        return checkStraightFlush(temp);
+    }
+
     private boolean straightFlush(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
@@ -358,6 +435,20 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return false;
     }
 
+    private List<Card> checkStraightFlush(List<Card> cards){
+        for(int i = 0; i < cards.size() - 4; i++){
+            List<Card> temp = new ArrayList<>();
+            temp.add(cards.get(i));
+            for(int j = 1; j < 5; j++){
+                if(cards.get(i).getSuit() == cards.get(i + j).getSuit() && cards.get(i).getRank() + j == cards.get(i + j).getRank()){
+                    temp.add(cards.get(i + j));
+                    if(temp.size() == 5){ return temp; }
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
     private boolean fourOfAKind(List<Card> cards){
 
         List<Integer> values = countNumbers(cards);
@@ -367,6 +458,24 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
 
         return false;
+    }
+
+    private List<Card> checkFourOfAKind(List<Card> cards){
+        List<Integer> values = countNumbers(cards);
+        List<Card> temp = new ArrayList<>();
+
+        for(Integer value : values){
+            if(values.get(value) == 4){
+                for(Card card : cards){
+                    if(card.getRank() == value){
+                        temp.add(card);
+                    }
+                }
+                return temp;
+            }
+        }
+
+        return new ArrayList<>();
     }
 
     private boolean fullHouse(List<Card> cards){
@@ -386,6 +495,102 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return threeCount == 2 || (threeCount == 1 && twoCount >= 1);
     }
 
+    private List<Card> checkFullHouse(List<Card> cards){
+        List<Integer> values = countNumbers(cards);
+
+        List<Card> temp = new ArrayList<>();
+
+        int twoCount = 0, threeCount = 0;
+
+        List<Integer> threes = new ArrayList<>();
+        List<Integer> twos = new ArrayList<>();
+
+        for(Integer value : values){
+            if(values.get(value) == 3){
+                threeCount++;
+                threes.add(value);
+            }else if(values.get(value) == 2){
+                twoCount++;
+                twos.add(value);
+            }
+        }
+
+        if(threeCount == 2 || (threeCount == 1 && twoCount >= 1)) {
+
+            if (threes.size() > 1) {
+                if (threes.get(0) > threes.get(1)) {
+                    for (Card card : cards) {
+                        if (card.getRank() == threes.get(0)) {
+                            temp.add(card);
+                        }
+                    }
+                    if(twoCount > 0){
+                        int maxnum = threes.get(1);
+                        for(Integer h : twos){
+                            if(h > maxnum){
+                                maxnum = h;
+                            }
+                        }
+                        for(Card card : cards){
+                            if(card.getRank() == maxnum){
+                                temp.add(card);
+                                if(temp.size() == 5){
+                                    return temp;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    for (Card card : cards) {
+                        if (card.getRank() == threes.get(1)){
+                            temp.add(card);
+                        }
+                    }
+                    if(twoCount > 0){
+                        int maxnum = threes.get(0);
+                        for(Integer h : twos){
+                            if(h > maxnum){
+                                maxnum = h;
+                            }
+                        }
+                        for(Card card : cards){
+                            if(card.getRank() == maxnum){
+                                temp.add(card);
+                                if(temp.size() == 5){
+                                    return temp;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }else{
+                int targ = threes.get(0);
+                for(Card card : cards){
+                    if(card.getRank() == targ){
+                        temp.add(card);
+                    }
+                }
+                int mx = twos.get(0);
+                if(twos.size() > 1){
+                    for(Integer val : twos){
+                        if(val > mx){
+                            mx = val;
+                        }
+                    }
+                }
+                for(Card card : cards){
+                    if(card.getRank() == mx){
+                        temp.add(card);
+                    }
+                }
+                return temp;
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
     private boolean flush(List<Card> cards){
         for(Suit suit : Suit.values()){
             int count = 0;
@@ -395,6 +600,17 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             if(count >= 5){ return true; }
         }
         return false;
+    }
+
+    private List<Card> checkFlush(List<Card> cards){
+        for(Suit suit : Suit.values()){
+            List<Card> temp = new ArrayList<>();
+            for(int i = cards.size() - 1; i >= 0; i--){
+                if(cards.get(i).getSuit() == suit){ temp.add(cards.get(i)); }
+            }
+            if(temp.size() >= 5){ return temp; }
+        }
+        return new ArrayList<>();
     }
 
     private boolean straight(List<Card> cards){
@@ -409,6 +625,21 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return false;
     }
 
+    private List<Card> checkStraight(List<Card> cards){
+        for(int i = 0; i < cards.size() - 4; i++){
+            List<Card> temp = new ArrayList<>();
+            for(int j = 1; j < 5; j++){
+                if(cards.get(i).getRank() + j == cards.get(i + j).getRank()){
+                    temp.add(cards.get(i + j));
+                    if(temp.size() == 5){
+                        return temp;
+                    }
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
     private boolean threeOfAKind(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -417,6 +648,24 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
 
         return false;
+    }
+
+    private List<Card> checkThreeOfAKind(List<Card> cards){
+        List<Integer> values = countNumbers(cards);
+
+        for(Integer i : values){
+            if(values.get(i) == 3){
+                List<Card> temp = new ArrayList<>();
+                for(Card card : cards){
+                    if(card.getRank() == i){
+                        temp.add(card);
+                    }
+                }
+                return temp;
+            }
+        }
+
+        return new ArrayList<>();
     }
 
     private boolean twoPair(List<Card> cards){
@@ -430,6 +679,25 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return count >= 2;
     }
 
+    private List<Card> checkTwoPair(List<Card> cards){
+        List<Integer> values = countNumbers(cards);
+        List<Card> temp = new ArrayList<>();
+        for(Integer value : values){
+            if(values.get(value) == 2){
+                for(Card card : cards){
+                    if(card.getRank() == value){
+                        temp.add(card);
+                        if(temp.size() == 4){
+                            return temp;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
     private boolean pair(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -438,6 +706,25 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
 
         return false;
+    }
+
+    private List<Card> checkPair(List<Card> cards){
+        List<Integer> values = countNumbers(cards);
+
+        List<Card> temp = new ArrayList<>();
+
+        for(Integer i : values){
+            if(values.get(i) == 2){
+                for(Card card : cards){
+                    if(card.getRank() == i){
+                        temp.add(card);
+                    }
+                }
+                return temp;
+            }
+        }
+
+        return new ArrayList<>();
     }
 
     private PokerHands getHighEnum(List<Card> cards){
