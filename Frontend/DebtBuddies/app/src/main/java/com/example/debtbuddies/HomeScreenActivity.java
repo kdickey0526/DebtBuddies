@@ -19,6 +19,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private TextView usernameField;
     private TextView coinsField;
     private static final String TAG = "HomeScreenActivity";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
     /**
      * Sets up the UI elements and fetches user information.
@@ -38,6 +39,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         // this code will only work when server is running and logged into an actual user
         if (!MyApplication.loggedInAsGuest) {
             try {
+                try {
+                    SERVER_URL += MyApplication.currentUser.getString("name");
+                } catch (Exception e) {
+                    Log.e(TAG, "failed getting the currentUser's username");
+                    e.printStackTrace();
+                }
                 // best to re-fetch the user information here, add soon
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
