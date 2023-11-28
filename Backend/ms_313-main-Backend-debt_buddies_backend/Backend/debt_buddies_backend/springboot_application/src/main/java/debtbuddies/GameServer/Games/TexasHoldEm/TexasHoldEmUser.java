@@ -16,6 +16,10 @@ public class TexasHoldEmUser extends User {
 
     private boolean fold;
 
+    private PokerHands high_hand = PokerHands.LOW;
+
+    private List<Card> high_hand_cards = new ArrayList<>();
+
     public TexasHoldEmUser(User user){
         super(user.toString());
         bet = 0;
@@ -28,6 +32,22 @@ public class TexasHoldEmUser extends User {
         return pick;
     }
 
+    public void addHigh_hand_card(Card card){
+        high_hand_cards.add(card);
+    }
+
+    public List<Card> getHigh_hand_cards(){
+        return high_hand_cards;
+    }
+
+    public void setHigh_hand(PokerHands hh){
+        high_hand = hh;
+    }
+
+    public PokerHands getHigh_hand(){
+        return high_hand;
+    }
+
     public List<Card> getHand(){
         return hand;
     }
@@ -36,6 +56,8 @@ public class TexasHoldEmUser extends User {
         this.bet = 0;
         this.ante = 0;
         this.hand = new ArrayList<>();
+        high_hand = PokerHands.LOW;
+        high_hand_cards = new ArrayList<>();
     }
 
     public void foldHand(){
