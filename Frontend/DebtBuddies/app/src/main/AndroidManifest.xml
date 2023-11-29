@@ -37,7 +37,7 @@
             android:exported="true" />
         <activity
             android:name=".TexasHoldem"
-            android:exported="ture" />
+            android:exported="true" />
         <activity
             android:name=".Party"
             android:exported="true" />

@@ -23,4 +23,10 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.debtbuddies", appContext.getPackageName());
     }
+
+    @Test
+    public void blackjack() {
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+    }
 }

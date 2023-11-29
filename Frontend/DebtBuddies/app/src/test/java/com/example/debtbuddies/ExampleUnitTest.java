@@ -26,6 +26,12 @@ import androidx.leanback.widget.Presenter;
  */
 public class ExampleUnitTest {
 
+//    @Mock
+//    private Context context;
+//
+//    @Mock
+//    private TestingView view;
+
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
@@ -33,6 +39,7 @@ public class ExampleUnitTest {
 
     @Test
     public void blackJack() {
-
+//        MainActivityPresenter presenter = new MainActivityPresenter(view, context);
+        
     }
 }

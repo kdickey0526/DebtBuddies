@@ -39,7 +39,7 @@ public class BlackJack extends AppCompatActivity {
     Button b_deal, b_stand, b_double, b_replay, b_menu;
     ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
         dealerCard2, dealerCard3, dealerCard4, dealerCard5;
-    boolean gameOver, doubleClick, hitPlayer;
+    public boolean gameOver, doubleClick, hitPlayer;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
     int i, bal, bet;
