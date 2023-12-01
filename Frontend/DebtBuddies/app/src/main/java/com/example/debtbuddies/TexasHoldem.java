@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -28,7 +29,9 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
     String player2, player3, player4;
     int players;
 
-    int pot, ante;
+    int pot, ante, count;
+
+    ImageView cardPlayer1, cardPlayer2, community1, community2, community3, community4, community5;
 
     /**
      * Instantiates the websocket connection with the backend for the game.
@@ -55,11 +58,22 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
         WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "joinQueue" + "\"}");
 
         tv_raise = findViewById(R.id.tv_raise);
+        cardPlayer1 = findViewById(R.id.id_player1);
+        cardPlayer2 = findViewById(R.id.id_player2);
+
+        community1 = findViewById(R.id.id_community1);
+        community2 = findViewById(R.id.id_community2);
+        community3 = findViewById(R.id.id_community3);
+        community4 = findViewById(R.id.id_community4);
+        community5 = findViewById(R.id.id_community5);
+
+
 
         gameStart = false;
         players = 0;
         pot = 0;
         ante = 0;
+        count = 0;
     }
     public void onFoldClicked(View view) {
         try {
@@ -121,9 +135,169 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
             String s_ante = "";
             String s_pot = "";
 
-            if (temp[0].charAt(8) == 's') { // stage logic
+            if (temp[0].charAt(8) == 's' && temp[0].charAt(11) == 'r') { // player hand
+                String card = "";
+                char suit = temp[1].charAt(26);
+                String rank = "";
 
-            } else if (temp[0].charAt(8) == 't') {   //get player info
+                for (int j = 7; j < temp[2].length(); j++) {
+                    rank += temp[2].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                int image = getResources().getIdentifier(card, "drawable", getPackageName());
+                cardPlayer1.setImageResource(image);
+
+                card = "";
+                suit = temp[3].charAt(8);
+                rank = "";
+
+                for (int j = 7; j < temp[4].length(); j++) {
+                    rank += temp[4].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                image = getResources().getIdentifier(card, "drawable", getPackageName());
+                cardPlayer2.setImageResource(image);
+
+
+            }  else if (temp[0].charAt(8) == 's') {  //stage info
+                count ++;
+                String card = "";
+                char suit = temp[1].charAt(25);
+                String rank = "";
+
+                for (int j = 7; j < temp[2].length(); j++) {
+                    rank += temp[2].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                int image = getResources().getIdentifier(card, "drawable", getPackageName());
+                community1.setImageResource(image);
+
+
+                card = "";
+                suit = temp[3].charAt(8);
+                rank = "";
+
+                for (int j = 7; j < temp[4].length(); j++) {
+                    rank += temp[4].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                image = getResources().getIdentifier(card, "drawable", getPackageName());
+                community2.setImageResource(image);
+
+                card = "";
+                suit = temp[5].charAt(8);
+                rank = "";
+
+                for (int j = 7; j < temp[6].length(); j++) {
+                    rank += temp[6].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                image = getResources().getIdentifier(card, "drawable", getPackageName());
+                community3.setImageResource(image);
+
+                if (count >= 2) {
+                    card = "";
+                    suit = temp[7].charAt(8);
+                    rank = "";
+
+                    for (int j = 7; j < temp[8].length(); j++) {
+                        rank += temp[8].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community4.setImageResource(image);
+                }
+                if (count >= 3) {
+                    card = "";
+                    suit = temp[9].charAt(8);
+                    rank = "";
+
+                    for (int j = 7; j < temp[10].length(); j++) {
+                        rank += temp[10].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community3.setImageResource(image);
+                }
+            }
+            else if (temp[0].charAt(8) == 't') {   //get player info
 
             } else if (temp[0].charAt(8) == 'd'){    // move logic
 
