@@ -28,6 +28,9 @@ public class FriendsListActivity extends AppCompatActivity {
     private JSONObject currentFriend = null;
     private static final String TAG = "FriendsListActivity";
 
+    // =============================================================================================================================================
+    // not sure how adding a friend wants to be handled, so that part still needs to be implemented
+    // =============================================================================================================================================
 
     /**
      * Runs when the screen is navigated to. Initializes UI elements
@@ -57,16 +60,18 @@ public class FriendsListActivity extends AppCompatActivity {
             try {
                 int i = 0;
                 for (i = 0; i < userFriendList.length(); i++) { // .length returns # of key/value pairs in the object
-                    int friendID = userFriendList.getInt("friend" + i); // not sure how the friends are mapped in the database
+                    int friendID = userFriendList.getInt("friend" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
                     SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + friendID;
-                    makeFriendJsonObjReq();
-                    boolean onlineStatus = currentFriend.getBoolean("online"); // not sure what actually is in backend
+                    makeFriendJsonObjReq(); // get that friend's info
+                    boolean onlineStatus = currentFriend.getBoolean("online"); // not sure what it's actually named in backend
                     String status = "";
                     if (onlineStatus)
                         status = "Online";
                     else
                         status = "Offline";
-                    listOfFriends.setText(currentFriend.getString("name") + "\t\tStatus: " + status + "\n");
+
+                    String previousList = listOfFriends.getText().toString();
+                    listOfFriends.setText(previousList + currentFriend.getString("name") + "\t\tStatus: " + status + "\n");
                 }
             } catch (Exception e) {
                 Log.e(TAG, "The userFriendList probably returned null.");

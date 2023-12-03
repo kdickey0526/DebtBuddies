@@ -72,6 +72,7 @@
                 android:id="@+id/tv_friends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/indie_flower"
                 android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>

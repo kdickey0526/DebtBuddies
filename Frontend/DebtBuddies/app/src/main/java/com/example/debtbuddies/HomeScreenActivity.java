@@ -49,10 +49,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     SERVER_URL += MyApplication.currentUserName;
                     makeJsonObjReq();   // refresh the currentUser object
                 } catch (Exception e) {
-                    Log.e(TAG, "failed getting the currentUser's username");
+                    Log.e(TAG, "failed fetching the user information");
                     e.printStackTrace();
                 }
-                // best to re-fetch the user information here, add soon
+
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
@@ -63,6 +63,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             usernameField.setText("Guest");
             coinsField.setText("No coins");
         }
+
+        updateUserSettings();
     }
 
     /**
@@ -164,5 +166,14 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Helper method. Sets the user's current settings.
+     */
+    public void updateUserSettings() {
+        if (!MyApplication.loggedInAsGuest) {
+            // get user's settings stored in database and update accordingly in MyApplication
+        }
     }
 }

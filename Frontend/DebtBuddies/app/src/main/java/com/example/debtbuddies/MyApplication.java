@@ -22,4 +22,6 @@ public class MyApplication extends Application {
      * Variable holding whether the user has logged in as guest or not.
      */
     public static boolean loggedInAsGuest = false;
+
+    public static boolean enableSounds = true; // by default enabled
 }
