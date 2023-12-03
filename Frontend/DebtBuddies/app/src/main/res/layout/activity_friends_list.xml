@@ -52,34 +52,28 @@
         app:layout_constraintTop_toBottomOf="@+id/friendsListTitle"
         app:layout_constraintVertical_bias="0.027" />
 
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="505dp"
+    <ScrollView
+        android:layout_width="369dp"
+        android:layout_height="522dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_addUserText"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/et_addUser">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_friends"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="left|center_vertical"
-                android:text="TextView"
+                android:layout_height="wrap_content"
                 android:textSize="24sp" />
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

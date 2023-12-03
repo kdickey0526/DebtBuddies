@@ -52,9 +52,9 @@ android {
 
 
     buildTypes {
-//        debug{
-//            testCoverageEnabled true
-//        }
+        debug {
+            enableAndroidTestCoverage = true // maybe this is the right variable...?
+        }
 
         release {
             isMinifyEnabled = false
