@@ -117,6 +117,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     // grab fields here
                     String username = response.getString("name");
                     String coins = response.getString("coins");
+                    MyApplication.currentUserName = response.getString("name");
 
                     // insert code here to save the response into a text file
                     MyApplication.currentUser = response; // store json object

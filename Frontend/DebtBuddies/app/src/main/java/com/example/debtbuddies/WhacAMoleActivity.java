@@ -214,7 +214,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
      * @param view the mole clicked
      */
     public void onMoleClicked(View view) {
-        mediaPlayer.start();
+        if (MyApplication.enableSounds) {
+            mediaPlayer.start();
+        }
         if (gameStarted) {
             // figure out which mole v is
             int i;

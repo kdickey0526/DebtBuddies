@@ -8,7 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * The home screen for the app. Responsible for navigation to leaderboard, settings, profile, games, etc.
@@ -40,12 +46,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         if (!MyApplication.loggedInAsGuest) {
             try {
                 try {
-                    SERVER_URL += MyApplication.currentUser.getString("name");
+                    SERVER_URL += MyApplication.currentUserName;
+                    makeJsonObjReq();   // refresh the currentUser object
                 } catch (Exception e) {
-                    Log.e(TAG, "failed getting the currentUser's username");
+                    Log.e(TAG, "failed fetching the user information");
                     e.printStackTrace();
                 }
-                // best to re-fetch the user information here, add soon
+
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
@@ -56,6 +63,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             usernameField.setText("Guest");
             coinsField.setText("No coins");
         }
+
+        updateUserSettings();
     }
 
     /**
@@ -100,7 +109,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     public void settingsOnClickListener(View v) {
         Log.d(TAG, "settingsOnClickListener: clicked");
-
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
@@ -118,7 +127,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     public void leaderboardOnClickListener(View v) {
         Log.d(TAG, "leaderboardOnClickListener: clicked");
-
+        startActivity(new Intent(this, LeaderboardActivity.class));
     }
 
     /**
@@ -128,5 +137,43 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void profileOnClickListener(View v) {
         Log.d(TAG, "profileOnClickListener: clicked");
         startActivity(new Intent(this, Menu.class));
+    }
+
+    /**
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
+     **/
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                MyApplication.currentUser = response; // store json object
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Helper method. Sets the user's current settings.
+     */
+    public void updateUserSettings() {
+        if (!MyApplication.loggedInAsGuest) {
+            // get user's settings stored in database and update accordingly in MyApplication
+        }
     }
 }
