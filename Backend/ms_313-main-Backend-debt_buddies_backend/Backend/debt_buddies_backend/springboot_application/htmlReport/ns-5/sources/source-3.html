@@ -1,0 +1,87 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GameInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameServer.Games</a>
+</div>
+
+<h1>Coverage Summary for Class: GameInterface (debtbuddies.GameServer.Games)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">GameInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameServer.Games;
+&nbsp;
+&nbsp;import debtbuddies.GameServer.Communication.ServerEvent;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.Group;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.User;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface GameInterface &lt;T, K&gt;{
+&nbsp;
+&nbsp;    void getResponse(User user, ServerEvent serverEvent);
+&nbsp;
+&nbsp;    K getNewGame(Group lobby, int gameId);
+&nbsp;
+&nbsp;    T getNewUser(User user);
+&nbsp;
+&nbsp;    int getQueueSize();
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-04 11:00</div>
+</div>
+</body>
+</html>
