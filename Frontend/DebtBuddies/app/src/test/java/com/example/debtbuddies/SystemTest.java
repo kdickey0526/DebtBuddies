@@ -42,8 +42,18 @@ public class SystemTest {
     public void login() {
         onView(withId(R.id.usernameField)).perform(typeText("guest"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
-
-
-
     }
+    @Rule   // needed to launch the activity
+    public ActivityTestRule<BlackJack> blackjackRule = new ActivityTestRule<>(BlackJack.class);
+
+    public void blackJack() {
+        onView(withId(R.id.b_deal)).perform(click());
+        onView(withId(R.id.b_stand)).perform(click());
+        onView(withId(R.id.b_replay)).perform(click());
+        onView(withId(R.id.b_double)).perform(click());
+        onView(withId(R.id.b_stand)).perform(click());
+        onView(withId(R.id.b_menu)).perform(click());
+    }
+
+
 }
