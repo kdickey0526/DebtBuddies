@@ -1,0 +1,135 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Manager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameServer</a>
+</div>
+
+<h1>Coverage Summary for Class: Manager (debtbuddies.GameServer)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Manager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameServer;
+&nbsp;
+&nbsp;import debtbuddies.GameServer.Communication.ServerEvent;
+&nbsp;import debtbuddies.GameServer.Games.GameManager;
+&nbsp;import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEm;
+&nbsp;import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEmUser;
+&nbsp;import debtbuddies.GameServer.Games.War.War;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.CardUser;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.User;
+&nbsp;
+<b class="nc">&nbsp;public class Manager {</b>
+&nbsp;
+<b class="nc">&nbsp;    private static GameManager&lt;TexasHoldEmUser, TexasHoldEm&gt; texasManager = new GameManager&lt;&gt;(new TexasHoldEm());</b>
+&nbsp;
+<b class="nc">&nbsp;    private static GameManager&lt;CardUser, War&gt; warManager = new GameManager&lt;CardUser, War&gt;(new War());</b>
+&nbsp;
+&nbsp;    public static void getResponse(String game, User user, ServerEvent serverEvent){
+<b class="nc">&nbsp;        switch(game){</b>
+&nbsp;            case &quot;texasholdem&quot;:
+<b class="nc">&nbsp;                texasManager.getResponse(user, serverEvent);</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            case &quot;war&quot;:
+<b class="nc">&nbsp;                warManager.getResponse(user, serverEvent);</b>
+&nbsp;            case &quot;gofish&quot;:
+&nbsp;                //return GoFishManager.getResponse(player, serverEvent.getAction());
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            default:
+&nbsp;                return;
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-04 11:00</div>
+</div>
+</body>
+</html>

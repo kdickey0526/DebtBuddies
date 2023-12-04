@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TexasHoldEmUser</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameServer.Games.TexasHoldEm</a>
+</div>
+
+<h1>Coverage Summary for Class: TexasHoldEmUser (debtbuddies.GameServer.Games.TexasHoldEm)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TexasHoldEmUser</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameServer.Games.TexasHoldEm;
+&nbsp;
+&nbsp;import debtbuddies.GameServer.DeckLibrary.Card;
+&nbsp;import debtbuddies.GameServer.DeckLibrary.Deck;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.User;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class TexasHoldEmUser extends User {
+<b class="nc">&nbsp;    private List&lt;Card&gt; hand = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;    private int bet;
+&nbsp;
+&nbsp;    private int ante;
+&nbsp;
+&nbsp;    private boolean fold;
+&nbsp;
+<b class="nc">&nbsp;    private PokerHands high_hand = PokerHands.LOW;</b>
+&nbsp;
+<b class="nc">&nbsp;    private List&lt;Card&gt; high_hand_cards = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;    public TexasHoldEmUser(User user){
+<b class="nc">&nbsp;        super(user.toString());</b>
+<b class="nc">&nbsp;        bet = 0;</b>
+<b class="nc">&nbsp;        fold = false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Card draw(Deck deck){
+<b class="nc">&nbsp;        Card pick = deck.draw();</b>
+<b class="nc">&nbsp;        hand.add(pick);</b>
+<b class="nc">&nbsp;        return pick;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addHigh_hand_card(Card card){
+<b class="nc">&nbsp;        high_hand_cards.add(card);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Card&gt; getHigh_hand_cards(){
+<b class="nc">&nbsp;        return high_hand_cards;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setHigh_hand(PokerHands hh){
+<b class="nc">&nbsp;        high_hand = hh;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PokerHands getHigh_hand(){
+<b class="nc">&nbsp;        return high_hand;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Card&gt; getHand(){
+<b class="nc">&nbsp;        return hand;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void clearInventory(){
+<b class="nc">&nbsp;        this.bet = 0;</b>
+<b class="nc">&nbsp;        this.ante = 0;</b>
+<b class="nc">&nbsp;        this.hand = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        high_hand = PokerHands.LOW;</b>
+<b class="nc">&nbsp;        high_hand_cards = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void foldHand(){
+<b class="nc">&nbsp;        fold = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean foldStatus(){
+<b class="nc">&nbsp;        return fold;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int placeBet(int bet){
+<b class="nc">&nbsp;        this.balance -= bet;</b>
+<b class="nc">&nbsp;        this.bet += bet;</b>
+<b class="nc">&nbsp;        this.ante += bet;</b>
+<b class="nc">&nbsp;        return bet;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getBet(){
+<b class="nc">&nbsp;        return bet;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setBet(int bet){
+<b class="nc">&nbsp;        this.bet = bet;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getAnte(){
+<b class="nc">&nbsp;        return ante;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAnte(int ante){
+<b class="nc">&nbsp;        this.ante = ante;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int cashout(int amount){
+<b class="nc">&nbsp;        balance += amount;</b>
+<b class="nc">&nbsp;        return balance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-04 11:00</div>
+</div>
+</body>
+</html>
