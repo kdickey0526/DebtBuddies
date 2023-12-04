@@ -29,8 +29,9 @@ plugins {
 //}
 
 android {
+    compileSdkVersion 33
+
     namespace = "com.example.debtbuddies"
-    compileSdkVersion = 33
 
     defaultConfig {
         applicationId = "com.example.debtbuddies"
