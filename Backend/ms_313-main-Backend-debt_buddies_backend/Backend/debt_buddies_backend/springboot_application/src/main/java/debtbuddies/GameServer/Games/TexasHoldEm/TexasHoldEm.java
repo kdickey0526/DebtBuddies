@@ -250,7 +250,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private void river(){
         pit.add(deck.draw());
     }
-
+/*
     public List<TexasHoldEmUser> decideWinners(){
         List<TexasHoldEmUser> activePlayers = getActiveUsers();
         if(activePlayers.size() == 1){
@@ -269,8 +269,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
             }
         }
+        return activePlayers;
     }
-
+*/
     public TexasHoldEmUser decideWinner(){
         int high_index = 0;
         PokerHands high_hand = PokerHands.LOW;
@@ -409,7 +410,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return straightFlush(temp);
     }
-
+/*
     private List<Card> checkRoyalFlush(List<Card> cards){
         List<Card> temp = new ArrayList<>();
         for(Card card : cards){
@@ -422,7 +423,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return checkStraightFlush(temp);
     }
-
+*/
     private boolean straightFlush(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
@@ -434,7 +435,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return false;
     }
-
+/*
     private List<Card> checkStraightFlush(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             List<Card> temp = new ArrayList<>();
@@ -448,7 +449,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return new ArrayList<>();
     }
-
+*/
     private boolean fourOfAKind(List<Card> cards){
 
         List<Integer> values = countNumbers(cards);
@@ -459,7 +460,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return false;
     }
-
+/*
     private List<Card> checkFourOfAKind(List<Card> cards){
         List<Integer> values = countNumbers(cards);
         List<Card> temp = new ArrayList<>();
@@ -477,7 +478,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return new ArrayList<>();
     }
-
+*/
     private boolean fullHouse(List<Card> cards){
 
         List<Integer> values = countNumbers(cards);
@@ -494,7 +495,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return threeCount == 2 || (threeCount == 1 && twoCount >= 1);
     }
-
+/*
     private List<Card> checkFullHouse(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -590,7 +591,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return new ArrayList<>();
     }
-
+*/
     private boolean flush(List<Card> cards){
         for(Suit suit : Suit.values()){
             int count = 0;
@@ -601,7 +602,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return false;
     }
-
+/*
     private List<Card> checkFlush(List<Card> cards){
         for(Suit suit : Suit.values()){
             List<Card> temp = new ArrayList<>();
@@ -612,7 +613,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return new ArrayList<>();
     }
-
+*/
     private boolean straight(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
@@ -624,7 +625,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return false;
     }
-
+/*
     private List<Card> checkStraight(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             List<Card> temp = new ArrayList<>();
@@ -639,7 +640,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         }
         return new ArrayList<>();
     }
-
+*/
     private boolean threeOfAKind(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -649,7 +650,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return false;
     }
-
+/*
     private List<Card> checkThreeOfAKind(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -667,7 +668,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return new ArrayList<>();
     }
-
+*/
     private boolean twoPair(List<Card> cards){
         List<Integer> values = countNumbers(cards);
         int count = 0;
@@ -678,7 +679,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return count >= 2;
     }
-
+/*
     private List<Card> checkTwoPair(List<Card> cards){
         List<Integer> values = countNumbers(cards);
         List<Card> temp = new ArrayList<>();
@@ -697,7 +698,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return new ArrayList<>();
     }
-
+*/
     private boolean pair(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -707,7 +708,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return false;
     }
-
+/*
     private List<Card> checkPair(List<Card> cards){
         List<Integer> values = countNumbers(cards);
 
@@ -726,7 +727,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
         return new ArrayList<>();
     }
-
+*/
     private PokerHands getHighEnum(List<Card> cards){
         switch(cards.get(cards.size() - 1).getRank()){
             case 2:
