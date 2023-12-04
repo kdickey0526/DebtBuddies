@@ -427,7 +427,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return checkStraightFlush(temp);
     }
 */
-    public boolean straightFlush(List<Card> cards){
+    private boolean straightFlush(List<Card> cards){
         for(int i = 0; i < cards.size() - 4; i++){
             int count = 1;
             for(int j = 1; j < 5; j++){
