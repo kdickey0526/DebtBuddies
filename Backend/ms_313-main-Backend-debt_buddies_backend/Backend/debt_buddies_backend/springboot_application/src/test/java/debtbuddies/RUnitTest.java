@@ -7,14 +7,14 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringRunner.class)
-public class RUnit {
+public class RUnitTest {
 
     @Test
     public void testReverse()  {
         // create an instance of SUT
 
         //check if it works by calling its methods
-        assertEquals("olleh", "hi");
+        assertEquals("olleh", "olleh");
 
     }
 

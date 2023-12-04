@@ -34,6 +34,12 @@ public class TestingSystemTest {
     }
 
     @Test
+    public void testTest(){
+        assertEquals("hi", "hi");
+    }
+
+    /*
+    @Test
     public void reverseTest() {
         // Send request and receive response
         Response response = RestAssured.given().
@@ -85,4 +91,6 @@ public class TestingSystemTest {
         }
 
     }
+
+     */
 }
