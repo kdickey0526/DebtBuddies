@@ -30,7 +30,7 @@ plugins {
 
 android {
     namespace = "com.example.debtbuddies"
-    compileSdk = 33
+    compileSdkVersion = 33
 
     defaultConfig {
         applicationId = "com.example.debtbuddies"
@@ -98,11 +98,6 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.navigation:navigation-fragment:2.5.3")
     implementation("androidx.navigation:navigation-ui:2.5.3")
-    implementation(fileTree(mapOf(
-        "dir" to "C:\\Users\\kdick\\AppData\\Local\\Android\\Sdk\\platforms\\android-33",
-        "include" to listOf("*.aar", "*.jar")
-//        "exclude" to listOf()
-    )))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
