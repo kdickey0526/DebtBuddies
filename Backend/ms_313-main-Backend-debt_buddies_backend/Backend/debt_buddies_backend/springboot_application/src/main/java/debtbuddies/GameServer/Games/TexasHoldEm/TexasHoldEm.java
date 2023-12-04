@@ -282,7 +282,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             if(player_high.getValue() > high_hand.getValue()){
                 high_index = i;
                 high_hand = player_high;
-            }else if(player_high.getValue() == high_hand.getValue()){
+            }
+            /*
+            else if(player_high.getValue() == high_hand.getValue()){
                 TexasHoldEmUser player1 = players.get(high_index);
                 TexasHoldEmUser player2 = players.get(i);
                 try {
@@ -297,6 +299,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                     throw new RuntimeException(e);
                 }
             }
+             */
         }
         return players.get(high_index);
     }
