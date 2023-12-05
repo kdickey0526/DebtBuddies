@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class LeaderboardActivity extends AppCompatActivity {
 
     private static final String TAG = "LeaderboardActivity";
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/Whackamole"; //person/WhacAMole for old version
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Whackamole"; //person/WhacAMole for old version
     private TextView tv_whacBoard;
     private TextView tv_warBoard;
     private TextView tv_bjBoard;
@@ -58,7 +58,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void updateWhac() {
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/Whackamole"; // will have to be updated after basic testing
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Whackamole"; // will have to be updated after basic testing
         makeJsonArrayReq();
 //        while (leaderboardArray == null) {
 //            makeJsonArrayReq();
@@ -100,7 +100,7 @@ public class LeaderboardActivity extends AppCompatActivity {
      * Updates some fields on the screen for debugging purposes as well.
      **/
     private void makeJsonArrayReq() {
-        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, "http://coms-309-048.class.las.iastate.edu:8080/person/Whackamole", null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, "http://coms-309-048.class.las.iastate.edu:8080/Whackamole", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("Volley Response", "response received: " + response.toString());
@@ -117,15 +117,15 @@ public class LeaderboardActivity extends AppCompatActivity {
                     int three = response.getJSONObject(2).getInt("id");
                     int four = response.getJSONObject(3).getInt("id");
                     int five = response.getJSONObject(4).getInt("id");
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + one;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + one;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + two;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + two;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + three;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + three;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + four;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + four;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + five;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + five;
                     makeJsonObjReq();
 
                 } catch (JSONException e) {
@@ -162,11 +162,12 @@ public class LeaderboardActivity extends AppCompatActivity {
                     case 0: // get first user
                         try {
                             String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
+                            tv_whacBoard.setText(s + response.getString("name") + "\t:\t" + response.getString("whack") + "\n");
                             count++;
                             break;
                         } catch (Exception e) {
-
+                            Log.e(TAG, "error updating leaderboard text");
+                            e.printStackTrace();
                         }
                     case 1: // get second user
                         try {

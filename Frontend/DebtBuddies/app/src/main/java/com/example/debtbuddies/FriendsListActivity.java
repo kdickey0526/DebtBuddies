@@ -61,31 +61,31 @@ public class FriendsListActivity extends AppCompatActivity {
             // display each user adding onto the text view, similar to how global chat was implemented
             // also display the user's online status
 
-            try {
-                int i = 0;
-                for (i = 0; i < userFriendList.length(); i++) { // .length returns # of key/value pairs in the object
-                    friendID = userFriendList.getJSONObject(i).getInt("person_id"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
-
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + friendID;
-                    makeFriendJsonObjReq(); // get that friend's info
-
-                    boolean onlineStatus = currentFriend.getBoolean("is_online"); // not sure what it's actually named in backend
-                    String name = currentFriend.getString("name");
-                    String status = "";
-
-                    if (onlineStatus)
-                        status = "Online";
-                    else
-                        status = "Offline";
-
-                    String previousList = listOfFriends.getText().toString();
-                    listOfFriends.setText(previousList + name + "\t\tStatus: " + status + "\n");
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "The userFriendList JSONObject is probably null.");
-                e.printStackTrace();
-                Log.d(TAG, "userFriendList value = " + userFriendList);
-            }
+//            try {
+//                int i = 0;
+//                for (i = 0; i < userFriendList.length(); i++) { // .length returns # of key/value pairs in the object
+//                    friendID = userFriendList.getJSONObject(i).getInt("person_id"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
+//
+//                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + friendID;
+//                    makeFriendJsonObjReq(); // get that friend's info
+//
+//                    boolean onlineStatus = currentFriend.getBoolean("is_online"); // not sure what it's actually named in backend
+//                    String name = currentFriend.getString("name");
+//                    String status = "";
+//
+//                    if (onlineStatus)
+//                        status = "Online";
+//                    else
+//                        status = "Offline";
+//
+//                    String previousList = listOfFriends.getText().toString();
+//                    listOfFriends.setText(previousList + name + "\t\tStatus: " + status + "\n");
+//                }
+//            } catch (Exception e) {
+//                Log.e(TAG, "The userFriendList JSONObject is probably null.");
+//                e.printStackTrace();
+//                Log.d(TAG, "userFriendList value = " + userFriendList);
+//            }
         } else {
             listOfFriends.setText("Silly goose, you're logged in as guest! You have no friends.");
         }
@@ -101,7 +101,32 @@ public class FriendsListActivity extends AppCompatActivity {
             public void onResponse(JSONArray response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
-                    userFriendList = response; //new JSONArray("{\n\t\"Array\": " + response + "\n}"); // store json object
+//                    userFriendList = response; //new JSONArray("{\n\t\"Array\": " + response + "\n}"); // store json object
+                    try {
+                        int i = 0;
+                        for (i = 0; i < response.length(); i++) { // .length returns # of key/value pairs in the object
+                            friendID = response.getJSONObject(i).getInt("person_id"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
+
+                            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + friendID;
+                            makeFriendJsonObjReq(); // get that friend's info
+
+//                            boolean onlineStatus = currentFriend.getBoolean("is_online"); // not sure what it's actually named in backend
+//                            String name = currentFriend.getString("name");
+//                            String status = "";
+//
+//                            if (onlineStatus)
+//                                status = "Online";
+//                            else
+//                                status = "Offline";
+//
+//                            String previousList = listOfFriends.getText().toString();
+//                            listOfFriends.setText(previousList + name + "\t\tStatus: " + status + "\n");
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "The userFriendList JSONObject is probably null.");
+                        e.printStackTrace();
+                        Log.d(TAG, "userFriendList value = " + userFriendList);
+                    }
                 } catch (Exception e) {
                     Log.e(TAG, "Failed ");
                 }
@@ -129,7 +154,23 @@ public class FriendsListActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
-                currentFriend = response; // store json object
+//                currentFriend = response; // store json object
+                try {
+                    boolean onlineStatus = response.getBoolean("is_online"); // not sure what it's actually named in backend
+                    String name = response.getString("name");
+                    String status = "";
+
+                    if (onlineStatus)
+                        status = "Online";
+                    else
+                        status = "Offline";
+
+                    String previousList = listOfFriends.getText().toString();
+                    listOfFriends.setText(previousList + name + "\t\tStatus: " + status + "\n");
+                } catch (Exception e) {
+                    Log.e(TAG, "error getting the object from the array");
+                    e.printStackTrace();
+                }
             }
         }, new ErrorListener() {
             /**
