@@ -128,7 +128,7 @@ public class PersonController {
 		GameScore laptop = GameScoreRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
-		laptop.setUser(user);
+		laptop.setPerson(user);
 		user.setGameScore(laptop);
 		personRepo.save(user);
 		return success;
@@ -145,7 +145,7 @@ public class PersonController {
 		Setting laptop = SettingRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
-		laptop.setUser(user);
+		laptop.setPerson(user);
 		user.setSettings(laptop);
 		personRepo.save(user);
 		return success;
