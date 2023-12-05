@@ -35,6 +35,11 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
 
     ImageView cardPlayer1, cardPlayer2, community1, community2, community3, community4, community5;
 
+
+    String icon, playerName;
+    int bal;
+    ImageView playerIcon;
+    TextView username, playerBal, tv_pot, tv_ante;
     /**
      * Instantiates the websocket connection with the backend for the game.
      * @param savedInstanceState
@@ -45,13 +50,18 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
 
 
 //         connect to websocket
-        try {
-            connectedURL = baseURL + MyApplication.currentUser.getString("name");
-            WebSocketManager.getInstance().connectWebSocket(connectedURL);
-            WebSocketManager.getInstance().setWebSocketListener(TexasHoldem.this);
-            Log.d(TAG, "onKey: message successful");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!MyApplication.loggedInAsGuest) {
+            try {
+                connectedURL = baseURL + MyApplication.currentUser.getString("name");
+                playerName = MyApplication.currentUser.getString("name");
+                icon = MyApplication.currentUser.getString("Profile");
+                bal = MyApplication.currentUser.getInt("coins");
+                WebSocketManager.getInstance().connectWebSocket(connectedURL);
+                WebSocketManager.getInstance().setWebSocketListener(TexasHoldem.this);
+                Log.d(TAG, "onKey: message successful");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         super.onCreate(savedInstanceState);
@@ -69,7 +79,19 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
         community4 = findViewById(R.id.id_community4);
         community5 = findViewById(R.id.id_community5);
 
+        playerIcon = findViewById(R.id.icon);
+        username = findViewById(R.id.tv_player1_username);
+        playerBal = findViewById(R.id.tv_player1_bal);
 
+
+        int image = getResources().getIdentifier(icon, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+
+        username.setText(playerName);
+        playerBal.setText(bal);
+
+        tv_pot = findViewById(R.id.tv_pot);
+        tv_ante = findViewById(R.id.tv_ante);
 
         gameStart = false;
         players = 0;
@@ -139,50 +161,50 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
             String s_pot = "";
 
             if (temp[0].charAt(9) == 's' && temp[0].charAt(12) == 'r') { // player hand
-//                String card = "";
-//                char suit = temp[1].charAt(31);
-//                String rank = "";
-//
-//                for (int j = 9; j < temp[2].length() - 1; j++) {
-//                    rank += temp[2].charAt(j);
-//                }
-//
-//                if (suit == 'S') { //spades
-//                    card += "spade";
-//                } else if (suit == 'C') { //club
-//                    card += "club";
-//                } else if (suit == 'C') { //diamond
-//                    card += "heart";
-//                } else if (suit == 'C') { //heart
-//                    card += "heart";
-//                }
-//                card += rank;
-//
-//                int image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                cardPlayer1.setImageResource(image);
-//
-//                card = "";
-//                suit = temp[3].charAt(12);
-//                rank = "";
-//
-//                for (int j = 9; j < temp[4].length() - 1; j++) {
-//                    rank += temp[4].charAt(j);
-//                }
-//
-//                if (suit == 'S') { //spades
-//                    card += "spade";
-//                } else if (suit == 'C') { //club
-//                    card += "club";
-//                } else if (suit == 'C') { //diamond
-//                    card += "heart";
-//                } else if (suit == 'C') { //heart
-//                    card += "heart";
-//                }
-//                card += rank;
-//
-//                image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                cardPlayer2.setImageResource(image);
-//
+                String card = "";
+                char suit = temp[1].charAt(31);
+                String rank = "";
+
+                for (int j = 9; j < temp[2].length() - 1; j++) {
+                    rank += temp[2].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                int image = getResources().getIdentifier(card, "drawable", getPackageName());
+                cardPlayer1.setImageResource(image);
+
+                card = "";
+                suit = temp[3].charAt(12);
+                rank = "";
+
+                for (int j = 9; j < temp[4].length() - 1; j++) {
+                    rank += temp[4].charAt(j);
+                }
+
+                if (suit == 'S') { //spades
+                    card += "spade";
+                } else if (suit == 'C') { //club
+                    card += "club";
+                } else if (suit == 'C') { //diamond
+                    card += "heart";
+                } else if (suit == 'C') { //heart
+                    card += "heart";
+                }
+                card += rank;
+
+                image = getResources().getIdentifier(card, "drawable", getPackageName());
+                cardPlayer2.setImageResource(image);
+
 
             }  else if (temp[0].charAt(9) == 's') {  //stage info
                 count ++;
@@ -192,116 +214,116 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                 String rank = "";
                 char suit;
 
-//                if (counter == 1) {
-//                    suit = temp[1].charAt(30); //was 25
-//                    rank = "";
-//                    for (int j = 9; j < temp[2].length() - 1; j++) {
-//                        rank += temp[2].charAt(j);
-//                    }
-//
-//                    if (suit == 'S') { //spades
-//                        card += "spade";
-//                    } else if (suit == 'C') { //club
-//                        card += "club";
-//                    } else if (suit == 'C') { //diamond
-//                        card += "heart";
-//                    } else if (suit == 'C') { //heart
-//                        card += "heart";
-//                    }
-//                    card += rank;
-//
-//                    image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                    community1.setImageResource(image);
-//
-//
-//                    card = "";
-//                    suit = temp[3].charAt(12);
-//                    rank = "";
-//
-//                    for (int j = 9; j < temp[4].length() - 1; j++) {
-//                        rank += temp[4].charAt(j);
-//                    }
-//
-//                    if (suit == 'S') { //spades
-//                        card += "spade";
-//                    } else if (suit == 'C') { //club
-//                        card += "club";
-//                    } else if (suit == 'C') { //diamond
-//                        card += "heart";
-//                    } else if (suit == 'C') { //heart
-//                        card += "heart";
-//                    }
-//                    card += rank;
-//
-//                    image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                    community2.setImageResource(image);
-//
-//                    card = "";
-//                    suit = temp[5].charAt(12);
-//                    rank = "";
-//
-//                    for (int j = 9; j < temp[6].length() - 5; j++) {
-//                        rank += temp[6].charAt(j);
-//                    }
-//
-//                    if (suit == 'S') { //spades
-//                        card += "spade";
-//                    } else if (suit == 'C') { //club
-//                        card += "club";
-//                    } else if (suit == 'C') { //diamond
-//                        card += "heart";
-//                    } else if (suit == 'C') { //heart
-//                        card += "heart";
-//                    }
-//                    card += rank;
-//
-//                    image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                    community3.setImageResource(image);
-//                }else
+                if (counter == 1) {
+                    suit = temp[1].charAt(30); //was 25
+                    rank = "";
+                    for (int j = 9; j < temp[2].length() - 1; j++) {
+                        rank += temp[2].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community1.setImageResource(image);
+
+
+                    card = "";
+                    suit = temp[3].charAt(12);
+                    rank = "";
+
+                    for (int j = 9; j < temp[4].length() - 1; j++) {
+                        rank += temp[4].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community2.setImageResource(image);
+
+                    card = "";
+                    suit = temp[5].charAt(12);
+                    rank = "";
+
+                    for (int j = 9; j < temp[6].length() - 5; j++) {
+                        rank += temp[6].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community3.setImageResource(image);
+                }else
                 if (counter == 2) {
-//                    card = "";
-//                    suit = temp[7].charAt(12);
-//                    rank = "";
-//
-//                    for (int j = 9; j < temp[8].length() - 5; j++) {
-//                        rank += temp[8].charAt(j);
-//                    }
-//
-//                    if (suit == 'S') { //spades
-//                        card += "spade";
-//                    } else if (suit == 'C') { //club
-//                        card += "club";
-//                    } else if (suit == 'C') { //diamond
-//                        card += "heart";
-//                    } else if (suit == 'C') { //heart
-//                        card += "heart";
-//                    }
-//                    card += rank;
-//
-//                    image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                    community4.setImageResource(image);
+                    card = "";
+                    suit = temp[7].charAt(12);
+                    rank = "";
+
+                    for (int j = 9; j < temp[8].length() - 5; j++) {
+                        rank += temp[8].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community4.setImageResource(image);
                 } else if (counter == 3) {
-//                    card = "";
-//                    suit = temp[9].charAt(12);
-//                    rank = "";
-//
-//                    for (int j = 9; j < temp[10].length() - 5; j++) {
-//                        rank += temp[10].charAt(j);
-//                    }
-//
-//                    if (suit == 'S') { //spades
-//                        card += "spade";
-//                    } else if (suit == 'C') { //club
-//                        card += "club";
-//                    } else if (suit == 'C') { //diamond
-//                        card += "heart";
-//                    } else if (suit == 'C') { //heart
-//                        card += "heart";
-//                    }
-//                    card += rank;
-//
-//                    image = getResources().getIdentifier(card, "drawable", getPackageName());
-//                    community5.setImageResource(image);
+                    card = "";
+                    suit = temp[9].charAt(12);
+                    rank = "";
+
+                    for (int j = 9; j < temp[10].length() - 5; j++) {
+                        rank += temp[10].charAt(j);
+                    }
+
+                    if (suit == 'S') { //spades
+                        card += "spade";
+                    } else if (suit == 'C') { //club
+                        card += "club";
+                    } else if (suit == 'C') { //diamond
+                        card += "heart";
+                    } else if (suit == 'C') { //heart
+                        card += "heart";
+                    }
+                    card += rank;
+
+                    image = getResources().getIdentifier(card, "drawable", getPackageName());
+                    community5.setImageResource(image);
                 }
             }
             else if (temp[0].charAt(8) == 't') {   //get player info
@@ -328,8 +350,10 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                 for (int i = 7; i < temp[4].length(); i ++) { // get the ante
                     s_ante += temp[2].charAt(i);
                 }
-                pot = Integer.parseInt(s_pot);
-                ante = Integer.parseInt(s_ante);
+                //pot = Integer.parseInt(s_pot);
+               // ante = Integer.parseInt(s_ante);
+                tv_pot.setText("Pot: " + s_pot);
+                tv_ante.setText("Ante: " + s_ante);
 
                 if (hold.equals(player2)) {
                     if (move.equals("fold")) {

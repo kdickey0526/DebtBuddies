@@ -30,7 +30,7 @@ import java.util.Random;
 public class BlackJack extends AppCompatActivity {
     int id;
     String username, email, password;
-    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     private static final String TAG = "BlackJack";
     int playerNumH;
     int playerNumL;
@@ -331,8 +331,6 @@ public class BlackJack extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        //postRequest(); //honestly idk if this works
-
         String temp = "Balance: ";
         temp += bal;
         tvBal.setText(temp);
@@ -441,31 +439,10 @@ public class BlackJack extends AppCompatActivity {
 
         // Convert input to JSONObject
         JSONObject postBody = null;
-//        String temp =
-//                "{" +
-//                        "\"id\":\"" + id + "\"," +
-//                        "\"userName\":\"" + username + "\"," +
-//                        "\"email\":\"" + email +"\"," +
-//                        "\"password\":\"" + password + "\"" +
-//                        "\"coins\":\"" + bal + "\"" +
-//                        "}";
-
-
-
         try {
-//            postBody = new JSONObject(temp);
             postBody = new JSONObject(MyApplication.currentUser.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);
-        }
-
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
-
-        } catch (Exception e){
-            e.printStackTrace();
         }
 
         JsonObjectRequest request = new JsonObjectRequest(

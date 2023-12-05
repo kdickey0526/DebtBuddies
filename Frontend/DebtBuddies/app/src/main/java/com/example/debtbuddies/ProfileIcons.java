@@ -1,17 +1,28 @@
 package com.example.debtbuddies;
 
+import static java.lang.Math.floor;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -19,9 +30,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Screen showing the different profile icons a user can select. Currently 9 options.
@@ -89,16 +100,16 @@ public class ProfileIcons extends AppCompatActivity {
      * save the icon choice and leave
      * @param view
      */
-    public void menu(View view) {
-        try {
-            MyApplication.currentUser.put("Profile", icon);
-            postRequest();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent(this, Menu.class);
-        startActivity(intent);
-    }
+//    public void menu(View view) {
+//        try {
+//            MyApplication.currentUser.put("Profile", icon);
+//            postRequest();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        Intent intent = new Intent(this, Menu.class);
+//        startActivity(intent);
+//    }
 
     /**
      * pick icon  0
@@ -251,6 +262,7 @@ public class ProfileIcons extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         Log.d("Volley: ", "object PUT");
                     }
                 },
