@@ -57,8 +57,8 @@ public class UserController {
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
     @PostMapping(path = "/users")
-    String createUser(@RequestBody User user){
-        if (user == null)
+    String createUser(@RequestBody(required = false) User user){
+        if (user == null || user.getUserName() == null)
             return failure;
         userRepository.save(user);
         return success;

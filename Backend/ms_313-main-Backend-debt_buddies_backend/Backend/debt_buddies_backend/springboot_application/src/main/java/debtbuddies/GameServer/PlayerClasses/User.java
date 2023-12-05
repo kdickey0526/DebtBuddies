@@ -22,6 +22,12 @@ public class User {
         this.username = username;
     }
 
+    public User(String username, int id, int balance){
+        this.username = username;
+        playerID = id;
+        this.balance = balance;
+    }
+
     public User(User user){
         playerID = user.getID();
         balance = user.getBalance();

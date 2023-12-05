@@ -28,7 +28,7 @@ public abstract class Game<T> {
 
     public Game(){}
 
-    protected abstract void initializeGame();
+    public abstract void initializeGame();
 
     protected abstract void getResponse(User user, ServerEvent serverEvent);
 
