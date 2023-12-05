@@ -25,11 +25,11 @@ public class Setting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private double cpuClock;
-    private int cpuCores;
+    private boolean sound;
+/*    private int cpuCores;
     private int ram;
     private String manufacturer;
-    private int cost;
+    private int cost;*/
 
     /*
      * @OneToOne creates a relation between the current entity/table(Laptop) with the entity/table defined below it(User)
@@ -39,15 +39,12 @@ public class Setting {
     @JsonIgnore
     private Person user;
 
-    public Setting(double cpuClock, int cpuCores, int ram, String manufacturer, int cost) {
-        this.cpuClock = cpuClock;
-        this.cpuCores = cpuCores;
-        this.ram = ram;
-        this.manufacturer = manufacturer;
-        this.cost = cost;
+    public Setting(boolean sound) {
+        this.sound = sound;
     }
 
     public Setting() {
+                this.sound = true;
     }
 
     // =============================== Getters and Setters for each field ================================== //
@@ -60,52 +57,13 @@ public class Setting {
         this.id = id;
     }
 
-    public double getCpuClock(){
-        return cpuClock;
+    public boolean getSound(){
+        return sound;
     }
 
-    public void setCpuClock(double cpuClock){
-        this.cpuClock = cpuClock;
+    public void setCpuClock(boolean sound){
+        this.sound = sound;
     }
 
-    public int getCpuCores(){
-        return cpuCores;
-    }
-
-    public void setCpuCores(int cpuCores){
-        this.cpuCores = cpuCores;
-    }
-
-    public String getManufacturer(){
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer){
-        this.manufacturer = manufacturer;
-    }
-
-    public int getCost(){
-        return cost;
-    }
-
-    public void setCost(int cost){
-        this.cost = cost;
-    }
-
-    public Person getUser(){
-        return user;
-    }
-
-    public void setUser(Person user){
-        this.user = user;
-    }
-
-    public int getRam(){
-        return ram;
-    }
-
-    public void setRam(int ram){
-        this.ram = ram;
-    }
 
 }

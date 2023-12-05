@@ -87,6 +87,11 @@ public class PersonController {
 		return personRepo.findByName(name);
 	}
 
+	@GetMapping(path = "/id/{name}")
+	public Person getPersonById(@PathVariable int name){
+		return personRepo.findById(name);
+	}
+
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
