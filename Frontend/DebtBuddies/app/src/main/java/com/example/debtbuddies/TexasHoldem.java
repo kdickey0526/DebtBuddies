@@ -122,7 +122,7 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
         }
     }
     public void onRaiseClicked(View view) {
-        String val = tv_raise.toString();
+        String val = tv_raise.getText().toString();
 
         try {
             WebSocketManager.getInstance().sendMessage("{\"action\":\"" + "raise" + "\"" +
