@@ -107,7 +107,7 @@ public class FriendsListActivity extends AppCompatActivity {
                         for (i = 0; i < response.length(); i++) { // .length returns # of key/value pairs in the object
                             friendID = response.getJSONObject(i).getInt("person_id"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
 
-                            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + friendID;
+                            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + friendID;
                             makeFriendJsonObjReq(); // get that friend's info
 
 //                            boolean onlineStatus = currentFriend.getBoolean("is_online"); // not sure what it's actually named in backend

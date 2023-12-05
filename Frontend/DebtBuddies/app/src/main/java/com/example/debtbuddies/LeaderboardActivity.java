@@ -25,6 +25,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     private TextView tv_bjBoard;
 
     private int count = 0;
+    private boolean updatingWhack;
+    private boolean updatingWar;
+    private boolean updatingBJ;
 
     private JSONArray leaderboardArray; // will be re-assigned to update each textview
     private JSONObject currentPerson1; // holds current object/person being added to whichever leaderboard
@@ -48,12 +51,20 @@ public class LeaderboardActivity extends AppCompatActivity {
         tv_warBoard.setText("");
         tv_bjBoard.setText("");
 
-
+        count = 0;
+        updatingWhack = true;
         updateWhac();
+        updatingWhack = false;
+
         count = 0;
-//        updateBJ();
+        updatingBJ = true;
+        updateBJ();
+        updatingBJ = false;
+
         count = 0;
-//        updateWar();
+        updatingWar = true;
+        updateWar();
+        updatingWar = false;
         count = 0;
     }
 
@@ -100,7 +111,7 @@ public class LeaderboardActivity extends AppCompatActivity {
      * Updates some fields on the screen for debugging purposes as well.
      **/
     private void makeJsonArrayReq() {
-        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, "http://coms-309-048.class.las.iastate.edu:8080/Whackamole", null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrReq = new JsonArrayRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("Volley Response", "response received: " + response.toString());
@@ -117,15 +128,15 @@ public class LeaderboardActivity extends AppCompatActivity {
                     int three = response.getJSONObject(2).getInt("id");
                     int four = response.getJSONObject(3).getInt("id");
                     int five = response.getJSONObject(4).getInt("id");
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + one;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + one;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + two;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + two;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + three;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + three;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + four;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + four;
                     makeJsonObjReq();
-                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/id/" + five;
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + five;
                     makeJsonObjReq();
 
                 } catch (JSONException e) {
@@ -158,59 +169,172 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
-                switch(count) {
-                    case 0: // get first user
-                        try {
-                            String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t:\t" + response.getString("whack") + "\n");
-                            count++;
+
+                if (updatingWhack) {
+                    switch(count) {
+                        case 0: // get first user
+                            try {
+                                String s = tv_whacBoard.getText().toString();
+                                tv_whacBoard.setText(s + response.getString("name") + "\t:\t" + response.getString("whack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 1: // get second user
+                            try {
+                                String s = tv_whacBoard.getText().toString();
+                                tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 2: // get third user
+                            try {
+                                String s = tv_whacBoard.getText().toString();
+                                tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 3: // get fourth user
+                            try {
+                                String s = tv_whacBoard.getText().toString();
+                                tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 4: // get fifth user
+                            try {
+                                String s = tv_whacBoard.getText().toString();
+                                tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        default:
                             break;
-                        } catch (Exception e) {
-                            Log.e(TAG, "error updating leaderboard text");
-                            e.printStackTrace();
-                        }
-                    case 1: // get second user
-                        try {
-                            String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
-                            count++;
+                    }
+                } else if (updatingBJ) {
+                    switch(count) {
+                        case 0: // get first user
+                            try {
+                                String s = tv_bjBoard.getText().toString();
+                                tv_bjBoard.setText(s + response.getString("name") + "\t:\t" + response.getString("blackJack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 1: // get second user
+                            try {
+                                String s = tv_bjBoard.getText().toString();
+                                tv_bjBoard.setText(s + response.getString("name") + "\t" + response.getString("blackJack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 2: // get third user
+                            try {
+                                String s = tv_bjBoard.getText().toString();
+                                tv_bjBoard.setText(s + response.getString("name") + "\t" + response.getString("blackJack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 3: // get fourth user
+                            try {
+                                String s = tv_bjBoard.getText().toString();
+                                tv_bjBoard.setText(s + response.getString("name") + "\t" + response.getString("blackJack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 4: // get fifth user
+                            try {
+                                String s = tv_bjBoard.getText().toString();
+                                tv_bjBoard.setText(s + response.getString("name") + "\t" + response.getString("blackJack") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        default:
                             break;
-                        } catch (Exception e) {
-                            Log.e(TAG, "error updating leaderboard text");
-                            e.printStackTrace();
-                        }
-                    case 2: // get third user
-                        try {
-                            String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
-                            count++;
+                    }
+                } else if (updatingWar) {
+                    switch(count) {
+                        case 0: // get first user
+                            try {
+                                String s = tv_warBoard.getText().toString();
+                                tv_warBoard.setText(s + response.getString("name") + "\t:\t" + response.getString("war") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 1: // get second user
+                            try {
+                                String s = tv_warBoard.getText().toString();
+                                tv_warBoard.setText(s + response.getString("name") + "\t" + response.getString("war") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 2: // get third user
+                            try {
+                                String s = tv_warBoard.getText().toString();
+                                tv_warBoard.setText(s + response.getString("name") + "\t" + response.getString("war") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 3: // get fourth user
+                            try {
+                                String s = tv_warBoard.getText().toString();
+                                tv_warBoard.setText(s + response.getString("name") + "\t" + response.getString("war") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        case 4: // get fifth user
+                            try {
+                                String s = tv_warBoard.getText().toString();
+                                tv_warBoard.setText(s + response.getString("name") + "\t" + response.getString("war") + "\n");
+                                count++;
+                                break;
+                            } catch (Exception e) {
+                                Log.e(TAG, "error updating leaderboard text");
+                                e.printStackTrace();
+                            }
+                        default:
                             break;
-                        } catch (Exception e) {
-                            Log.e(TAG, "error updating leaderboard text");
-                            e.printStackTrace();
-                        }
-                    case 3: // get fourth user
-                        try {
-                            String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
-                            count++;
-                            break;
-                        } catch (Exception e) {
-                            Log.e(TAG, "error updating leaderboard text");
-                            e.printStackTrace();
-                        }
-                    case 4: // get fifth user
-                        try {
-                            String s = tv_whacBoard.getText().toString();
-                            tv_whacBoard.setText(s + response.getString("name") + "\t" + response.getString("whack") + "\n");
-                            count++;
-                            break;
-                        } catch (Exception e) {
-                            Log.e(TAG, "error updating leaderboard text");
-                            e.printStackTrace();
-                        }
-                    default:
-                        break;
+                    }
                 }
             }
         }, new Response.ErrorListener() {
