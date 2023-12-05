@@ -11,6 +11,13 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import debtbuddies.Settings.Setting;
+import debtbuddies.Settings.SettingRepository;
+import debtbuddies.GameScores.GameScore;
+import debtbuddies.GameScores.GameScoreRepository;
+
+import debtbuddies.person.Person;
+import debtbuddies.person.PersonRepository;
 
 @Api(value = "PersonController", description = "Rest Api used for user accounts")
 @RestController
@@ -19,6 +26,16 @@ public class PersonController {
 	
 	@Autowired
 	PersonRepository personRepo;
+
+	@Autowired
+	GameScoreRepository GameScoreRepo;
+
+	@Autowired
+	SettingRepository SettingRepo;
+
+	private String success = "{\"message\":\"success\"}";
+	private String failure = "{\"message\":\"failure\"}";
+
 
 	//@ApiOperation(value = "Add a person account to the database", response = Iterable.class, tags = "addPerson")
 	@ApiResponses(value = {
@@ -75,16 +92,6 @@ public class PersonController {
 			@ApiResponse(code = 401, message = "not authorized!"),
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
-	@GetMapping(path = "/Whackamole")
-	public List<Person> getWhackamole(){
-		return personRepo.findTop5ByOrderByWhackDesc();
-	}
-
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Success|OK"),
-			@ApiResponse(code = 401, message = "not authorized!"),
-			@ApiResponse(code = 403, message = "forbidden!!!"),
-			@ApiResponse(code = 404, message = "not found!!!") })
 	@DeleteMapping(path = "/{name}")
 	public void deleteFriend(@PathVariable String name){
 		personRepo.deleteByName(name);
@@ -99,4 +106,45 @@ public class PersonController {
 	public List<Person> getAll(){
 		return personRepo.findAll();
 	}
+
+/*	@GetMapping("/getAllFriends/{name}")
+	public List<Person> getAllFriends(){
+		return personRepo.findAll();
+	}*/
+
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success|OK"),
+			@ApiResponse(code = 401, message = "not authorized!"),
+			@ApiResponse(code = 403, message = "forbidden!!!"),
+			@ApiResponse(code = 404, message = "not found!!!") })
+	@PutMapping("/persons/{userId}/GameScore/{laptopId}")
+	String assignGameScoreToUser(@PathVariable int userId,@PathVariable int laptopId){
+		Person user = personRepo.findById(userId);
+		GameScore laptop = GameScoreRepo.findById(laptopId);
+		if(user == null || laptop == null)
+			return failure;
+		laptop.setUser(user);
+		user.setGameScore(laptop);
+		personRepo.save(user);
+		return success;
+	}
+
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success|OK"),
+			@ApiResponse(code = 401, message = "not authorized!"),
+			@ApiResponse(code = 403, message = "forbidden!!!"),
+			@ApiResponse(code = 404, message = "not found!!!") })
+	@PutMapping("/persons/{userId}/Settings/{laptopId}")
+	String assignSettingsToUser(@PathVariable int userId,@PathVariable int laptopId){
+		Person user = personRepo.findById(userId);
+		Setting laptop = SettingRepo.findById(laptopId);
+		if(user == null || laptop == null)
+			return failure;
+		laptop.setUser(user);
+		user.setSettings(laptop);
+		personRepo.save(user);
+		return success;
+	}
+
+
 }

@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
+import debtbuddies.GameScores.GameScore;
+import debtbuddies.Settings.Setting;
+
 @Entity
 @Table(name="persons")
 @Data
@@ -34,10 +37,15 @@ public class Person {
 	private String email;
 	private String password;
 	private int Coins;
-	private int whack;
-	private int WarWon;
-	private int WarLost;
 	private String Profile;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "gameScore_id")
+	private GameScore gameScore;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "settings_id")
+	private Setting settings;
 
 
 	@ManyToMany(cascade={CascadeType.ALL})
@@ -104,9 +112,6 @@ public class Person {
 		this.email = email;
 		this.password = password;
 		this.isOnline = true;
-		this.whack = 0;
-		this.WarWon = 0;
-		this.WarLost = 0;
 		this.Profile = "icon0";
 	}
 
@@ -116,9 +121,6 @@ public class Person {
 		this.email = "";
 		this.password = "password";
 		this.isOnline = true;
-		this.whack = 0;
-		this.WarWon = 0;
-		this.WarLost = 0;
 		this.Profile = "icon0";
 	}
 	public long getId(){
@@ -164,29 +166,30 @@ public class Person {
 	public void setPassword(String password){
 		this.password = password;
 	}
-	public int getWhack(){
-		return whack;
-	}
-	public void setWhack(int Whack){
-		this.whack = Whack;
-	}
-	public int getWarWon(){
-		return WarWon;
-	}
-	public void setWarWon(int WarWon){
-		this.WarWon = WarWon;
-	}
-	public int getWarLost(){
-		return WarLost;
-	}
-	public void setWarLost(int WarLost){
-		this.WarLost = WarLost;
-	}
 	public String getProfile(){
 		return Profile;
 	}
 	public void setProfile(String Profile){
 		this.Profile = Profile;
 	}
+
+	public GameScore getGameScore(){
+		return gameScore;
+	}
+
+	public void setgamScore(GameScore gameScore){
+		this.gameScore = gameScore;
+	}
+
+
+	public Setting getSettings(){
+		return settings;
+	}
+
+	public void setSetting(Setting settings){
+		this.settings = settings;
+	}
+
+
 
 }
