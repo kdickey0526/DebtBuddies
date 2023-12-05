@@ -7,12 +7,14 @@ import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEmUser;
 import debtbuddies.GameServer.Games.War.War;
 import debtbuddies.GameServer.PlayerClasses.CardUser;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.Users.UserRepository;
 
 public class Manager {
 
     private static GameManager<TexasHoldEmUser, TexasHoldEm> texasManager = new GameManager<>(new TexasHoldEm());
 
     private static GameManager<CardUser, War> warManager = new GameManager<CardUser, War>(new War());
+
 
     public static void getResponse(String game, User user, ServerEvent serverEvent){
         switch(game){

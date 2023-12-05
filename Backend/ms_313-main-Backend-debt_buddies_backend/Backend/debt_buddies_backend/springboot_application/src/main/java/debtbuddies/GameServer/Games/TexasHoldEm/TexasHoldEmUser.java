@@ -21,7 +21,7 @@ public class TexasHoldEmUser extends User {
     private List<Card> high_hand_cards = new ArrayList<>();
 
     public TexasHoldEmUser(User user){
-        super(user.toString());
+        super(user);
         bet = 0;
         fold = false;
     }

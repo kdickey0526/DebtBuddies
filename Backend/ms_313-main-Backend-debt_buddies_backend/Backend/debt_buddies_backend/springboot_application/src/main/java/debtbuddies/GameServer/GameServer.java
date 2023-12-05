@@ -16,8 +16,11 @@ import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.Communication.MessageBearer;
 import debtbuddies.GameServer.PlayerClasses.User;
 import debtbuddies.GameServer.Communication.Response;
+import debtbuddies.Users.UserRepository;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -35,11 +38,17 @@ import org.springframework.stereotype.Component;
  * The server provides functionality for broadcasting messages to all connected
  * users and sending messages to specific users.
  */
-@ServerEndpoint("/gameserver/{game}/{username}")
+@ServerEndpoint("/gameserver/{game}/{username}/{id}")
 @Component
 public class GameServer {
 
-    private Gson gson = new Gson();
+    private static UserRepository Repo;
+
+    @Autowired
+    public void setUserRepository(UserRepository Repo){
+        this.Repo = Repo;
+    }
+    private static Gson gson = new Gson();
 
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
@@ -57,15 +66,27 @@ public class GameServer {
      * @param username username specified in path parameter.
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username) throws IOException {
+    public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username, @PathParam("id") int id) throws IOException {
 
         // server side log
         logger.info("[onOpen] " + username);
+        //logger.info("[onOpen] " + Repo.toString());
+        int coins = 25;
+        int f_id = 0;
+
+        debtbuddies.Users.User cl = Repo.findById(id);
+        if(cl != null) {
+            username = cl.getUserName();
+            logger.info("[onOpen] " + username);
+            f_id = cl.getId();
+            coins = cl.getCoins();
+        }
 
         if(sessionUserMap.containsKey(session)){
             session.close();
         }else{
-            User user = new User(username);
+            User user = new User(username, f_id, coins);
+            logger.info("[onOpen] created: " + user.toString());
             sessionUserMap.put(session, user);
             userSessionMap.put(user, session);
             userGameMap.put(user, game);
@@ -90,6 +111,8 @@ public class GameServer {
         ServerEvent serverEvent = gson.fromJson(message, ServerEvent.class);
 
         logger.info(user.toString() + " sent " + message);
+
+        //Repo.findBy(user.toString());
 
         Manager.getResponse(userGameMap.get(user), user, serverEvent);
 
@@ -170,4 +193,5 @@ public class GameServer {
             }
         });
     }
+
 }

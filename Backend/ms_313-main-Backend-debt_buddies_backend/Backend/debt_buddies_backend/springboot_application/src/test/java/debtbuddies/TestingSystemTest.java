@@ -3,14 +3,14 @@ package debtbuddies;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.JsonObject;
-import debtbuddies.Users.User;
-import org.json.JSONArray;
+import debtbuddies.Users.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 //import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.restassured.RestAssured;
@@ -21,7 +21,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 //import org.springframework.boot.test.web.server.LocalServerPort;
 // SBv3
 
@@ -30,7 +29,10 @@ import java.util.Objects;
 @RunWith(SpringRunner.class)
 public class TestingSystemTest {
 
-    int current_id = 109;
+    int current_id = 112;
+
+    @Autowired
+    private UserRepository myRepo;
 
     @LocalServerPort
     int port;
@@ -39,11 +41,6 @@ public class TestingSystemTest {
     public void setUp() {
         RestAssured.port = port;
         RestAssured.baseURI = "http://localhost";
-    }
-
-    @Test
-    public void testTest(){
-        assertEquals("hi", "hi");
     }
 
     @Test
@@ -215,6 +212,7 @@ public class TestingSystemTest {
         assertEquals(200, statusCode);
 
     }
+
 
     /*
     @Test
