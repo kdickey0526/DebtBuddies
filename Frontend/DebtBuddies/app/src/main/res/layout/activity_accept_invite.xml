@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardview_dark_background"
+    tools:context=".LoginScreenActivity">
+
+    <Button
+        android:id="@+id/b_decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="153dp"
+        android:layout_marginEnd="189dp"
+       android:onClick="onDeclineClicked"
+        android:text="Decline" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="354dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon0"></ImageView>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="138dp"
+        android:text="Username"
+        android:textColor="#FFFFFFFF"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="307dp"
+        android:layout_height="82dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="78dp"
+        android:layout_marginEnd="99dp"
+        android:text="No Invites"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/b_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="306dp"
+        android:onClick="onAcceptClicked"
+        android:text="Accept" />
+
+    <Button
+        android:id="@+id/b_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="237dp"
+        android:layout_marginEnd="252dp"
+        android:onClick="onBackClicked"
+        android:text="Back" />
+
+
+</RelativeLayout>
+

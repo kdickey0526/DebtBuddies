@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > War</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameServer.Games.War</a>
+</div>
+
+<h1>Coverage Summary for Class: War (debtbuddies.GameServer.Games.War)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">War</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/82)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameServer.Games.War;
+&nbsp;
+&nbsp;import debtbuddies.GameServer.Communication.Response;
+&nbsp;import debtbuddies.GameServer.Communication.ServerEvent;
+&nbsp;import debtbuddies.GameServer.DeckLibrary.Card;
+&nbsp;import debtbuddies.GameServer.DeckLibrary.Deck;
+&nbsp;import debtbuddies.GameServer.DeckLibrary.Suit;
+&nbsp;import debtbuddies.GameServer.Games.Game;
+&nbsp;import debtbuddies.GameServer.Games.GameInterface;
+&nbsp;import debtbuddies.GameServer.Games.War.WarInfo.EndInfo;
+&nbsp;import debtbuddies.GameServer.Games.War.WarInfo.PlayInfo;
+&nbsp;import debtbuddies.GameServer.Games.War.WarInfo.RoundInfo;
+&nbsp;import debtbuddies.GameServer.Games.War.WarInfo.StartInfo;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.CardUser;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.Group;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.User;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Objects;
+&nbsp;import java.util.Queue;
+&nbsp;
+&nbsp;public class War extends Game&lt;CardUser&gt; implements GameInterface&lt;CardUser, War&gt; {
+&nbsp;
+<b class="nc">&nbsp;    private int QUEUE_SIZE = 2;</b>
+&nbsp;
+&nbsp;    private CardUser target_player;
+&nbsp;
+&nbsp;    private List&lt;Card&gt; p1stack, p2stack;
+&nbsp;
+&nbsp;    private CardUser p1, p2;
+&nbsp;
+<b class="nc">&nbsp;    private int p_index = 0;</b>
+&nbsp;
+&nbsp;    private Deck deck;
+&nbsp;
+&nbsp;    private String ltm;
+&nbsp;
+<b class="nc">&nbsp;    private Card last_card1 = new Card(Suit.CLUBS, 2);</b>
+<b class="nc">&nbsp;    private Card last_card2 = new Card(Suit.CLUBS, 2);</b>
+&nbsp;
+<b class="nc">&nbsp;    public War(List&lt;User&gt; users, int gameId){super(users, gameId);}</b>
+&nbsp;
+&nbsp;    public War(){
+<b class="nc">&nbsp;        super();</b>
+<b class="nc">&nbsp;        queue_size = QUEUE_SIZE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void sendPlayInfo(CardUser player){
+&nbsp;        String last_suit1, last_suit2;
+<b class="nc">&nbsp;        int last_rank1 = 0;</b>
+<b class="nc">&nbsp;        int last_rank2 = 0;</b>
+<b class="nc">&nbsp;        if(player == p1){</b>
+<b class="nc">&nbsp;            last_card1 = p1stack.get(p1stack.size()-1);</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            last_card2 = p2stack.get(p2stack.size()-1);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        last_suit1 = last_card1.getSuit().toString();</b>
+<b class="nc">&nbsp;        last_rank1 = last_card1.getRank();</b>
+<b class="nc">&nbsp;        last_suit2 = last_card2.getSuit().toString();</b>
+<b class="nc">&nbsp;        last_rank2 = last_card2.getRank();</b>
+<b class="nc">&nbsp;        last_suit1 = convertSuit(last_suit1);</b>
+<b class="nc">&nbsp;        last_suit2 = convertSuit(last_suit2);</b>
+&nbsp;        //PlayInfo playInfo = new PlayInfo(target_player.toString(), player.toString(), last_suit, last_rank);
+<b class="nc">&nbsp;        String playInfo = last_suit1 + last_rank1 + &quot; &quot; + last_suit2 + last_rank2;</b>
+<b class="nc">&nbsp;        if(player == p2) {</b>
+<b class="nc">&nbsp;            Response.addMessage(users, &quot;playInfo&quot;, playInfo);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private String convertSuit(String s){
+<b class="nc">&nbsp;        switch(s){</b>
+&nbsp;            case &quot;CLUBS&quot;:
+<b class="nc">&nbsp;                return &quot;club&quot;;</b>
+&nbsp;            case &quot;HEARTS&quot;:
+<b class="nc">&nbsp;                return &quot;heart&quot;;</b>
+&nbsp;            case &quot;SPADES&quot;:
+<b class="nc">&nbsp;                return &quot;spade&quot;;</b>
+&nbsp;            case &quot;DIAMONDS&quot;:
+<b class="nc">&nbsp;                return &quot;diamond&quot;;</b>
+&nbsp;            default:
+<b class="nc">&nbsp;                return &quot;&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    private void sendStartInfo(CardUser player){
+<b class="nc">&nbsp;        StartInfo startInfo = new StartInfo(player.toString());</b>
+<b class="nc">&nbsp;        Response.addMessage(playerUserMap.get(player), &quot;startInfo&quot;, startInfo);</b>
+&nbsp;    }
+&nbsp;    private void sendEndInfo(){
+<b class="nc">&nbsp;        EndInfo endInfo = new EndInfo();</b>
+<b class="nc">&nbsp;        Response.addMessage(users, &quot;endInfo&quot;, endInfo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void sendRoundInfo(String info){
+<b class="nc">&nbsp;        RoundInfo roundInfo = new RoundInfo(info);</b>
+<b class="nc">&nbsp;        Response.addMessage(users, &quot;roundInfo&quot;, roundInfo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private CardUser nextTargetPlayer(){
+<b class="nc">&nbsp;        return players.get((players.indexOf(target_player) + 1) % players.size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void initializeGame() {
+<b class="nc">&nbsp;        running = 1;</b>
+<b class="nc">&nbsp;        convertUsers();</b>
+<b class="nc">&nbsp;        target_player = players.get(p_index++ % players.size());</b>
+<b class="nc">&nbsp;        p1 = target_player;</b>
+<b class="nc">&nbsp;        p2 = nextTargetPlayer();</b>
+<b class="nc">&nbsp;        p1stack = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        p2stack = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        deck = new Deck();</b>
+<b class="nc">&nbsp;        for(int i = 0; i &lt; 26; i++){</b>
+<b class="nc">&nbsp;            for(CardUser player : players){</b>
+<b class="nc">&nbsp;                player.draw(deck);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void getResponse(User user, ServerEvent serverEvent) {
+&nbsp;
+<b class="nc">&nbsp;        CardUser player = userPlayerMap.get(user);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(running == 0 &amp;&amp; Objects.equals(serverEvent.getAction(), &quot;start&quot;)){</b>
+&nbsp;
+<b class="nc">&nbsp;            initializeGame();</b>
+&nbsp;
+<b class="nc">&nbsp;            sendStartInfo(target_player);</b>
+&nbsp;
+<b class="nc">&nbsp;        }else if(running == 1 &amp;&amp; player == target_player){</b>
+<b class="nc">&nbsp;            switch(serverEvent.getAction()){</b>
+&nbsp;                case &quot;deal&quot;:
+<b class="nc">&nbsp;                    if(player == p1){</b>
+<b class="nc">&nbsp;                        p1stack.add(player.play());</b>
+<b class="nc">&nbsp;                        if(p1stack.size() &gt; 1){</b>
+<b class="nc">&nbsp;                            p1stack.add(player.play());</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                    }else if(player == p2){</b>
+<b class="nc">&nbsp;                        p2stack.add(player.play());</b>
+<b class="nc">&nbsp;                        if(p2stack.size() &gt; 1){</b>
+<b class="nc">&nbsp;                            p2stack.add(player.play());</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                        compareCards();</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    target_player = nextTargetPlayer();</b>
+<b class="nc">&nbsp;                    sendPlayInfo(player);</b>
+<b class="nc">&nbsp;                    if(player == p2){</b>
+<b class="nc">&nbsp;                        sendRoundInfo(&quot;winner: &quot;+ltm);</b>
+&nbsp;                    }
+&nbsp;                    break;
+&nbsp;                default:
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public void compareCards(){
+&nbsp;        Card last1, last2;
+<b class="nc">&nbsp;        last1 = p1stack.get(p1stack.size()-1);</b>
+<b class="nc">&nbsp;        last2 = p2stack.get(p2stack.size()-1);</b>
+<b class="nc">&nbsp;        if(last1.getRank() &gt; last2.getRank()){</b>
+&nbsp;            //reward(p1);
+<b class="nc">&nbsp;            ltm = p1.toString();</b>
+<b class="nc">&nbsp;        }else if(last2.getRank() &gt; last1.getRank()){</b>
+&nbsp;            //reward(p2);
+<b class="nc">&nbsp;            ltm = p2.toString();</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            ltm = &quot;war&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void reward(CardUser player){
+<b class="nc">&nbsp;        for(Card card : p1stack){</b>
+<b class="nc">&nbsp;            player.giveCard(card);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        for(Card card : p2stack){</b>
+<b class="nc">&nbsp;            player.giveCard(card);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        p1stack.clear();</b>
+<b class="nc">&nbsp;        p2stack.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public War getNewGame(Group lobby, int gameId) {
+<b class="nc">&nbsp;        return new War(lobby.getUsers(), gameId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public CardUser getNewUser(User user) {
+<b class="nc">&nbsp;        return new CardUser(user);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-04 11:00</div>
+</div>
+</body>
+</html>

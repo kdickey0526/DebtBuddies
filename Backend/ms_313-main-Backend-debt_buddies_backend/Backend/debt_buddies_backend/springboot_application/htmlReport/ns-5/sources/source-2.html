@@ -1,0 +1,255 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GameManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameServer.Games</a>
+</div>
+
+<h1>Coverage Summary for Class: GameManager (debtbuddies.GameServer.Games)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/82)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameServer.Games;
+&nbsp;
+&nbsp;import debtbuddies.GameServer.Communication.LobbyInfo;
+&nbsp;import debtbuddies.GameServer.Communication.ServerEvent;
+&nbsp;import debtbuddies.GameServer.Communication.Response;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.Group;
+&nbsp;import debtbuddies.GameServer.PlayerClasses.User;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class GameManager&lt;T , K extends GameInterface&lt;T, K&gt;&gt; {
+&nbsp;
+<b class="nc">&nbsp;    protected int GameId = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;    protected int LobbyId = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;    protected Group Queue = new Group(LobbyId);</b>
+&nbsp;
+<b class="nc">&nbsp;    protected List&lt;Group&gt; Lobbies = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;    protected List&lt;K&gt; Servers = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;    protected Map&lt; User , Group &gt; userLobbyMap = new Hashtable&lt;&gt;();</b>
+<b class="nc">&nbsp;    protected Map &lt; Integer , Group &gt; lobbyIdLobbyMap = new Hashtable&lt;&gt;();</b>
+<b class="nc">&nbsp;    protected Map &lt; User , Integer &gt; userGameIdMap = new Hashtable&lt;&gt;();</b>
+<b class="nc">&nbsp;    protected Map &lt; Integer , K &gt; gameIdServerMap = new Hashtable&lt;&gt;();</b>
+<b class="nc">&nbsp;    protected Map &lt; Group, Integer &gt; lobbyGameIdMap = new Hashtable&lt;&gt;();</b>
+&nbsp;    protected K dummyInstance;
+&nbsp;
+<b class="nc">&nbsp;    public GameManager(K dummyInstance){</b>
+<b class="nc">&nbsp;        this.dummyInstance = dummyInstance;</b>
+<b class="nc">&nbsp;        lobbyIdLobbyMap.put(LobbyId, Queue);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void getResponse(User user, ServerEvent serverEvent){
+<b class="nc">&nbsp;        String action = serverEvent.getAction();</b>
+<b class="nc">&nbsp;        if(inGame(user)){</b>
+<b class="nc">&nbsp;            gameAction(user, serverEvent);</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            LobbyInfo lobbyInfo = new LobbyInfo(&quot;lobbyError&quot;);</b>
+<b class="nc">&nbsp;            switch(action){</b>
+&nbsp;                case &quot;joinQueue&quot;:
+<b class="nc">&nbsp;                    if(inLobby(user)){ return; }</b>
+<b class="nc">&nbsp;                    joinQueue(user);</b>
+<b class="nc">&nbsp;                    lobbyInfo = new LobbyInfo(&quot;joinQueue&quot;, userLobbyMap.get(user).getGroupId());</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &quot;joinLobby&quot;:
+<b class="nc">&nbsp;                    if(inLobby(user)){ return; }</b>
+<b class="nc">&nbsp;                    joinLobby(user, serverEvent.getValue());</b>
+<b class="nc">&nbsp;                    lobbyInfo = new LobbyInfo(&quot;joinLobby&quot;, userLobbyMap.get(user).getGroupId(), userLobbyMap.get(user).getUsersString());</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &quot;createLobby&quot;:
+<b class="nc">&nbsp;                    if(inLobby(user)){ return; }</b>
+<b class="nc">&nbsp;                    createLobby(user);</b>
+<b class="nc">&nbsp;                    lobbyInfo = new LobbyInfo(&quot;createLobby&quot;, userLobbyMap.get(user).getGroupId());</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &quot;leaveLobby&quot;:
+<b class="nc">&nbsp;                    if(!inLobby(user)){ return; }</b>
+<b class="nc">&nbsp;                    int l_id = userLobbyMap.get(user).getGroupId();</b>
+<b class="nc">&nbsp;                    leaveLobby(user);</b>
+<b class="nc">&nbsp;                    lobbyInfo = new LobbyInfo(&quot;leaveLobby&quot;, l_id);</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                case &quot;start&quot;:
+<b class="nc">&nbsp;                    if(!inLobby(user) || userLobbyMap.get(user).getGroupId() == 0){ return; }</b>
+<b class="nc">&nbsp;                    startGame(user);</b>
+<b class="nc">&nbsp;                    lobbyInfo = new LobbyInfo(&quot;gameStart&quot;, userLobbyMap.get(user).getGroupId());</b>
+&nbsp;                    break;
+&nbsp;            }
+<b class="nc">&nbsp;            Response.addMessage(user, &quot;lobbyEvent&quot;, lobbyInfo);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void gameAction(User user, ServerEvent serverEvent){
+<b class="nc">&nbsp;        K server = gameIdServerMap.get(userGameIdMap.get(user));</b>
+<b class="nc">&nbsp;        server.getResponse(user, serverEvent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void joinQueue(User user){
+<b class="nc">&nbsp;        Queue.add(user);</b>
+<b class="nc">&nbsp;        userLobbyMap.put(user, Queue);</b>
+<b class="nc">&nbsp;        if(Queue.getNumUsers() == dummyInstance.getQueueSize()){</b>
+<b class="nc">&nbsp;            LobbyInfo lobbyInfo = new LobbyInfo(&quot;gameFound&quot;, GameId + 1, Queue.getUsersString());</b>
+<b class="nc">&nbsp;            Response.addMessage(Queue.getUsers(), &quot;lobbyEvent&quot;, lobbyInfo);</b>
+<b class="nc">&nbsp;            startGame(user);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean inLobby(User user){
+<b class="nc">&nbsp;        return userLobbyMap.containsKey(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean inGame(User user){
+<b class="nc">&nbsp;        return userGameIdMap.containsKey(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void joinLobby(User user, int lobbyId){
+<b class="nc">&nbsp;        if(!lobbyIdLobbyMap.containsKey(lobbyId)){ return; }</b>
+<b class="nc">&nbsp;        if(lobbyIdLobbyMap.get(lobbyId).full()){ return; }</b>
+&nbsp;
+<b class="nc">&nbsp;        Group current_lobby = lobbyIdLobbyMap.get(lobbyId);</b>
+<b class="nc">&nbsp;        current_lobby.add(user);</b>
+<b class="nc">&nbsp;        userLobbyMap.put(user, current_lobby);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void leaveLobby(User user){
+<b class="nc">&nbsp;        Group current_lobby = userLobbyMap.get(user);</b>
+<b class="nc">&nbsp;        current_lobby.remove(user);</b>
+<b class="nc">&nbsp;        userLobbyMap.remove(user);</b>
+<b class="nc">&nbsp;        userGameIdMap.remove(user);</b>
+<b class="nc">&nbsp;        if(current_lobby.getNumUsers() == 0 &amp;&amp; current_lobby.getGroupId() != 0){</b>
+<b class="nc">&nbsp;            lobbyIdLobbyMap.remove(current_lobby.getGroupId());</b>
+<b class="nc">&nbsp;            Lobbies.remove(current_lobby);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void createLobby(User user){
+<b class="nc">&nbsp;        Group new_lobby = new Group(user, ++LobbyId);</b>
+<b class="nc">&nbsp;        Lobbies.add(new_lobby);</b>
+<b class="nc">&nbsp;        userLobbyMap.put(user, new_lobby);</b>
+<b class="nc">&nbsp;        lobbyIdLobbyMap.put(new_lobby.getGroupId(), new_lobby);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void startGame(User user){
+&nbsp;
+<b class="nc">&nbsp;        Group current_lobby = userLobbyMap.get(user);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(current_lobby.isQueue()){</b>
+<b class="nc">&nbsp;            leaveLobby(user);</b>
+<b class="nc">&nbsp;            createLobby(user);</b>
+<b class="nc">&nbsp;            current_lobby = userLobbyMap.get(user);</b>
+<b class="nc">&nbsp;            for(User temp_user : Queue.getUsers()){</b>
+<b class="nc">&nbsp;                leaveLobby(temp_user);</b>
+<b class="nc">&nbsp;                joinLobby(temp_user, userLobbyMap.get(user).getGroupId());</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        K new_game = dummyInstance.getNewGame(current_lobby, ++GameId);</b>
+&nbsp;
+<b class="nc">&nbsp;        Servers.add(new_game);</b>
+&nbsp;
+<b class="nc">&nbsp;        lobbyGameIdMap.put(current_lobby, GameId);</b>
+<b class="nc">&nbsp;        gameIdServerMap.put(GameId, new_game);</b>
+&nbsp;
+<b class="nc">&nbsp;        for(User current_user : current_lobby.getUsers()){</b>
+<b class="nc">&nbsp;            userGameIdMap.put(current_user, GameId);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        new_game.getResponse(user, new ServerEvent(&quot;start&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-04 11:00</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeScreenActivity">
+
+    <TextView
+        android:id="@+id/debtBuddiesTitle"
+        android:layout_width="368dp"
+        android:layout_height="81dp"
+        android:background="#DFDCDC"
+        android:fontFamily="@font/indie_flower"
+        android:gravity="center|clip_vertical|center_horizontal"
+        android:text="@string/debtBuddies"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.129" />
+
+    <ImageView
+        android:id="@+id/settings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:onClick="settingsOnClickListener"
+        app:layout_constraintBottom_toTopOf="@+id/debtBuddiesTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/settingsicon" />
+
+    <TextView
+        android:id="@+id/gamesHeader"
+        android:layout_width="113dp"
+        android:layout_height="39dp"
+        android:fontFamily="@font/indie_flower"
+        android:gravity="center"
+        android:text="@string/games"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debtBuddiesTitle"
+        app:layout_constraintVertical_bias="0.015" />
+
+    <LinearLayout
+        android:id="@+id/gamesLayout"
+        android:layout_width="368dp"
+        android:layout_height="425dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:weightSum="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gamesHeader"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_weight="1"
+            android:onClick="blackjackOnClickListener">
+
+            <ImageView
+                android:id="@+id/blackjackBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="blackjackOnClickListener"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/blackjackbackground" />
+
+            <TextView
+                android:id="@+id/blackjackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/indie_flower"
+                android:gravity="left|center_vertical"
+                android:onClick="blackjackOnClickListener"
+                android:text="@string/blackjack"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/blackjackBackground"
+                app:layout_constraintTop_toTopOf="@+id/blackjackBackground"
+                app:layout_constraintVertical_bias="0.489" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/whacAMoleBox"
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_weight="1"
+            android:onClick="whacAMoleOnClickListener">
+
+            <ImageView
+                android:id="@+id/whacBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="whacAMoleOnClickListener"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/whacbackgroundcolor" />
+
+            <ImageView
+                android:id="@+id/whacIcon"
+                android:layout_width="86dp"
+                android:layout_height="77dp"
+                android:onClick="whacAMoleOnClickListener"
+                app:layout_constraintBottom_toBottomOf="@+id/whacBackground"
+                app:layout_constraintEnd_toEndOf="@+id/whacBackground"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/whacBackground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/moleicon" />
+
+            <TextView
+                android:id="@+id/whacText"
+                android:layout_width="225dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/indie_flower"
+                android:gravity="left|center_vertical"
+                android:onClick="whacAMoleOnClickListener"
+                android:text="@string/whacamole"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="@+id/whacBackground"
+                app:layout_constraintEnd_toStartOf="@+id/whacIcon"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/whacBackground"
+                app:layout_constraintVertical_bias="0.48" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_weight="1"
+            android:onClick="warOnClickListener">
+
+            <ImageView
+                android:id="@+id/warBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="warOnClickListener"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/warbackground" />
+
+            <TextView
+                android:id="@+id/warText"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:fontFamily="@font/indie_flower"
+                android:gravity="center|center_horizontal|center_vertical"
+                android:onClick="warOnClickListener"
+                android:text="@string/war"
+                android:textColor="@color/white"
+                android:textSize="48sp"
+                app:layout_constraintBottom_toBottomOf="@+id/warBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.049"
+                app:layout_constraintStart_toStartOf="@+id/warBackground"
+                app:layout_constraintTop_toTopOf="@+id/warBackground"
+                app:layout_constraintVertical_bias="0.485" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spacer4"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_weight="1">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/chatIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:onClick="chatOnClickListener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/friendsListIcon"
+        app:layout_constraintStart_toEndOf="@+id/usernameText"
+        app:layout_constraintTop_toTopOf="@+id/usernameText"
+        app:srcCompat="@drawable/chaticon" />
+
+    <ImageView
+        android:id="@+id/userIcon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
+        android:onClick="profileOnClickListener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/usericon" />
+
+    <TextView
+        android:id="@+id/usernameText"
+        android:layout_width="160dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="5dp"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/indie_flower"
+        android:gravity="clip_vertical|left"
+        android:text="@string/username"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/userIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.934" />
+
+    <TextView
+        android:id="@+id/coinsText"
+        android:layout_width="160dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/indie_flower"
+        android:text="@string/coins"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/userIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985" />
+
+    <ImageView
+        android:id="@+id/friendsListIcon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:onClick="friendsListOnClickListener"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/coinsText"
+        app:layout_constraintTop_toBottomOf="@+id/gamesLayout"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/friendslisticon" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="leaderboardOnClickListener"
+        app:layout_constraintBottom_toTopOf="@+id/debtBuddiesTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/leaderboardicon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

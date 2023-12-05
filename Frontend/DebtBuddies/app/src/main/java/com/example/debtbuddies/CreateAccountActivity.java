@@ -3,54 +3,49 @@ package com.example.debtbuddies;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity for the user to create and register a new account with the backend.
+ * Creates a new account with the user's supplied username, email, and password.
+ */
 public class CreateAccountActivity extends AppCompatActivity {
 
     // as a note it's almost certainly better to implement this as a fragment and not an activity but at this point
     // i do not really care so this is fine
 
-
-    EditText tv_username,tv_email,tv_password,tv_confirmPassword;
-    Button b_confirm, b_back;
-    String username, email, password, confirmPassword, SERVER_URL;
+    private EditText tv_username,tv_email,tv_password,tv_confirmPassword;
+    private Button b_save, b_submit;
+    private String username, email, password, confirmPassword;
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/add/";
     private String tag_string_req = "string_req";
-    private String TAG = MainActivity.class.getSimpleName();
+    private String TAG = LoginScreenActivity.class.getSimpleName();
     private ProgressDialog pDialog;
-    Boolean createAccount;
+    private Boolean createAccount;
 
+    /**
+     * Runs when starting the activity. Initializes all of the instance variables, UI, etc. involved
+     * in the activity itself.
+     * @param savedInstanceState the state of the app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,87 +56,71 @@ public class CreateAccountActivity extends AppCompatActivity {
         tv_password = findViewById(R.id.tv_password);
         tv_confirmPassword = findViewById(R.id.tv_confirm);
 
-        b_confirm = findViewById(R.id.b_confirm);
-        b_back = findViewById(R.id.b_back);
+        b_save = findViewById(R.id.b_save);
+        b_submit = findViewById(R.id.b_submit);
+
+        b_save.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The onClickListener for the "save" button. Gets the user's input and prepares it for parsing
+             * into a JSONObject, which will be sent to the backend.
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                username = tv_username.getText().toString();
+                email = tv_email.getText().toString();
+                password = tv_password.getText().toString();
+                confirmPassword = tv_confirmPassword.getText().toString();
+                if (password.equals(confirmPassword)) {
+                    Toast.makeText(getApplicationContext(),"Data saved. Press SUBMIT." ,Toast.LENGTH_SHORT).show();
+                    createAccount = true;
+                } else {
+                    Toast.makeText(getApplicationContext(),"Passwords don't match. Please try again." ,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        b_submit.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The onClickListener for the "submit" button. Sends a POST request to the backend to create
+             * the new user given the fields supplied by the user. Once the request is submitted, goes back to
+             * the Login screen.
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                if (createAccount = true) {
+                    postRequest();
+
+                    Intent intent = new Intent(getApplicationContext(), LoginScreenActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         createAccount = false;
     }
-    public void onSubmitClicked(View v) {
-        username = tv_username.getText().toString();
-        email = tv_email.getText().toString();
-        password = tv_password.getText().toString();
-        confirmPassword = tv_confirmPassword.getText().toString();
-        if (password.equals(confirmPassword)) {
-            Toast.makeText(this,"account created" ,Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,"go back to login" ,Toast.LENGTH_SHORT).show();
-            createAccount = true;
-        } else {
-            Toast.makeText(this,"passwords don't match" ,Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    public void onBackClicked(View v) {
-
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";// + requestedUser;
-        if (createAccount = true) {
-            postRequest();
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    private void makeJsonObjReq() {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Volley Response", "response received: " + response.toString());
-                try {
-                    String username = response.getString("userName");
-                    // grab other fields here
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley Error", error.toString());
-            }
-        });
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
-    }
+    /**
+     * Method sets up the JSONObject (which represents the new user) and sends it to the backend.
+     */
     private void postRequest() {
 
         // Convert input to JSONObject
         JSONObject postBody;
         String temp =
                 "{" +
-                        "\"userName\":\"" + username + "\"," +
-                        "\"email\":\"" + email +"\"," +
-                        "\"password\":\"" + password + "\"" +
+                        "\"email\":\"" + email + "\"," +
+                        "\"userName\":\"" + username +"\"," +
+                        "\"password\":\"" + password + "\"," +
+                        "\"person_id\":\"" + 8 +
                         "}";
 
-
-        //\"password\":\"MS313Owen\"}";
-
-//                "{\"id\":62,\"userName\":\"Brock\",\"isOnline\":true,\"email\":\"oparker@iastate.edu\",\"password\":\"MS313Owen\",\"coins\":0}";
         try {
-            postBody = new JSONObject(temp);
+             postBody = new JSONObject(temp);
+            Log.d(TAG, "Succeeded making JSONObject from user input.");
         } catch (JSONException e) {
             throw new RuntimeException(e);
-        }
-
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
-
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
-
-        } catch (Exception e){
-            e.printStackTrace();
         }
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -149,6 +128,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
+                    /**
+                     * Does nothing, but is required by the listener.
+                     * @param response the response from the server. Contains a JSONObject.
+                     */
                     @Override
                     public void onResponse(JSONObject response) {
                         //  tvResponse.setText(response.toString());
@@ -156,12 +139,21 @@ public class CreateAccountActivity extends AppCompatActivity {
                     }
                 },
                 new Response.ErrorListener() {
+                    /**
+                     * Does nothing, but is required by the listener.
+                     * @param error the error response from the server. Contains a VolleyError
+                     */
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //tvResponse.setText(error.getMessage());
                     }
                 }
         ){
+            /**
+             * Gets the headers of the request. Not used, but may be required.
+             * @return a HashMap of the headers
+             * @throws AuthFailureError
+             */
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
@@ -170,6 +162,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return headers;
             }
 
+            /**
+             * Gets the parameters of the request. Not used, but may be required.
+             * @return a HashMap of the parameters
+             */
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
@@ -179,6 +175,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         };
 
+        Log.d(TAG, "Adding POST request to the queue.");
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
