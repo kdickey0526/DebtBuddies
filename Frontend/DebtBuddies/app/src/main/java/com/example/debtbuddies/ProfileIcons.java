@@ -82,14 +82,19 @@ public class ProfileIcons extends AppCompatActivity {
         b_icon8 = findViewById(R.id.b_icon8);
         b_frag = findViewById(R.id.b_menu);
 
+        String hold = "";
+
         if (!MyApplication.loggedInAsGuest) {
             try {
                 SERVER_URL += MyApplication.currentUser.getString("name");
+                hold = MyApplication.currentUser.getString("profile");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
         }
-        makeJsonObjReq();
+
+        int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
 
 
 
@@ -100,16 +105,16 @@ public class ProfileIcons extends AppCompatActivity {
      * save the icon choice and leave
      * @param view
      */
-//    public void menu(View view) {
-//        try {
-//            MyApplication.currentUser.put("Profile", icon);
-//            postRequest();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        Intent intent = new Intent(this, Menu.class);
-//        startActivity(intent);
-//    }
+    public void menu(View view) {
+        try {
+            MyApplication.currentUser.put("profile", icon);
+            postRequest();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(this, Menu.class);
+        startActivity(intent);
+    }
 
     /**
      * pick icon  0
@@ -205,41 +210,13 @@ public class ProfileIcons extends AppCompatActivity {
      */
     public void onMenuClicked(View view) {
         try {
-            MyApplication.currentUser.put("Profile", icon);
+            MyApplication.currentUser.put("profile", icon);
             postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
-    }
-
-
-    private void makeJsonObjReq() {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Volley Response", "response received: " + response.toString());
-                try {
-                    // grab fields here
-                    String profileIcon = response.getString("Profile");
-                    image = getResources().getIdentifier(profileIcon, "drawable", getPackageName());
-                    playerIcon.setImageResource(image);
-
-                    MyApplication.currentUser = response; // store json object
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley Error", error.toString());
-            }
-        });
-
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
     private void postRequest() {

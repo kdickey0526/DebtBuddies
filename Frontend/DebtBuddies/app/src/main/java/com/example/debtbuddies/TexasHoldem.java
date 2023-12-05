@@ -24,6 +24,7 @@ import android.util.Log;
 public class TexasHoldem extends AppCompatActivity implements WebSocketListener {
     private static final String TAG = "TexasHoldem";
     String baseURL = "ws://coms-309-048.class.las.iastate.edu:8080/gameserver/texasholdem/";
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     String connectedURL;
     Boolean gameStart;
     EditText tv_raise;
@@ -37,7 +38,7 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
 
 
     String icon, playerName;
-    int bal;
+    String bal;
     ImageView playerIcon;
     TextView username, playerBal, tv_pot, tv_ante;
     /**
@@ -53,9 +54,10 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
         if (!MyApplication.loggedInAsGuest) {
             try {
                 connectedURL = baseURL + MyApplication.currentUser.getString("name");
+                SERVER_URL = SERVER_URL + MyApplication.currentUser.get("name");
                 playerName = MyApplication.currentUser.getString("name");
-                icon = MyApplication.currentUser.getString("Profile");
-                bal = MyApplication.currentUser.getInt("coins");
+                icon = MyApplication.currentUser.getString("profile");
+                bal = String.valueOf(MyApplication.currentUser.getInt("coins"));
                 WebSocketManager.getInstance().connectWebSocket(connectedURL);
                 WebSocketManager.getInstance().setWebSocketListener(TexasHoldem.this);
                 Log.d(TAG, "onKey: message successful");
@@ -82,7 +84,6 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
         playerIcon = findViewById(R.id.icon);
         username = findViewById(R.id.tv_player1_username);
         playerBal = findViewById(R.id.tv_player1_bal);
-
 
         int image = getResources().getIdentifier(icon, "drawable", getPackageName());
         playerIcon.setImageResource(image);
@@ -173,9 +174,9 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                     card += "spade";
                 } else if (suit == 'C') { //club
                     card += "club";
-                } else if (suit == 'C') { //diamond
-                    card += "heart";
-                } else if (suit == 'C') { //heart
+                } else if (suit == 'D') { //diamond
+                    card += "diamond";
+                } else if (suit == 'H') { //heart
                     card += "heart";
                 }
                 card += rank;
@@ -191,15 +192,17 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                     rank += temp[4].charAt(j);
                 }
 
+
                 if (suit == 'S') { //spades
                     card += "spade";
                 } else if (suit == 'C') { //club
                     card += "club";
-                } else if (suit == 'C') { //diamond
-                    card += "heart";
-                } else if (suit == 'C') { //heart
+                } else if (suit == 'D') { //diamond
+                    card += "diamond";
+                } else if (suit == 'H') { //heart
                     card += "heart";
                 }
+
                 card += rank;
 
                 image = getResources().getIdentifier(card, "drawable", getPackageName());
@@ -221,13 +224,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                         rank += temp[2].charAt(j);
                     }
 
+
                     if (suit == 'S') { //spades
                         card += "spade";
                     } else if (suit == 'C') { //club
                         card += "club";
-                    } else if (suit == 'C') { //diamond
-                        card += "heart";
-                    } else if (suit == 'C') { //heart
+                    } else if (suit == 'D') { //diamond
+                        card += "diamond";
+                    } else if (suit == 'H') { //heart
                         card += "heart";
                     }
                     card += rank;
@@ -244,13 +248,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                         rank += temp[4].charAt(j);
                     }
 
+
                     if (suit == 'S') { //spades
                         card += "spade";
                     } else if (suit == 'C') { //club
                         card += "club";
-                    } else if (suit == 'C') { //diamond
-                        card += "heart";
-                    } else if (suit == 'C') { //heart
+                    } else if (suit == 'D') { //diamond
+                        card += "diamond";
+                    } else if (suit == 'H') { //heart
                         card += "heart";
                     }
                     card += rank;
@@ -266,13 +271,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                         rank += temp[6].charAt(j);
                     }
 
+
                     if (suit == 'S') { //spades
                         card += "spade";
                     } else if (suit == 'C') { //club
                         card += "club";
-                    } else if (suit == 'C') { //diamond
-                        card += "heart";
-                    } else if (suit == 'C') { //heart
+                    } else if (suit == 'D') { //diamond
+                        card += "diamond";
+                    } else if (suit == 'H') { //heart
                         card += "heart";
                     }
                     card += rank;
@@ -289,13 +295,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                         rank += temp[8].charAt(j);
                     }
 
+
                     if (suit == 'S') { //spades
                         card += "spade";
                     } else if (suit == 'C') { //club
                         card += "club";
-                    } else if (suit == 'C') { //diamond
-                        card += "heart";
-                    } else if (suit == 'C') { //heart
+                    } else if (suit == 'D') { //diamond
+                        card += "diamond";
+                    } else if (suit == 'H') { //heart
                         card += "heart";
                     }
                     card += rank;
@@ -311,13 +318,14 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                         rank += temp[10].charAt(j);
                     }
 
+
                     if (suit == 'S') { //spades
                         card += "spade";
                     } else if (suit == 'C') { //club
                         card += "club";
-                    } else if (suit == 'C') { //diamond
-                        card += "heart";
-                    } else if (suit == 'C') { //heart
+                    } else if (suit == 'D') { //diamond
+                        card += "diamond";
+                    } else if (suit == 'H') { //heart
                         card += "heart";
                     }
                     card += rank;
