@@ -411,6 +411,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
             // similar to what you would have in POSTMAN-body field
             // and the fields should match with the object structure of @RequestBody on sb
             postBody = new JSONObject(MyApplication.currentUser.toString());
+
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -57,6 +57,7 @@ public class BlackJack extends AppCompatActivity {
         if (!MyApplication.loggedInAsGuest) {
             try {
                 SERVER_URL += MyApplication.currentUser.getString("name");
+                bal = MyApplication.currentUser.getInt("coins");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
@@ -85,7 +86,6 @@ public class BlackJack extends AppCompatActivity {
         b_menu = findViewById(R.id.b_menu);
         String card;
 
-        bal = 50;
         bet = 5;
         gameOver = false;
 
@@ -322,7 +322,16 @@ public class BlackJack extends AppCompatActivity {
             tvDealer.setText(String.valueOf(dealerNumH));
         }
 
-        postRequest(); //honestly idk if this works
+            if (!MyApplication.loggedInAsGuest) {
+                try {
+                    MyApplication.currentUser.put("coins", bal);
+                    postRequest();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating the highscore on the backend");
+                    e.printStackTrace();
+                }
+            }
+        //postRequest(); //honestly idk if this works
 
         String temp = "Balance: ";
         temp += bal;
@@ -431,27 +440,24 @@ public class BlackJack extends AppCompatActivity {
     private void postRequest() {
 
         // Convert input to JSONObject
-        JSONObject postBody;
-        String temp =
-                "{" +
-                        "\"id\":\"" + id + "\"," +
-                        "\"userName\":\"" + username + "\"," +
-                        "\"email\":\"" + email +"\"," +
-                        "\"password\":\"" + password + "\"" +
-                        "\"coins\":\"" + bal + "\"" +
-                        "}";
+        JSONObject postBody = null;
+//        String temp =
+//                "{" +
+//                        "\"id\":\"" + id + "\"," +
+//                        "\"userName\":\"" + username + "\"," +
+//                        "\"email\":\"" + email +"\"," +
+//                        "\"password\":\"" + password + "\"" +
+//                        "\"coins\":\"" + bal + "\"" +
+//                        "}";
 
 
-        //\"password\":\"MS313Owen\"}";
 
-//                "{\"id\":62,\"userName\":\"Brock\",\"isOnline\":true,\"email\":\"oparker@iastate.edu\",\"password\":\"MS313Owen\",\"coins\":0}";
         try {
-            postBody = new JSONObject(temp);
+//            postBody = new JSONObject(temp);
+            postBody = new JSONObject(MyApplication.currentUser.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
 
         try{
             // etRequest should contain a JSON object string as your POST body
@@ -463,39 +469,25 @@ public class BlackJack extends AppCompatActivity {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.PUT,
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //  tvResponse.setText(response.toString());
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //tvResponse.setText(error.getMessage());
+                        Log.e("Volley Error", error.toString());
                     }
                 }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
-                //                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                //                params.put("param1", "value1");
-                //                params.put("param2", "value2");
-                return params;
-            }
-        };
+        );
+
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
+
+
 }

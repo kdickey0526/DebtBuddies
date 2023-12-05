@@ -352,10 +352,6 @@
 
 
 
-
-
-
-
     <ImageView
         android:id="@+id/player4_icon"
         android:layout_width="50dp"
@@ -423,8 +419,5 @@
         android:text="Bal: 0"
         android:textColor="#FFFFFFFF"
         android:textSize="12sp" />
-
-
-
 
 </RelativeLayout>

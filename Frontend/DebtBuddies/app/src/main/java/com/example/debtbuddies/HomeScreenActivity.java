@@ -94,6 +94,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         startActivity(new Intent(this, WarMultiplayer.class));
     }
 
+    public void texasOnClickListener(View v) {
+        Log.d(TAG, "texasOnClickListener: clicked");
+        startActivity(new Intent(this, TexasHoldem.class));
+    }
+
     /**
      * Listener for displaying the friends list
      * @param v the button/image for friends list
