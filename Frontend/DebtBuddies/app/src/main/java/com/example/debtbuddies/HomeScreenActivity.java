@@ -53,6 +53,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Log.d(TAG, MyApplication.currentUser.toString());
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {

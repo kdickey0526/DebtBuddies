@@ -140,6 +140,7 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, jsonObjReq.toString());
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
