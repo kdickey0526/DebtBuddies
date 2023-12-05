@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  * The server provides functionality for broadcasting messages to all connected
  * users and sending messages to specific users.
  */
-@ServerEndpoint("/gameserver/{game}/{username}/{id}")
+@ServerEndpoint("/gameserver/{game}/{username}")
 @Component
 public class GameServer {
 
