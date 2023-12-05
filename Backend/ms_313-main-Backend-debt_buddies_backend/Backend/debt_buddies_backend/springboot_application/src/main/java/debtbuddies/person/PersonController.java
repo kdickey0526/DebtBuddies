@@ -87,9 +87,9 @@ public class PersonController {
 		return personRepo.findByName(name);
 	}
 
-	@GetMapping(path = "/id/{name}")
-	public Person getPersonById(@PathVariable int name){
-		return personRepo.findById(name);
+	@GetMapping(path = "/id/{id}")
+	public Person getPersonById(@PathVariable int id){
+		return personRepo.findById(id);
 	}
 
 	@ApiResponses(value = {
