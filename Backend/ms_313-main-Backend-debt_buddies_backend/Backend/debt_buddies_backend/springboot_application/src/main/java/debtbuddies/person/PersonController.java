@@ -88,7 +88,7 @@ public class PersonController {
 	}
 
 	@GetMapping(path = "/num/{id}")
-	public Person getPersonById(@PathVariable int id){
+	Person getPersonById(@PathVariable int id){
 		return personRepo.findById(id);
 	}
 
