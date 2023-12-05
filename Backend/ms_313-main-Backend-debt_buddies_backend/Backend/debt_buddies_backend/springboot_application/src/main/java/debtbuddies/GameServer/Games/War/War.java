@@ -101,7 +101,7 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
     }
 
     @Override
-    protected void initializeGame() {
+    public void initializeGame() {
         running = 1;
         convertUsers();
         target_player = players.get(p_index++ % players.size());
