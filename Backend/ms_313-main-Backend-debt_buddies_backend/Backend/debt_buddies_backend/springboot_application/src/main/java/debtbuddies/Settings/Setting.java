@@ -61,7 +61,7 @@ public class Setting {
         return sound;
     }
 
-    public void setCpuClock(boolean sound){
+    public void setSound(boolean sound){
         this.sound = sound;
     }
 

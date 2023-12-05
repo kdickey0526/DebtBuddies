@@ -84,13 +84,6 @@ public class GameScore {
         this.warLost = warLost;
     }
 
-    public Person getUser(){
-        return user;
-    }
-
-    public void setUser(Person user){
-        this.user = user;
-    }
 
     public int getWarWon(){
         return warWon;
