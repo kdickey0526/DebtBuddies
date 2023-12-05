@@ -38,7 +38,7 @@ public class BlackJack extends AppCompatActivity {
     int dealerNumL;
     Button b_deal, b_stand, b_double, b_replay, b_menu;
     ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
-        dealerCard2, dealerCard3, dealerCard4, dealerCard5;
+        dealerCard2, dealerCard3, dealerCard4, dealerCard5, playerIcon;
     public boolean gameOver, doubleClick, hitPlayer;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
@@ -52,12 +52,13 @@ public class BlackJack extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackjack);
-
+        String hold = "";
 
         if (!MyApplication.loggedInAsGuest) {
             try {
                 SERVER_URL += MyApplication.currentUser.getString("name");
                 bal = MyApplication.currentUser.getInt("coins");
+                hold = MyApplication.currentUser.getString("profile");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
@@ -84,7 +85,13 @@ public class BlackJack extends AppCompatActivity {
         tvBal = findViewById(R.id.textView);
         tvBet = findViewById(R.id.textView2);
         b_menu = findViewById(R.id.b_menu);
+
+        playerIcon = findViewById(R.id.icon);
         String card;
+
+
+        int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
 
         bet = 5;
         gameOver = false;
@@ -92,7 +99,7 @@ public class BlackJack extends AppCompatActivity {
         card = hitPlayer();
 
 
-        int image = getResources().getIdentifier( card, "drawable", getPackageName());
+        image = getResources().getIdentifier( card, "drawable", getPackageName());
         playerCard1.setImageResource(image);
 
         card = hitPlayer();
