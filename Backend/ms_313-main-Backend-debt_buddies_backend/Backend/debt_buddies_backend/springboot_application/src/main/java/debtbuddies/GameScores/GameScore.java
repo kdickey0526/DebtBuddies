@@ -38,7 +38,7 @@ public class GameScore {
      */
     @OneToOne
     @JsonIgnore
-    private Person user;
+    private Person person;
 
     public GameScore(int whack, int WarWon, int BlackJack, int WarLost) {
         this.whack = whack;
@@ -99,5 +99,14 @@ public class GameScore {
     public void setWarWon(int WarWon){
         this.warWon = WarWon;
     }
+
+    public Person getPerson(){
+        return person;
+    }
+
+    public void setPerson(Person person){
+        this.person = person;
+    }
+
 
 }

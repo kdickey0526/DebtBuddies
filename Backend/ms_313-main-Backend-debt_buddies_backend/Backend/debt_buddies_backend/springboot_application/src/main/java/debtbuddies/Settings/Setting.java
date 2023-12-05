@@ -37,7 +37,7 @@ public class Setting {
      */
     @OneToOne
     @JsonIgnore
-    private Person user;
+    private Person person;
 
     public Setting(boolean sound) {
         this.sound = sound;
@@ -63,6 +63,14 @@ public class Setting {
 
     public void setCpuClock(boolean sound){
         this.sound = sound;
+    }
+
+    public Person getPerson(){
+        return person;
+    }
+
+    public void setPerson(Person person){
+        this.person = person;
     }
 
 
