@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  * The server provides functionality for broadcasting messages to all connected
  * users and sending messages to specific users.
  */
-@ServerEndpoint("/gameserver/{game}/{username}/{id}")
+@ServerEndpoint("/gameserver/{game}/{username}")
 @Component
 public class GameServer {
 
@@ -66,14 +66,14 @@ public class GameServer {
      * @param username username specified in path parameter.
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username, @PathParam("id") int id) throws IOException {
+    public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username/*, @PathParam("id") int id*/) throws IOException {
 
         // server side log
         logger.info("[onOpen] " + username);
         //logger.info("[onOpen] " + Repo.toString());
         int coins = 25;
         int f_id = 0;
-
+        /*
         debtbuddies.Users.User cl = Repo.findById(id);
         if(cl != null) {
             username = cl.getUserName();
@@ -81,6 +81,8 @@ public class GameServer {
             f_id = cl.getId();
             coins = cl.getCoins();
         }
+        
+         */
 
         if(sessionUserMap.containsKey(session)){
             session.close();
