@@ -140,9 +140,9 @@ public class PersonController {
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/persons/{userId}/Settings/{laptopId}")
-	String assignSettingsToUser(@PathVariable String userId,@PathVariable int laptopId){
+	String assignSettingsToUser(@PathVariable String userId,@PathVariable String laptopId){
 		Person user = personRepo.findByName(userId);
-		Setting laptop = SettingRepo.findById(laptopId);
+		Setting laptop = SettingRepo.findByUserName(laptopId);
 		if(user == null || laptop == null)
 			return failure;
 		laptop.setPerson(user);
