@@ -8,7 +8,6 @@ import debtbuddies.GameServer.Games.War.War;
 import debtbuddies.GameServer.PlayerClasses.CardUser;
 import debtbuddies.GameServer.PlayerClasses.User;
 import debtbuddies.Users.UserRepository;
-import debtbuddies.person.PersonRepository;
 
 public class Manager {
 
@@ -17,13 +16,13 @@ public class Manager {
     private static GameManager<CardUser, War> warManager = new GameManager<CardUser, War>(new War());
 
 
-    public static void getResponse(String game, User user, ServerEvent serverEvent, PersonRepository personRepository){
+    public static void getResponse(String game, User user, ServerEvent serverEvent){
         switch(game){
             case "texasholdem":
-                texasManager.getResponse(user, serverEvent, personRepository);
+                texasManager.getResponse(user, serverEvent);
                 break;
             case "war":
-                warManager.getResponse(user, serverEvent, personRepository);
+                warManager.getResponse(user, serverEvent);
             case "gofish":
                 //return GoFishManager.getResponse(player, serverEvent.getAction());
                 break;

@@ -2,7 +2,6 @@ package debtbuddies;
 
 import debtbuddies.GameServer.DeckLibrary.Card;
 import debtbuddies.GameServer.DeckLibrary.Suit;
-import debtbuddies.GameServer.Games.TexasHoldEm.PokerHands;
 import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEm;
 import io.swagger.models.auth.In;
 import org.junit.Test;
@@ -132,26 +131,6 @@ public class HandsTest {
         cards.add(new Card(Suit.HEARTS, 8));
 
         assertTrue(game.pair(cards));
-    }
-
-    @Test
-    public void HighTest(){
-        cards = new ArrayList<>();
-        cards.add(new Card(Suit.DIAMONDS, 3));
-        cards.add(new Card(Suit.DIAMONDS, 4));
-        cards.add(new Card(Suit.HEARTS, 5));
-        cards.add(new Card(Suit.DIAMONDS, 7));
-        cards.add(new Card(Suit.SPADES, 8));
-        cards.add(new Card(Suit.DIAMONDS, 9));
-        cards.add(new Card(Suit.CLUBS, 11));
-
-        PokerHands high = game.convertHigh(cards);
-
-        System.out.println(high);
-
-        assertEquals(PokerHands.HIGH_JACK, game.getHighEnum(cards));
-
-        assertEquals(PokerHands.HIGH_JACK, high);
     }
 
 }

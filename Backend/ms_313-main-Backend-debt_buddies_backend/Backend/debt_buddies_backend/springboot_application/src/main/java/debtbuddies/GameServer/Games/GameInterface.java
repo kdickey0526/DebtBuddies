@@ -3,13 +3,12 @@ package debtbuddies.GameServer.Games;
 import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
-import debtbuddies.person.PersonRepository;
 
 import java.util.List;
 
 public interface GameInterface <T, K>{
 
-    void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository);
+    void getResponse(User user, ServerEvent serverEvent);
 
     K getNewGame(Group lobby, int gameId);
 

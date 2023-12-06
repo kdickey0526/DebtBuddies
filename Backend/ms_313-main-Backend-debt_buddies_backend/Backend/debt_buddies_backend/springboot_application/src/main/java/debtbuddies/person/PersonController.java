@@ -47,7 +47,7 @@ public class PersonController {
 	public void addPerson(@RequestBody Person p) {
 		personRepo.save(p);
 	}
-	/*
+
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
@@ -62,8 +62,6 @@ public class PersonController {
 			personRepo.save(person);
 		}
 	}
-
-	 */
 
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
@@ -89,21 +87,11 @@ public class PersonController {
 		return personRepo.findByName(name);
 	}
 
-/*
 	@GetMapping(path = "/num/{id}")
     Person getPersonById( @PathVariable int id){
         return personRepo.findById(id);
     }
 
-
-	@GetMapping(path = "/id/{name}")
-	public Person getPersonById(@PathVariable int name){
-		return personRepo.findById(name);
-	}
-	
- */
-	/*
->>>>>>> kyle_cicd
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
@@ -113,7 +101,7 @@ public class PersonController {
 	public void deleteFriend(@PathVariable String name){
 		personRepo.deleteByName(name);
 	}
-	*/
+
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
