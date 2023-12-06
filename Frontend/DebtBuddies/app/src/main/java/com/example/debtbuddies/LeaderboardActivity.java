@@ -32,9 +32,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     private ImageView btn_refresh;
 
 //    private int count = 0;
-    private boolean updatingWhack = true;
-    private boolean updatingWar = true;
-    private boolean updatingBJ = true;
+//    private boolean updatingWhack = true;
+//    private boolean updatingWar = true;
+//    private boolean updatingBJ = true;
 
 
     // deprecated, from an approach that did not work
@@ -68,15 +68,15 @@ public class LeaderboardActivity extends AppCompatActivity {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
 
-        updatingWhack = true;
+//        updatingWhack = true;
         updateWhac();
-        updatingWhack = false;
-        updatingBJ = true;
+//        updatingWhack = false;
+//        updatingBJ = true;
         updateBJ();
-        updatingBJ = false;
-        updatingWar = true;
+//        updatingBJ = false;
+//        updatingWar = true;
         updateWar();
-        updatingWar = false;
+//        updatingWar = false;
     }
 
     @Override
@@ -253,7 +253,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     tv_warBoard.setText(s + "4th: " + response.getJSONObject(3).getString("userName") + getString(R.string.tab) + getString(R.string.tab) + response.getJSONObject(3).getInt("warWon") + "\n");
                     s = tv_warBoard.getText().toString();
                     tv_warBoard.setText(s + "5th: " + response.getJSONObject(4).getString("userName") + getString(R.string.tab) + getString(R.string.tab) + response.getJSONObject(4).getInt("warWon") + "\n");
-                    updatingWar = false;
+//                    updatingWar = false;
                 } catch (Exception e) {
                     Log.e(TAG, "Error fetching fields from each object");
                     e.printStackTrace();
