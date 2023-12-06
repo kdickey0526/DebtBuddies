@@ -26,6 +26,8 @@ public class Setting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private boolean sound;
+    private boolean darkmode;
+
 /*    private int cpuCores;
     private int ram;
     private String manufacturer;
@@ -63,6 +65,14 @@ public class Setting {
 
     public void setSound(boolean sound){
         this.sound = sound;
+    }
+
+    public boolean getDarkmode(){
+        return darkmode;
+    }
+
+    public void setDarkmode(boolean darkmode){
+        this.darkmode = darkmode;
     }
 
     public Person getPerson(){
