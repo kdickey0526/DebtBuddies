@@ -24,7 +24,7 @@ import org.json.JSONObject;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/persons/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Settings/";
     private JSONObject settingsProfile;
     private Switch sw_enableSounds;
     private Switch sw_darkMode;
@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
         if (!MyApplication.loggedInAsGuest) { // get user's settings profile and update everything accordingly
-            SERVER_URL += MyApplication.currentUser + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
+            SERVER_URL += MyApplication.currentUser; // + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
             makeJsonObjReq();
             try {
                 sw_enableSounds.setChecked(sounds_enabled); // sounds_enabled will have the value set in the user's profile at this point.
@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (!MyApplication.loggedInAsGuest) {
                     try {
-                        settingsProfile.put("dark", dark_enabled);
+                        settingsProfile.put("darkmode", dark_enabled);
                         putRequest();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed updating backend with the new dark mode setting");
@@ -148,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
                     sounds_enabled = response.getBoolean("sound"); // or however its stored in database
                     MyApplication.enableSounds = sounds_enabled;
 
-                    dark_enabled = response.getBoolean("dark");
+                    dark_enabled = response.getBoolean("darkmode");
                     MyApplication.enableDarkMode = dark_enabled;
                     // other settings here
 
