@@ -81,16 +81,16 @@ dependencies {
     implementation("androidx.test:runner:1.5.2")
 //    implementation("androidx.test:runner:1.5.2")
 
-    implementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:4.13.2")
     implementation("androidx.test.ext:junit:1.1.5")
-    implementation("androidx.test.espresso:espresso-core:3.5.1")
+    testDebugImplementation("androidx.test.espresso:espresso-core:3.5.1")
 //    implementation ("com.android.volley:volley:1.1.1")    // duplicate entry
     implementation ("androidx.cardview:cardview:1.0.0")
 
 
     implementation ("androidx.appcompat:appcompat:1.1.0")
     implementation ("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation ("junit:junit:4.13")
+//    implementation ("junit:junit:4.13")
     // required if you want to use Mockito for unit tests
 //    implementation ("org.mockito:mockito-core:4.0.0")
 //    implementation ("org.robolectric:robolectric:4.3.1")
