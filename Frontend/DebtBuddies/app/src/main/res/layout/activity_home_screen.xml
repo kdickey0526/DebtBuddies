@@ -146,7 +146,7 @@
 
             <TextView
                 android:id="@+id/whacText"
-                android:layout_width="225dp"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/indie_flower"
@@ -154,7 +154,7 @@
                 android:onClick="whacAMoleOnClickListener"
                 android:text="@string/whacamole"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="48sp"
                 app:layout_constraintBottom_toBottomOf="@+id/whacBackground"
                 app:layout_constraintEnd_toStartOf="@+id/whacIcon"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -218,8 +218,34 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="77dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="texasOnClickListener">
 
+            <ImageView
+                android:id="@+id/holdemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="texasOnClickListener"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/holdembackground" />
+
+            <TextView
+                android:id="@+id/holdEmText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/indie_flower"
+                android:onClick="texasOnClickListener"
+                android:text="Texas Hold 'Em"
+                android:textColor="@color/white"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/holdemBackground"
+                app:layout_constraintHorizontal_bias="0.105"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/holdemBackground" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -328,16 +354,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/leaderboardicon" />
-
-    <Button
-        android:id="@+id/texas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="160dp"
-        android:text="Button"
-        android:onClick="texasOnClickListener"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
