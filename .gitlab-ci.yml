@@ -25,13 +25,14 @@ maven-test:
 autoDeploy:
   stage: mavenDeploy  #do make a stage with same name!
   tags:
-  - spring_tag
+  - springboot_tag
   script:
     - cd Backend
     - mvn package
-    - sudo mv target/*.jar /target/web-demo.jar 
+    - sudo mv Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/target/*.jar /target/web-demo.jar 
     - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
+
 android-build:
   image: afirefly/android-ci:java17 # gjandres/android-ci:latest
   stage: androidbuild
