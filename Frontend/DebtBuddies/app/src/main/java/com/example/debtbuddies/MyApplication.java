@@ -18,6 +18,8 @@ public class MyApplication extends Application {
      */
     public static String currentUserName = null;
 
+    public static int currentUserID;
+
     /**
      * Variable holding whether the user has logged in as guest or not.
      */
