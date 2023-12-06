@@ -3,6 +3,7 @@ package com.example.debtbuddies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     // i do not really care so this is fine
 
     private EditText tv_username,tv_email,tv_password,tv_confirmPassword;
-    private RelativeLayout overall_background;
+
     private Button b_save, b_submit;
     private String username, email, password, confirmPassword;
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/add/";
@@ -63,7 +64,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         b_submit = findViewById(R.id.b_submit);
 
         if (MyApplication.enableDarkMode) {
-            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
 
         b_save.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +109,16 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
 
         createAccount = false;
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     /**

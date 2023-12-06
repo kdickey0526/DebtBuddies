@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +31,6 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
     private EditText passwordField;
-    private ConstraintLayout overall_background;
     private TextView coinCount;
     private TextView msgResponse;
     private Button loginBtn;
@@ -58,8 +58,20 @@ public class LoginScreenActivity extends AppCompatActivity {
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
 
         if (MyApplication.enableDarkMode) {
-            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     /**

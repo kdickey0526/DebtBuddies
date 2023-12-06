@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     private TextView tv_warBoard;
     private TextView tv_bjBoard;
     private ImageView btn_refresh;
-    private ConstraintLayout overall_background;
 
     private int count = 0;
     private boolean updatingWhack;
@@ -46,6 +46,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private JSONObject currentPerson5;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +61,26 @@ public class LeaderboardActivity extends AppCompatActivity {
         tv_whacBoard.setText("");
         tv_warBoard.setText("");
         tv_bjBoard.setText("");
+
         if (MyApplication.enableDarkMode) {
-            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
 
         updateWhac();
         updateBJ();
         updateWar();
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     private void updateWhac() {

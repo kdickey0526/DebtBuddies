@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +26,6 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/persons/";
     private JSONObject settingsProfile;
-    private ConstraintLayout overall_background;
     private Switch sw_enableSounds;
     private Switch sw_darkMode;
     private boolean dark_enabled = MyApplication.enableDarkMode;
@@ -38,7 +39,6 @@ public class SettingsActivity extends AppCompatActivity {
         // instantiate views
         sw_enableSounds = findViewById(R.id.sw_enableSounds);
         sw_darkMode = findViewById(R.id.sw_darkMode);
-        overall_background = findViewById(R.id.overall_background);
 
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
@@ -63,8 +63,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
-        if (sw_darkMode.isEnabled() || MyApplication.enableDarkMode) {
-            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
 
         // each option should set the according value in MyApplication class
@@ -105,10 +107,26 @@ public class SettingsActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
+                if (MyApplication.enableDarkMode) {
+                    getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+                } else {
+                    getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+                }
             }
         });
 
         // other listeners can go here for other settings
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     /**
