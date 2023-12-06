@@ -80,6 +80,7 @@ public class GameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username) throws IOException {
 
+
         // server side log
         logger.info("[onOpen] " + username);
         //logger.info("[onOpen] " + Repo.toString());
@@ -102,7 +103,6 @@ public class GameServer {
                 coins = 50;
             }
         }
-
         /*
         debtbuddies.Users.User cl = Repo.findById(id);
         if(cl != null) {

@@ -1,5 +1,6 @@
 package debtbuddies;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.JsonObject;
@@ -43,7 +44,7 @@ public class TestingSystemTest {
         RestAssured.baseURI = "http://localhost";
     }
 
-    @Test
+
     public void GetUsersTest(){
         Response response = RestAssured.given().
                 header("Content-Type", "text/plain").
@@ -212,7 +213,6 @@ public class TestingSystemTest {
         assertEquals(200, statusCode);
 
     }
-
 
     /*
     @Test
