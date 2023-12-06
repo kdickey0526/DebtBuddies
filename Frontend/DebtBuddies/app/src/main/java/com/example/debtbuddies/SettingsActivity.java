@@ -1,7 +1,10 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +24,10 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/persons/";
     private JSONObject settingsProfile;
+    private ConstraintLayout overall_background;
     private Switch sw_enableSounds;
+    private Switch sw_darkMode;
+    private boolean dark_enabled = MyApplication.enableDarkMode;
     private boolean sounds_enabled = MyApplication.enableSounds;    // could probably get away with not needing/using this variable but its ok lol
 
     @Override
@@ -31,6 +37,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         // instantiate views
         sw_enableSounds = findViewById(R.id.sw_enableSounds);
+        sw_darkMode = findViewById(R.id.sw_darkMode);
+        overall_background = findViewById(R.id.overall_background);
 
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
@@ -39,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
             makeJsonObjReq();
             try {
                 sw_enableSounds.setChecked(sounds_enabled); // sounds_enabled will have the value set in the user's profile at this point.
+                sw_darkMode.setChecked(dark_enabled);
                 // update other UI here
 
             } catch (Exception e) {
@@ -49,8 +58,13 @@ public class SettingsActivity extends AppCompatActivity {
             // logged in as guest, update the UI based on what's in MyApplication class (class is updated regardless of guest or not btw)
 
             sw_enableSounds.setChecked(MyApplication.enableSounds);
+            sw_darkMode.setChecked(MyApplication.enableDarkMode);
             // other settings here
 
+        }
+
+        if (sw_darkMode.isEnabled() || MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
         }
 
         // each option should set the according value in MyApplication class
@@ -66,10 +80,28 @@ public class SettingsActivity extends AppCompatActivity {
                 if (!MyApplication.loggedInAsGuest) {
                     // update backend with new settings
                     try {
-                        settingsProfile.put("soundEnabled", sounds_enabled);
+                        settingsProfile.put("sound", sounds_enabled);
                         putRequest();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed updating backend with the new sounds setting");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        sw_darkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isEnabled) {
+                dark_enabled = isEnabled;
+                MyApplication.enableDarkMode = isEnabled;
+
+                if (!MyApplication.loggedInAsGuest) {
+                    try {
+                        settingsProfile.put("dark", dark_enabled);
+                        putRequest();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Failed updating backend with the new dark mode setting");
                         e.printStackTrace();
                     }
                 }
@@ -92,12 +124,14 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
-                settingsProfile = response;
+                settingsProfile = response; // may not actually work, as seen in JSONArray stuff and login screen
 
                 try {
                     sounds_enabled = response.getBoolean("sound"); // or however its stored in database
                     MyApplication.enableSounds = sounds_enabled;
 
+                    dark_enabled = response.getBoolean("dark");
+                    MyApplication.enableDarkMode = dark_enabled;
                     // other settings here
 
                 } catch (JSONException e) {

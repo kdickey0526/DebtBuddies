@@ -1,6 +1,9 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,6 +29,7 @@ import org.json.JSONObject;
 public class FriendsListActivity extends AppCompatActivity {
 
     private TextView listOfFriends;
+    private ConstraintLayout overall_background;
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     private JSONArray userFriendList = null;
     private JSONObject currentFriend = null;
@@ -48,6 +52,10 @@ public class FriendsListActivity extends AppCompatActivity {
 
         // instantiate views
         listOfFriends = findViewById(R.id.tv_friends);
+
+        if (MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        }
 
         if (!MyApplication.loggedInAsGuest) {
             // setup server URL

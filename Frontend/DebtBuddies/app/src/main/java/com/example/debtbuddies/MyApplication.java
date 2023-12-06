@@ -25,5 +25,8 @@ public class MyApplication extends Application {
      */
     public static boolean loggedInAsGuest = false;
 
+    // ===================== Settings here =====================
     public static boolean enableSounds = true; // by default enabled
+
+    public static boolean enableDarkMode = false;
 }

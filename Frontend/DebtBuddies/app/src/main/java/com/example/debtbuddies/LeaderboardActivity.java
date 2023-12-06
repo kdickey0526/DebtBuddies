@@ -1,6 +1,8 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private TextView tv_warBoard;
     private TextView tv_bjBoard;
     private ImageView btn_refresh;
+    private ConstraintLayout overall_background;
 
     private int count = 0;
     private boolean updatingWhack;
@@ -57,6 +60,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         tv_whacBoard.setText("");
         tv_warBoard.setText("");
         tv_bjBoard.setText("");
+        if (MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        }
 
         updateWhac();
         updateBJ();

@@ -1,6 +1,7 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,6 +35,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     // i do not really care so this is fine
 
     private EditText tv_username,tv_email,tv_password,tv_confirmPassword;
+    private RelativeLayout overall_background;
     private Button b_save, b_submit;
     private String username, email, password, confirmPassword;
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/add/";
@@ -58,6 +61,10 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         b_save = findViewById(R.id.b_save);
         b_submit = findViewById(R.id.b_submit);
+
+        if (MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        }
 
         b_save.setOnClickListener(new View.OnClickListener() {
             /**

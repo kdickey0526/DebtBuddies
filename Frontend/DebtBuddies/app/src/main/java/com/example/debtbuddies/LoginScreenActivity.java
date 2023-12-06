@@ -1,6 +1,8 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     private EditText usernameField;
     private EditText passwordField;
+    private ConstraintLayout overall_background;
     private TextView coinCount;
     private TextView msgResponse;
     private Button loginBtn;
@@ -53,6 +56,10 @@ public class LoginScreenActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.passwordField);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
+
+        if (MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        }
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView usernameField;
     private TextView coinsField;
+    private ConstraintLayout overall_background;
     private static final String TAG = "HomeScreenActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
@@ -40,6 +43,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         // instantiate views
         usernameField = (TextView) findViewById(R.id.usernameText);
         coinsField = (TextView) findViewById(R.id.coinsText);
+
+        if (MyApplication.enableDarkMode) {
+            overall_background.setBackgroundColor(ContextCompat.getColor(this, R.color.darkerlightgray));
+        }
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
