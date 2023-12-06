@@ -123,8 +123,8 @@ public class PersonController {
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/persons/{userId}/GameScore/{laptopId}")
-	String assignGameScoreToUser(@PathVariable int userId,@PathVariable int laptopId){
-		Person user = personRepo.findById(userId);
+	String assignGameScoreToUser(@PathVariable String userId,@PathVariable int laptopId){
+		Person user = personRepo.findByName(userId);
 		GameScore laptop = GameScoreRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
@@ -140,8 +140,8 @@ public class PersonController {
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/persons/{userId}/Settings/{laptopId}")
-	String assignSettingsToUser(@PathVariable int userId,@PathVariable int laptopId){
-		Person user = personRepo.findById(userId);
+	String assignSettingsToUser(@PathVariable String userId,@PathVariable int laptopId){
+		Person user = personRepo.findByName(userId);
 		Setting laptop = SettingRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
