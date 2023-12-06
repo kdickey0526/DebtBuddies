@@ -176,6 +176,10 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         final_player = target_player;
     }
 
+    public TexasHoldEmUser getTargetPlayer(){
+        return target_player;
+    }
+
     private TexasHoldEmUser end_game(){
         running = 0;
         if(getActivePlayers() == 1){

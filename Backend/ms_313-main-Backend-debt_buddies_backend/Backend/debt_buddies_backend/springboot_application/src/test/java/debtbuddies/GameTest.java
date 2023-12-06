@@ -1,6 +1,11 @@
 package debtbuddies;
 
+import debtbuddies.GameServer.Communication.MessageBearer;
+import debtbuddies.GameServer.Communication.MessageWrapper;
+import debtbuddies.GameServer.Communication.Response;
+import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEm;
+import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEmUser;
 import debtbuddies.GameServer.PlayerClasses.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -29,6 +34,20 @@ public class GameTest {
 
         assertTrue(game.isRunning());
 
+        TexasHoldEmUser t_user = game.getTargetPlayer();
+        System.out.println(t_user.toString());
+
+        ServerEvent serverEvent = new ServerEvent("call", 0);
+
+        game.getResponse(user3, serverEvent);
+        
+        game.getResponse(user1, serverEvent);
+
+        game.getResponse(user2, serverEvent);
+
+        for(MessageBearer mb : Response.getMessages()){
+            System.out.println(mb.getMessageString());
+        }
     }
 
 }
