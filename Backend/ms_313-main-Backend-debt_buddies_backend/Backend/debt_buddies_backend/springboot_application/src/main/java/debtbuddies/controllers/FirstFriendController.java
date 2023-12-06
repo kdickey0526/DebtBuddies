@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-@Api(value = "FriendController", description = "Rest Api used for friend lists")
+@Api(value = "FirstFriendController", description = "Rest Api used for friend lists")
 @RestController
 @RequestMapping(value="/friends")
 public class FirstFriendController {
