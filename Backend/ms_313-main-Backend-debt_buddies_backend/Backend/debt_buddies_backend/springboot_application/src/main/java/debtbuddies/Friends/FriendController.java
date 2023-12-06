@@ -36,7 +36,7 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @GetMapping(path = "/Friends")
+    @GetMapping(path = "/friends")
     List<Friend> getAllFriends(){
         return friendrepo.findAll();
     }
@@ -46,7 +46,7 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @GetMapping(path = "/Friends/{personName}")
+    @GetMapping(path = "/friends/{personName}")
     List<Friend> getFriendById( @PathVariable String personName){
         return friendrepo.findAllByPersonName(personName);
     }
@@ -56,7 +56,7 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @PostMapping(path = "/Friends")
+    @PostMapping(path = "/friends")
     String createFriend(@RequestBody(required = false) Friend Friend){
         if (Friend == null)
             return failure;
@@ -69,7 +69,7 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @PutMapping("/Friends/{id}")
+    @PutMapping("/friends/{id}")
     Friend updateFriend(@PathVariable int id, @RequestBody Friend request){
         Friend Friend = friendrepo.findById(id);
         if(Friend == null)
@@ -95,7 +95,7 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @DeleteMapping(path = "/Friends/{id}")
+    @DeleteMapping(path = "/friends/{id}")
     String deleteFriend(@PathVariable int id){
         friendrepo.deleteById(id);
         return success;
