@@ -1,16 +1,9 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -31,10 +24,10 @@ public class FriendsListActivity extends AppCompatActivity {
 
     private TextView listOfFriends;
 
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/guys/";
     private JSONArray userFriendList = null;
     private JSONObject currentFriend = null;
-    private int friendID;
+    private String friendName;
     private static final String TAG = "FriendsListActivity";
 
     // =============================================================================================================================================
@@ -46,7 +39,6 @@ public class FriendsListActivity extends AppCompatActivity {
      * and fetches the current user's friends.
      * @param savedInstanceState the instance of the app
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +55,7 @@ public class FriendsListActivity extends AppCompatActivity {
 
         if (!MyApplication.loggedInAsGuest) {
             // setup server URL
-            SERVER_URL += "getAllFriends/" + MyApplication.currentUserName; // or something similar
+            SERVER_URL += MyApplication.currentUserName; // or something similar
 
             // request user's friends list from backend here
             makeJsonArrayReq();
@@ -127,9 +119,9 @@ public class FriendsListActivity extends AppCompatActivity {
                     try {
                         int i = 0;
                         for (i = 0; i < response.length(); i++) { // .length returns # of key/value pairs in the object
-                            friendID = response.getJSONObject(i).getInt("person_id"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
+                            friendName = response.getJSONObject(i).getString("guysFriend"); // getInt("person_id" + i); // not sure how the friends are mapped in the database, should grab the friend's ID though
 
-                            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/num/" + friendID;
+                            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + friendName;
                             makeFriendJsonObjReq(); // get that friend's info
 
 //                            boolean onlineStatus = currentFriend.getBoolean("is_online"); // not sure what it's actually named in backend
@@ -178,7 +170,7 @@ public class FriendsListActivity extends AppCompatActivity {
                 Log.d("Volley Response", "response received: " + response.toString());
 //                currentFriend = response; // store json object
                 try {
-                    boolean onlineStatus = response.getBoolean("is_online"); // not sure what it's actually named in backend
+                    boolean onlineStatus = response.getBoolean("isOnline"); // not sure what it's actually named in backend
                     String name = response.getString("name");
                     String status = "";
 
@@ -188,9 +180,9 @@ public class FriendsListActivity extends AppCompatActivity {
                         status = "Offline";
 
                     String previousList = listOfFriends.getText().toString();
-                    listOfFriends.setText(previousList + name + "\t\tStatus: " + status + "\n");
+                    listOfFriends.setText(previousList + name + getString(R.string.tab) + getString(R.string.tab) + "Status: " + status + "\n");
                 } catch (Exception e) {
-                    Log.e(TAG, "error getting the object from the array");
+                    Log.e(TAG, "error getting fields from object");
                     e.printStackTrace();
                 }
             }

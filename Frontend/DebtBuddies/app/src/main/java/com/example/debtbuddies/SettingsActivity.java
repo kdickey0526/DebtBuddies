@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Settings/";
-    private JSONObject settingsProfile;
+//    private JSONObject settingsProfile;
     private Switch sw_enableSounds;
     private Switch sw_darkMode;
     private boolean dark_enabled = MyApplication.enableDarkMode;
@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
         if (!MyApplication.loggedInAsGuest) { // get user's settings profile and update everything accordingly
-            SERVER_URL += MyApplication.currentUser; // + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
+            SERVER_URL += MyApplication.currentUserName; // + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
             makeJsonObjReq();
             try {
                 sw_enableSounds.setChecked(sounds_enabled); // sounds_enabled will have the value set in the user's profile at this point.
@@ -82,8 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (!MyApplication.loggedInAsGuest) {
                     // update backend with new settings
                     try {
-                        settingsProfile.put("sound", sounds_enabled);
-                        putRequest();
+                        makeDiffJsonObjReq();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed updating backend with the new sounds setting");
                         e.printStackTrace();
@@ -100,8 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (!MyApplication.loggedInAsGuest) {
                     try {
-                        settingsProfile.put("darkmode", dark_enabled);
-                        putRequest();
+                        makeDiffJsonObjReq();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed updating backend with the new dark mode setting");
                         e.printStackTrace();
@@ -142,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
-                settingsProfile = response; // may not actually work, as seen in JSONArray stuff and login screen
+//                settingsProfile = response; // may not actually work, as seen in JSONArray stuff and login screen
 
                 try {
                     sounds_enabled = response.getBoolean("sound"); // or however its stored in database
@@ -172,21 +170,48 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     /**
+     * Makes a json object request with the given user information.
+     * Server URL should be set to get the current user's settings profile.
+     **/
+    private void makeDiffJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+
+                try {
+                    response.put("sound", sounds_enabled);
+                    response.put("darkmode", dark_enabled);
+                    putRequest(response);
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "failed getting user's settings");
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+
+    /**
      * Sends a JSONObject to the backend. Updates values based on the currentUser.
      */
-    private void putRequest() {
-
-        // Convert input to JSONObject
-        JSONObject postBody = null;
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
-            postBody = new JSONObject(MyApplication.currentUser.toString());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
+    private void putRequest(JSONObject postBody) {
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.PUT,
                 SERVER_URL,
