@@ -14,6 +14,7 @@ import debtbuddies.GameServer.Games.War.WarInfo.StartInfo;
 import debtbuddies.GameServer.PlayerClasses.CardUser;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.person.PersonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,7 @@ public class War extends Game<CardUser> implements GameInterface<CardUser, War> 
     }
 
     @Override
-    public void getResponse(User user, ServerEvent serverEvent) {
+    public void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository) {
 
         CardUser player = userPlayerMap.get(user);
 

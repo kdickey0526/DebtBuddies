@@ -6,14 +6,14 @@ public class User {
 
     protected final String username;
 
-    protected int playerID;
+    protected long playerID;
 
     protected int balance;
 
     public User(){
         playerID = playerID_index++;
         balance = 100;
-        username = Integer.toString(playerID);
+        username = Long.toString(playerID);
     }
 
     public User(String username){
@@ -22,7 +22,7 @@ public class User {
         this.username = username;
     }
 
-    public User(String username, int id, int balance){
+    public User(String username, long id, int balance){
         this.username = username;
         playerID = id;
         this.balance = balance;
@@ -36,7 +36,7 @@ public class User {
     
     public int getBalance(){ return balance; }
 
-    public int getID(){
+    public long getID(){
         return playerID;
     }
 

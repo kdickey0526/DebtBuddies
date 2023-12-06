@@ -39,22 +39,22 @@ public class Person {
 	private int WarLost;
 	private String Profile;
 
-
-	@ManyToMany(cascade={CascadeType.ALL})
+	/*
+	@ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
 	@JoinTable(name="friends_with",
 	joinColumns={@JoinColumn(name="person_id")},
 	inverseJoinColumns={@JoinColumn(name="friend_id")})
 	@JsonIgnore
-	private Set<Person> friends/* = new HashSet<Person>()*/;
+	private Set<Person> friends*//* = new HashSet<Person>()*/;
 
 	/*@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinTable(name = "friends_with", joinColumns = {@JoinColumn(name = "person_id")}, inverseJoinColumns = {@JoinColumn(name = "friend_id")})
 	private Set<Person> friends;*/
 
-
-	@ManyToMany(mappedBy="friends")
+	/*
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="friends")
 	@JsonIgnore
-	private Set<Person> friendsOf/* = new HashSet<Person>()*/;
+	private Set<Person> friendsOf*//* = new HashSet<Person>()*/;
 
 
 

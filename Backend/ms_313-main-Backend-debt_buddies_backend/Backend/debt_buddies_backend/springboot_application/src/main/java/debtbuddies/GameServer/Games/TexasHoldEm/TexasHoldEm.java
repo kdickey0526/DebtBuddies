@@ -10,6 +10,10 @@ import debtbuddies.GameServer.Games.GameInterface;
 import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEmInfo.*;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.GameServer.DBManager;
+import debtbuddies.person.PersonRepository;
+import org.hibernate.Hibernate;
+import org.springframework.transaction.annotation.Transactional;
 
 public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<TexasHoldEmUser, TexasHoldEm> {
 
@@ -63,7 +67,8 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return new TexasHoldEmUser(user);
     }
 
-    public void getResponse(User user, ServerEvent serverEvent){
+
+    public void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository){
 
         TexasHoldEmUser player = userPlayerMap.get(user);
 
@@ -92,7 +97,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             }
 
             if(getActivePlayers() == 1){
-                TexasHoldEmUser winner = end_game();
+                TexasHoldEmUser winner = end_game(personRepository);
                 sendEndInfo(winner);
                 return;
             }else{
@@ -113,9 +118,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                         break;
                     case 3:
                         river();
-                        break;
+                        sendStageInfo();
                     default:
-                        sendEndInfo(end_game());
+                        sendEndInfo(end_game(personRepository));
                         return;
                 }
             }
@@ -180,7 +185,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return target_player;
     }
 
-    private TexasHoldEmUser end_game(){
+    public TexasHoldEmUser end_game(PersonRepository personRepository){
         running = 0;
         if(getActivePlayers() == 1){
             for(TexasHoldEmUser player : players){
@@ -189,7 +194,30 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                 }
             }
         }
-        return decideWinner();
+
+        DBManager dbManager = new DBManager(personRepository);
+
+        TexasHoldEmUser winner = decideWinner();
+
+        //dbManager.updatePerson(winner.toString(), winner.getBalance() + pot);
+
+        List<Long> ids = new ArrayList<>();
+        List<Integer> coins = new ArrayList<>();
+
+        ids.add(winner.getID());
+        coins.add(winner.getBalance() + pot);
+
+        for(TexasHoldEmUser player : players){
+            if(player != winner){
+                ids.add(player.getID());
+                coins.add(player.getBalance());
+                //dbManager.updatePerson(player.toString(), player.getBalance());
+            }
+        }
+
+        dbManager.updatePersons(ids, coins);
+
+        return winner;
     }
 
     private void fold(TexasHoldEmUser player){

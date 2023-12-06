@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.person.PersonRepository;
 
 import java.util.*;
 
@@ -30,7 +31,7 @@ public abstract class Game<T> {
 
     public abstract void initializeGame();
 
-    protected abstract void getResponse(User user, ServerEvent serverEvent);
+    protected abstract void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository);
 
     protected abstract Game<T> getNewGame(Group queue, int gameId);
 
