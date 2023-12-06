@@ -92,20 +92,20 @@ dependencies {
     implementation ("androidx.constraintlayout:constraintlayout:1.1.3")
 //    implementation ("junit:junit:4.13")
     // required if you want to use Mockito for unit tests
-//    implementation ("org.mockito:mockito-core:4.0.0")
+    testImplementation ("org.mockito:mockito-core:4.0.0")
 //    implementation ("org.robolectric:robolectric:4.3.1")
-//    implementation ("androidx.test:core:1.2.0")
+    testImplementation ("androidx.test:core:1.2.0")
 
 
     // required if you want to use Mockito for Android tests
 //    implementation ("org.mockito:mockito-android:2.7.22")
     implementation("com.android.support.test:rules:1.0.2")
-//    implementation ("com.android.support.test:runner:1.0.2")
+    implementation ("com.android.support.test:runner:1.0.2")
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-//    implementation ("com.android.volley:volley:1.1.1")
-//    implementation ("androidx.test.ext:junit:1.1.3")
-//    implementation("androidx.test.espresso:espresso-contrib:3.4.0")
+    implementation ("com.android.volley:volley:1.1.1")
+    implementation ("androidx.test.ext:junit:1.1.3")
+    implementation("androidx.test.espresso:espresso-contrib:3.4.0")
 
 
 }
