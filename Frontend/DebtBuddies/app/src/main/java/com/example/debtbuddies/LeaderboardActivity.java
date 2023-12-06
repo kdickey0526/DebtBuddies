@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -23,12 +26,15 @@ public class LeaderboardActivity extends AppCompatActivity {
     private TextView tv_whacBoard;
     private TextView tv_warBoard;
     private TextView tv_bjBoard;
+    private ImageView btn_refresh;
 
     private int count = 0;
     private boolean updatingWhack;
     private boolean updatingWar;
     private boolean updatingBJ;
 
+
+    // deprecated, from an approach that did not work
     private JSONArray leaderboardArray; // will be re-assigned to update each textview
     private JSONObject currentPerson1; // holds current object/person being added to whichever leaderboard
     private JSONObject currentPerson2;
@@ -46,31 +52,24 @@ public class LeaderboardActivity extends AppCompatActivity {
         tv_whacBoard = findViewById(R.id.tv_whacLeaderboard);
         tv_warBoard = findViewById(R.id.tv_warLeaderboard);
         tv_bjBoard = findViewById(R.id.tv_blackjackLeaderboard);
+        btn_refresh = findViewById(R.id.btn_refresh);
 
         tv_whacBoard.setText("");
         tv_warBoard.setText("");
         tv_bjBoard.setText("");
 
-        count = 0;
-        updatingWhack = true;
         updateWhac();
-        updatingWhack = false;
-
-        count = 0;
-        updatingBJ = true;
         updateBJ();
-        updatingBJ = false;
-
-        count = 0;
-        updatingWar = true;
         updateWar();
-        updatingWar = false;
-        count = 0;
     }
 
     private void updateWhac() {
-        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Whackamole"; // will have to be updated after basic testing
+        count = 0;
+        updatingWhack = true;
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Whackamole"; // may be wrong
         makeJsonArrayReq();
+        updatingWhack = false;
+        count = 0;
 //        while (leaderboardArray == null) {
 //            makeJsonArrayReq();
 //            Log.d(TAG, "trying to get the JSONArray again");
@@ -97,13 +96,24 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     }
 
-    private void updateWar() {
-
-    }
-
     private void updateBJ() {
-
+        count = 0;
+        updatingBJ = true;
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Blackjack";    // may be wrong
+        makeJsonArrayReq();
+        updatingBJ = false;
+        count = 0;
     }
+    private void updateWar() {
+        count = 0;
+        updatingWar = true;
+        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/War";      // may be wrong
+        makeJsonArrayReq();
+        updatingWar = false;
+        count = 0;
+    }
+
+
 
 
     /**
@@ -349,6 +359,12 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    public void onRefreshButtonClick(View view) {
+        updateWhac();
+        updateBJ();
+        updateWar();
     }
 
 }
