@@ -15,6 +15,8 @@ import java.util.List;
 public interface GameScoreRepository extends JpaRepository<GameScore, Long> {
     GameScore findById(int id);
 
+    GameScore findByuserName(String userName);
+
     List<GameScore> findTop5ByOrderByWhackDesc();
 
     List<GameScore> findTop5ByOrderByWarWonDesc();
