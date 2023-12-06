@@ -30,7 +30,7 @@ import java.util.Random;
 public class BlackJack extends AppCompatActivity {
     int id;
     String username, email, password;
-    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/users/";
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
     private static final String TAG = "BlackJack";
     int playerNumH;
     int playerNumL;
@@ -38,7 +38,7 @@ public class BlackJack extends AppCompatActivity {
     int dealerNumL;
     Button b_deal, b_stand, b_double, b_replay, b_menu;
     ImageView playerCard1, playerCard2, playerCard3, playerCard4, playerCard5, dealerCard1,
-        dealerCard2, dealerCard3, dealerCard4, dealerCard5;
+        dealerCard2, dealerCard3, dealerCard4, dealerCard5, playerIcon;
     public boolean gameOver, doubleClick, hitPlayer;
 
     TextView tvDealer, tvPlayer, tvStatus,tvBal, tvBet;
@@ -52,11 +52,13 @@ public class BlackJack extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackjack);
-
+        String hold = "";
 
         if (!MyApplication.loggedInAsGuest) {
             try {
                 SERVER_URL += MyApplication.currentUser.getString("name");
+                bal = MyApplication.currentUser.getInt("coins");
+                hold = MyApplication.currentUser.getString("profile");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
@@ -83,16 +85,21 @@ public class BlackJack extends AppCompatActivity {
         tvBal = findViewById(R.id.textView);
         tvBet = findViewById(R.id.textView2);
         b_menu = findViewById(R.id.b_menu);
+
+        playerIcon = findViewById(R.id.icon);
         String card;
 
-        bal = 50;
+
+        int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
+
         bet = 5;
         gameOver = false;
 
         card = hitPlayer();
 
 
-        int image = getResources().getIdentifier( card, "drawable", getPackageName());
+        image = getResources().getIdentifier( card, "drawable", getPackageName());
         playerCard1.setImageResource(image);
 
         card = hitPlayer();
@@ -322,8 +329,15 @@ public class BlackJack extends AppCompatActivity {
             tvDealer.setText(String.valueOf(dealerNumH));
         }
 
-        postRequest(); //honestly idk if this works
-
+            if (!MyApplication.loggedInAsGuest) {
+                try {
+                    MyApplication.currentUser.put("coins", bal);
+                    postRequest();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating the highscore on the backend");
+                    e.printStackTrace();
+                }
+            }
         String temp = "Balance: ";
         temp += bal;
         tvBal.setText(temp);
@@ -431,71 +445,33 @@ public class BlackJack extends AppCompatActivity {
     private void postRequest() {
 
         // Convert input to JSONObject
-        JSONObject postBody;
-        String temp =
-                "{" +
-                        "\"id\":\"" + id + "\"," +
-                        "\"userName\":\"" + username + "\"," +
-                        "\"email\":\"" + email +"\"," +
-                        "\"password\":\"" + password + "\"" +
-                        "\"coins\":\"" + bal + "\"" +
-                        "}";
-
-
-        //\"password\":\"MS313Owen\"}";
-
-//                "{\"id\":62,\"userName\":\"Brock\",\"isOnline\":true,\"email\":\"oparker@iastate.edu\",\"password\":\"MS313Owen\",\"coins\":0}";
+        JSONObject postBody = null;
         try {
-            postBody = new JSONObject(temp);
+            postBody = new JSONObject(MyApplication.currentUser.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        //String postBody = "username:" + username + "password:" + password + "email:" + email;
-
-        try{
-            // etRequest should contain a JSON object string as your POST body
-            // similar to what you would have in POSTMAN-body field
-            // and the fields should match with the object structure of @RequestBody on sb
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.PUT,
                 SERVER_URL,
                 postBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //  tvResponse.setText(response.toString());
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //tvResponse.setText(error.getMessage());
+                        Log.e("Volley Error", error.toString());
                     }
                 }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
-                //                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                //                params.put("param1", "value1");
-                //                params.put("param2", "value2");
-                return params;
-            }
-        };
+        );
+
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
+
+
 }

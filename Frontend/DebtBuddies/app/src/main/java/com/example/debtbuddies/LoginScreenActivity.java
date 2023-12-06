@@ -118,6 +118,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     String username = response.getString("name");
                     String coins = response.getString("coins");
                     MyApplication.currentUserName = response.getString("name");
+                    MyApplication.currentUserID = response.getInt("id");
 
                     // insert code here to save the response into a text file
                     MyApplication.currentUser = response; // store json object
@@ -140,6 +141,7 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, jsonObjReq.toString());
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 

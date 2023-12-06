@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+    private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/persons/";
     private JSONObject settingsProfile;
     private Switch sw_enableSounds;
     private boolean sounds_enabled = MyApplication.enableSounds;    // could probably get away with not needing/using this variable but its ok lol
@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
         if (!MyApplication.loggedInAsGuest) { // get user's settings profile and update everything accordingly
-            SERVER_URL += MyApplication.currentUser + "/settings"; // or whatever the URL actually is in backend
+            SERVER_URL += MyApplication.currentUser + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
             makeJsonObjReq();
             try {
                 sw_enableSounds.setChecked(sounds_enabled); // sounds_enabled will have the value set in the user's profile at this point.
@@ -58,6 +58,8 @@ public class SettingsActivity extends AppCompatActivity {
         sw_enableSounds.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isEnabled) {
+
+                // necessary updates for guest and registered user
                 sounds_enabled = isEnabled; // will be true if enabled, false otherwise
                 MyApplication.enableSounds = isEnabled; // this variable is what's used in the actual games to enable/disable sounds
 
@@ -65,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
                     // update backend with new settings
                     try {
                         settingsProfile.put("soundEnabled", sounds_enabled);
-                        postRequest();
+                        putRequest();
                     } catch (Exception e) {
                         Log.e(TAG, "Failed updating backend with the new sounds setting");
                         e.printStackTrace();
@@ -93,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
                 settingsProfile = response;
 
                 try {
-                    sounds_enabled = response.getBoolean("soundEnabled"); // or however its stored in database
+                    sounds_enabled = response.getBoolean("sound"); // or however its stored in database
                     MyApplication.enableSounds = sounds_enabled;
 
                     // other settings here
@@ -120,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Sends a JSONObject to the backend. Updates values based on the currentUser.
      */
-    private void postRequest() {
+    private void putRequest() {
 
         // Convert input to JSONObject
         JSONObject postBody = null;

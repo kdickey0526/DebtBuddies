@@ -53,6 +53,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Log.d(TAG, MyApplication.currentUser.toString());
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
@@ -92,6 +93,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void warOnClickListener(View v) {
         Log.d(TAG, "warOnClickListener: clicked");
         startActivity(new Intent(this, WarMultiplayer.class));
+    }
+
+    public void texasOnClickListener(View v) {
+        Log.d(TAG, "texasOnClickListener: clicked");
+        startActivity(new Intent(this, TexasHoldem.class));
     }
 
     /**

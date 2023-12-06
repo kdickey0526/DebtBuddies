@@ -352,10 +352,6 @@
 
 
 
-
-
-
-
     <ImageView
         android:id="@+id/player4_icon"
         android:layout_width="50dp"
@@ -425,6 +421,32 @@
         android:textSize="12sp" />
 
 
+    <TextView
+        android:id="@+id/tv_pot"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="300dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Pot: "
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/tv_ante"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="325dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Ante: : "
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
 
 </RelativeLayout>

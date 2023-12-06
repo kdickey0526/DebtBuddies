@@ -33,6 +33,7 @@ public class Menu extends AppCompatActivity  {
     Button b_back, b_menu,b_party;
     ImageView icon;
     String serverUrl = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+
     TextView tv_username;
 
     /**
@@ -44,6 +45,7 @@ public class Menu extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        String hold = "";
         tv_username = findViewById(R.id.tv_username);
 
         b_back = findViewById(R.id.b_submit);
@@ -56,11 +58,14 @@ public class Menu extends AppCompatActivity  {
         if (!MyApplication.loggedInAsGuest) {
             try {
                 serverUrl += MyApplication.currentUser.getString("name");
+                hold = MyApplication.currentUser.getString("profile");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
         }
-        makeJsonObjReq();
+        int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+        icon.setImageResource(image);
+
 
     }
 
@@ -104,7 +109,7 @@ public class Menu extends AppCompatActivity  {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
-                    String temp = response.getString("Profile");
+                    String temp = response.getString("profile");
                     int image = getResources().getIdentifier(temp, "drawable", getPackageName());
                     icon.setImageResource(image);
 
