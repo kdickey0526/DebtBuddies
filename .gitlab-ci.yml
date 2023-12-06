@@ -1,25 +1,59 @@
-stages:             # these stages (jobs) forms the CICD pipeline
-  - mavenbuild      # this is a JOB to build your Springboot application
-  - maventest       # this is a JOB to run tests in your Springboot application (it's okay you don't have any test for now)
-
-
-maven-build:            
-  stage: mavenbuild     # one of the stages listed above
-  tags:                 # to specify which runner to execute this job
-    - kyle_tag    # change to your runner's tag
-  script:               # what to execute for this job
-    - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application
-        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
-    - mvn package       # maven package
-  artifacts:            # where to output the packaged jar file, change 'Backend' to to where you have the pom.xml
-    paths:
-    - Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/target/*.jar
-
-maven-test:             
-   stage: maventest     # one of the stages listed above
+stages:
+  - mavenbuild
+  - maventest
+  - mavenDeploy
+  - androidbuild
+  - androidtest
+maven-build: #this is a JOB
+  stage: mavenbuild
+  tags:
+    - springboot_tag
+  script:
+    - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application # to where you have the pom.xml
+    - mvn package
+maven-test:
+   stage: maventest
    tags:
-     - kyle_tag   # change to your runner's tag
+     - springboot_tag
    script:
-     - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
-     - mvn test         # maven test
-
+     - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application
+     - mvn test
+   artifacts:
+     paths:
+       - Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/target/*.jar
+#Below job builds, deploys, executes jar as service.
+autoDeploy:
+  stage: mavenDeploy  #do make a stage with same name!
+  tags:
+  - spring_tag
+  script:
+    - cd Backend
+    - mvn package
+    - sudo mv target/*.jar /target/web-demo.jar 
+    - sudo systemctl stop system-web-demo
+    - sudo systemctl start system-web-demo
+android-build:
+  image: afirefly/android-ci:java17 # gjandres/android-ci:latest
+  stage: androidbuild
+  tags:
+   - android_tag
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend # to where you have ‘gradlew’
+    - ./gradlew build
+  artifacts:
+    paths:
+    - Frontend/app/build/outputs/
+android-test:
+   image: afirefly/android-ci:java17 # gjandres/android-ci:latest
+   stage: androidtest
+   tags:
+    - android_tag
+   before_script:
+     - export GRADLE_USER_HOME=`pwd`/.gradle
+     - chmod +x ./Frontend/gradlew
+   script:
+     - cd Frontend
+     - ./gradlew test
