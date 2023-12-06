@@ -34,7 +34,7 @@ public class CreatePartyTest {
     public ActivityTestRule<CreateParty> activityRule = new ActivityTestRule<>(CreateParty.class);
 
     @Test
-    public void blackJack() {
+    public void CreateParty() {
 
         onView(withId(R.id.member1))
                 .perform(typeText("Kyle"), closeSoftKeyboard());
