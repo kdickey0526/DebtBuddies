@@ -52,6 +52,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         profileIcon = findViewById(R.id.userIcon);
         String hold = "";
 
+        // get user's settings
+        if (!MyApplication.loggedInAsGuest) {
+            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Settings/" + MyApplication.currentUserName;
+            getSettingsJSON();
+        }
+
+        // likely redundant
         if (MyApplication.enableDarkMode) {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
         } else {
@@ -63,6 +70,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         if (!MyApplication.loggedInAsGuest) {
             try {
                 try {
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
                     SERVER_URL += MyApplication.currentUserName;
                     makeJsonObjReq();   // refresh the currentUser object
                 } catch (Exception e) {
@@ -84,8 +92,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             usernameField.setText("Guest");
             coinsField.setText("No coins");
         }
-
-        updateUserSettings();
     }
 
     @Override
@@ -205,11 +211,45 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Helper method. Sets the user's current settings.
-     */
-    public void updateUserSettings() {
-        if (!MyApplication.loggedInAsGuest) {
-            // get user's settings stored in database and update accordingly in MyApplication
-        }
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
+     **/
+    private void getSettingsJSON() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                MyApplication.currentUser = response; // store json object
+                try {
+                    MyApplication.enableDarkMode = response.getBoolean("darkmode");
+                    MyApplication.enableSounds = response.getBoolean("sound");
+
+                    if (response.getBoolean("darkmode")) {
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+                    } else {
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Error getting settings profile");
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 }

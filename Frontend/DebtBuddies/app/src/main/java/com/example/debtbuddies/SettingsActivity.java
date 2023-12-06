@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         // if not logged in as guest, check the user's settings and update the UI elements
         // to reflect their decisions
         if (!MyApplication.loggedInAsGuest) { // get user's settings profile and update everything accordingly
-            SERVER_URL += MyApplication.currentUser; // + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
+            SERVER_URL += MyApplication.currentUserName; // + "/settings/" + MyApplication.currentUserID; // or whatever the URL actually is in backend
             makeJsonObjReq();
             try {
                 sw_enableSounds.setChecked(sounds_enabled); // sounds_enabled will have the value set in the user's profile at this point.

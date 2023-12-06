@@ -257,6 +257,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                         adjCoinCount = adjCoinCount - 5;
                         depositingCoins = true;
                         MyApplication.currentUser.put("coins", adjCoinCount);
+                        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
                         postRequest();
                     } else {
                         Toast.makeText(this, "You need at least 5 coins to play. You have " + adjCoinCount + ".", Toast.LENGTH_SHORT).show();
@@ -348,6 +349,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     newCoins = newCoins + ((level / 5 + 1) / 2); // ((level/5 + 1) / 2) is the amt of coins user gets
                     // (simply the displayed level / 2)
                     MyApplication.currentUser.put("coins", newCoins);
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUserName;
                     postRequest();
                     if ((level/5 + 1)/2 != 0) {
                         Toast.makeText(this, "Congratulations! You won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
@@ -374,8 +376,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
             if (!MyApplication.loggedInAsGuest) {
                 // UNCOMMENT WHEN THE "WHACK" FIELD IS FIXED
                 try {
-                    MyApplication.currentUser.put("whack", highscore);
-                    postRequest();
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
+                    makeJsonObjReq();
+//                    MyApplication.currentUser.put("whack", highscore);
+//                    postRequest();
                 } catch (Exception e) {
                     Log.e(TAG, "Error updating the highscore on the backend");
                     e.printStackTrace();
@@ -424,7 +428,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (depositingCoins) {
-                            Log.d("Volley: ", "coins deposited");
+                            Log.d("Volley: ", "coins deposited and highscore possibly updated");
                             Toast.makeText(getApplicationContext(), "Deposited 5 coins to play.", Toast.LENGTH_SHORT).show();
                             depositingCoins = false;
                         } else {
@@ -442,6 +446,42 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         // Adding request to request queue
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+    /**
+     * Makes a json object request with the given user information.
+     * Used ONLY for getting the whack score in this activity.
+     **/
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                try {
+                    response.put("whack", highscore);
+                    postRequest();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        Log.d(TAG, jsonObjReq.toString());
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
 
