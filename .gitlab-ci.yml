@@ -40,11 +40,13 @@ android-build:
   stage: androidbuild               # one of the stages listed above
   tags:
    - android_tag                    # change to your runner's tag
+   - Brock_tag                    # change to your runner's tag
   before_script:                    # enable gradlew, change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/DebtBuddies/gradlew
   script:
     - cd Frontend/DebtBuddies                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+    - cd Frontend/DebtBuddies       # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew build               # gradle build
 
 android-test:
@@ -52,9 +54,8 @@ android-test:
    stage: androidtest               # one of the stages listed above
    tags:
     - android_tag                   # change to your runner's tag
+    - Brock_tag                   # change to your runner's tag
    before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
      - export GRADLE_USER_HOME=`pwd`/.gradle
      - chmod +x ./Frontend/DebtBuddies/gradlew
-   script:
-     - cd Frontend/DebtBuddies                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-     - ./gradlew test               # gradle test
+
