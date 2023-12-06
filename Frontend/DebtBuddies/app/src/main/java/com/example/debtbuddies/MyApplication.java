@@ -14,7 +14,19 @@ public class MyApplication extends Application {
     public static JSONObject currentUser = null;
 
     /**
+     * String holding the current user's username. Makes it easier for setting the server URL.
+     */
+    public static String currentUserName = null;
+
+    public static int currentUserID;
+
+    /**
      * Variable holding whether the user has logged in as guest or not.
      */
     public static boolean loggedInAsGuest = false;
+
+    // ===================== Settings here =====================
+    public static boolean enableSounds = true; // by default enabled
+
+    public static boolean enableDarkMode = false;
 }

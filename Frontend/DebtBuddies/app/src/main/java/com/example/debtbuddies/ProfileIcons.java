@@ -1,17 +1,28 @@
 package com.example.debtbuddies;
 
+import static java.lang.Math.floor;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -19,9 +30,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 /**
  * Screen showing the different profile icons a user can select. Currently 9 options.
@@ -71,14 +82,19 @@ public class ProfileIcons extends AppCompatActivity {
         b_icon8 = findViewById(R.id.b_icon8);
         b_frag = findViewById(R.id.b_menu);
 
+        String hold = "";
+
         if (!MyApplication.loggedInAsGuest) {
             try {
                 SERVER_URL += MyApplication.currentUser.getString("name");
+                hold = MyApplication.currentUser.getString("profile");
             } catch (Exception e) {
                 Log.d(TAG, "Not logged in as guest, failed to get name field from currentUser");
             }
         }
-        makeJsonObjReq();
+
+        int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+        playerIcon.setImageResource(image);
 
 
 
@@ -91,7 +107,7 @@ public class ProfileIcons extends AppCompatActivity {
      */
     public void menu(View view) {
         try {
-            MyApplication.currentUser.put("Profile", icon);
+            MyApplication.currentUser.put("profile", icon);
             postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -194,41 +210,13 @@ public class ProfileIcons extends AppCompatActivity {
      */
     public void onMenuClicked(View view) {
         try {
-            MyApplication.currentUser.put("Profile", icon);
+            MyApplication.currentUser.put("profile", icon);
             postRequest();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
-    }
-
-
-    private void makeJsonObjReq() {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Volley Response", "response received: " + response.toString());
-                try {
-                    // grab fields here
-                    String profileIcon = response.getString("Profile");
-                    image = getResources().getIdentifier(profileIcon, "drawable", getPackageName());
-                    playerIcon.setImageResource(image);
-
-                    MyApplication.currentUser = response; // store json object
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley Error", error.toString());
-            }
-        });
-
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
     private void postRequest() {
@@ -251,6 +239,7 @@ public class ProfileIcons extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         Log.d("Volley: ", "object PUT");
                     }
                 },

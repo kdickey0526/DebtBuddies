@@ -1,13 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/cardview_dark_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/feltbackground"
     android:padding="20dp"
     tools:context=".LoginScreenActivity"
     tools:ignore="MissingDefaultResource">
 
+
+    <Button
+        android:id="@+id/b_fold"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="210dp"
+        android:onClick="onFoldClicked"
+        android:text="FOLD"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/b_call"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="160dp"
+        android:onClick="onCallClicked"
+        android:text="CALL"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/b_raise"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="110dp"
+        android:onClick="onRaiseClicked"
+        android:text="RAISE"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/tv_raise"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="77dp"
+        android:onClick="onDoubleClicked"
+        android:text="0"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/id_community1"
@@ -142,19 +194,6 @@
         android:textSize="12sp" />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     <ImageView
         android:id="@+id/player2_icon"
         android:layout_width="50dp"
@@ -222,11 +261,6 @@
         android:text="Bal: 0"
         android:textColor="#FFFFFFFF"
         android:textSize="12sp" />
-
-
-
-
-
 
 
     <ImageView
@@ -298,12 +332,6 @@
         android:textSize="12sp" />
 
 
-
-
-
-
-
-
     <ImageView
         android:id="@+id/player4_icon"
         android:layout_width="50dp"
@@ -373,6 +401,32 @@
         android:textSize="12sp" />
 
 
+    <TextView
+        android:id="@+id/tv_pot"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="300dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Pot: "
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/tv_ante"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="325dp"
+        android:layout_weight="2"
+        android:gravity="left"
+        android:text="Ante: : "
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
 
 </RelativeLayout>

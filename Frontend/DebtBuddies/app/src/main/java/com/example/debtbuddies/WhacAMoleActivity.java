@@ -170,7 +170,8 @@ public class WhacAMoleActivity extends AppCompatActivity {
 //        highscore = pref.getInt(key_highscore, 0);
         if (!MyApplication.loggedInAsGuest) {
             try {
-                highscore = MyApplication.currentUser.getInt("whack");
+                SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
+                makeJsonObjReq();
             } catch (Exception e) {
                 Log.e(TAG, "Failed getting current user's whac-a-mole highscore.");
                 e.printStackTrace();
@@ -214,7 +215,9 @@ public class WhacAMoleActivity extends AppCompatActivity {
      * @param view the mole clicked
      */
     public void onMoleClicked(View view) {
-        mediaPlayer.start();
+        if (MyApplication.enableSounds) {
+            mediaPlayer.start();
+        }
         if (gameStarted) {
             // figure out which mole v is
             int i;
@@ -257,6 +260,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                             depositingCoins = true;
                         }
                         MyApplication.currentUser.put("coins", adjCoinCount);
+                        SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
                         postRequest();
                     } else {
                         Toast.makeText(this, "You need at least 5 coins to play. You have " + adjCoinCount + ".", Toast.LENGTH_SHORT).show();
@@ -348,6 +352,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     newCoins = newCoins + ((level / 5 + 1) / 2); // ((level/5 + 1) / 2) is the amt of coins user gets
                     // (simply the displayed level / 2)
                     MyApplication.currentUser.put("coins", newCoins);
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/" + MyApplication.currentUserName;
                     postRequest();
                     if ((level/5 + 1)/2 != 0) {
                         Toast.makeText(this, "Congratulations! You won " + ((level / 5 + 1) / 2) + " coins!", Toast.LENGTH_SHORT).show();
@@ -374,8 +379,10 @@ public class WhacAMoleActivity extends AppCompatActivity {
             if (!MyApplication.loggedInAsGuest) {
                 // UNCOMMENT WHEN THE "WHACK" FIELD IS FIXED
                 try {
-                    MyApplication.currentUser.put("whack", highscore);
-                    postRequest();
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
+                    makeJsonObjReq();
+//                    MyApplication.currentUser.put("whack", highscore);
+//                    postRequest();
                 } catch (Exception e) {
                     Log.e(TAG, "Error updating the highscore on the backend");
                     e.printStackTrace();
@@ -400,7 +407,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
     }
 
     /**
-     * Posts updates to the backend (coin count and highscore).
+     * Posts updates to the backend (coin count).
      */
     private void postRequest() {
 
@@ -411,6 +418,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
             // similar to what you would have in POSTMAN-body field
             // and the fields should match with the object structure of @RequestBody on sb
             postBody = new JSONObject(MyApplication.currentUser.toString());
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -429,6 +437,72 @@ public class WhacAMoleActivity extends AppCompatActivity {
                         } else {
                             Log.d("Volley: ", "updating highscore");
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                }
+        );
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
+    }
+
+    /**
+     * Makes a json object request with the given user information.
+     * Used ONLY for getting the whack score in this activity.
+     **/
+    private void makeJsonObjReq() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                try {
+                    if (response.getInt("whack") > highscore) {
+                        highscore = response.getInt("whack");
+                    }
+                    Log.d(TAG, "updating whack with value: " + highscore + " to user: " + MyApplication.currentUserName);
+                    response.put("whack", highscore);
+                    updateWhack(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        Log.d(TAG, jsonObjReq.toString());
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Posts updates to the backend.
+     */
+    private void updateWhack(JSONObject postBody) {
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PUT,
+                "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "updated whack score in backend successfully");
                     }
                 },
                 new Response.ErrorListener() {

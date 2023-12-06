@@ -1,7 +1,10 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +56,22 @@ public class LoginScreenActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.passwordField);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         createAcctBtn = (Button) findViewById(R.id.createAcctButton);
+
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     /**
@@ -124,6 +143,8 @@ public class LoginScreenActivity extends AppCompatActivity {
                     // grab fields here
                     String username = response.getString("name");
                     String coins = response.getString("coins");
+                    MyApplication.currentUserName = response.getString("name");
+                    MyApplication.currentUserID = response.getInt("id");
 
                     // insert code here to save the response into a text file
                     MyApplication.currentUser = response; // store json object
@@ -146,6 +167,7 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, jsonObjReq.toString());
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
     }
 
@@ -161,6 +183,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 coins = MyApplication.currentUser.getInt("coins");
                 coins++;
                 MyApplication.currentUser.put("coins", coins);
+                MyApplication.currentUser.put("isOnline", true);
                 postRequest();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -198,7 +221,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.d("Volley: ", "object PUT");
+                            Log.d("Volley: ", "new coin value: " + response.getInt("coins") + ", isOnline: " + response.getBoolean("isOnline"));
                             coinCount.setText("Coins: " + response.getInt("coins"));
                             // could add & update some visual indicator that user is online here
                         } catch (JSONException e) {

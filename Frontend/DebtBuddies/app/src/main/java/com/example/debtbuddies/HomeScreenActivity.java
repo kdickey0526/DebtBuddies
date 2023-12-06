@@ -1,11 +1,16 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,12 +30,16 @@ public class HomeScreenActivity extends AppCompatActivity {
     private TextView usernameField;
     private TextView coinsField;
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+    private String hold;
+    public ImageView profileIcon;
     private static final String TAG = "HomeScreenActivity";
+
 
     /**
      * Sets up the UI elements and fetches user information.
      * @param savedInstanceState the current instance of the app
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,21 @@ public class HomeScreenActivity extends AppCompatActivity {
         // instantiate views
         usernameField = (TextView) findViewById(R.id.usernameText);
         coinsField = (TextView) findViewById(R.id.coinsText);
+        profileIcon = findViewById(R.id.userIcon);
+        String hold = "";
+
+        // get user's settings
+        if (!MyApplication.loggedInAsGuest) {
+            SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/Settings/" + MyApplication.currentUserName;
+            getSettingsJSON();
+        }
+
+        // likely redundant
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
@@ -69,8 +93,21 @@ public class HomeScreenActivity extends AppCompatActivity {
                 SERVER_URL += MyApplication.currentUser.getString("name").toString();
                 makeJsonObjReq(); // should update currentUser
                 // best to re-fetch the user information here, add soon
+                try {
+                    SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+                    SERVER_URL += MyApplication.currentUserName;
+                    makeJsonObjReq();   // refresh the currentUser object
+                } catch (Exception e) {
+                    Log.e(TAG, "failed fetching the user information");
+                    e.printStackTrace();
+                }
+
+                Log.d(TAG, MyApplication.currentUser.toString());
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
+                hold = MyApplication.currentUser.getString("profile");
+                int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+                profileIcon.setImageResource(image);
             } catch (JSONException e) {
                 Log.e(TAG, "failed setting username and coins in text views");
                 e.printStackTrace();
@@ -78,6 +115,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         } else {
             usernameField.setText("Guest");
             coinsField.setText("No coins");
+        }
+
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
     }
 
@@ -108,6 +151,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         startActivity(new Intent(this, WarMultiplayer.class));
     }
 
+    public void texasOnClickListener(View v) {
+        Log.d(TAG, "texasOnClickListener: clicked");
+        startActivity(new Intent(this, TexasHoldem.class));
+    }
+
     /**
      * Listener for displaying the friends list
      * @param v the button/image for friends list
@@ -123,7 +171,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     public void settingsOnClickListener(View v) {
         Log.d(TAG, "settingsOnClickListener: clicked");
-
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
@@ -141,7 +189,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     public void leaderboardOnClickListener(View v) {
         Log.d(TAG, "leaderboardOnClickListener: clicked");
-
+        startActivity(new Intent(this, LeaderboardActivity.class));
     }
 
     /**
@@ -152,17 +200,72 @@ public class HomeScreenActivity extends AppCompatActivity {
         Log.d(TAG, "profileOnClickListener: clicked");
         startActivity(new Intent(this, Menu.class));
     }
+
+
     /**
-     * Making json object request
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
      **/
     private void makeJsonObjReq() {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
-                MyApplication.currentUser = response;
+                MyApplication.currentUser = response; // store json object
             }
         }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley Error", error.toString());
+            }
+        });
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Makes a json object request with the given user information.
+     * Updates some fields on the screen for debugging purposes as well.
+     **/
+    private void getSettingsJSON() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+            /**
+             * Updates some text views and instance variables according to the response.
+             * @param response
+             */
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley Response", "response received: " + response.toString());
+                MyApplication.currentUser = response; // store json object
+                try {
+                    MyApplication.enableDarkMode = response.getBoolean("darkmode");
+                    MyApplication.enableSounds = response.getBoolean("sound");
+
+                    if (response.getBoolean("darkmode")) {
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+                    } else {
+                        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Error getting settings profile");
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            /**
+             * Displays the error to Logcat.
+             * @param error
+             */
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley Error", error.toString());

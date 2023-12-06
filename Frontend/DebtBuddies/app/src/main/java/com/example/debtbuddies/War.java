@@ -53,7 +53,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class War extends AppCompatActivity {
     TextView tvPlayer1, tvPlayer2, whoWin;
     ImageView cardPlayer1, cardPlayer2;
-   PlayerStats p;  // will remove
+    String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
+    PlayerStats p;  // will remove
     boolean win;
     int bet = 5;
     boolean gameOver, playerWin;
@@ -102,7 +103,7 @@ public class War extends AppCompatActivity {
         }
         int temp;
         Random r = new Random();
-        for (int i = 52; i > 2; i --) { //change back to 26
+        for (int i = 52; i > 26; i --) { //change back to 26
             temp = r.nextInt(i);
             player1.add(deck.get(temp));
             deck.remove(temp);

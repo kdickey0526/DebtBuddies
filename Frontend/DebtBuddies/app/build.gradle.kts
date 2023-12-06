@@ -6,32 +6,23 @@ import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
 
+
+
+
 plugins {
     id("com.android.application")
 }
 
-//val javadocTaskName = "generateReleaseJavadoc"
-
-//tasks.register<Javadoc>(javadocTaskName) {
-//    group = "documentation"
-//    description = "Generates Javadoc for the release."
-//
-//    val sourceSets = the<SourceSetContainer>()
-//    source = sourceSets["main"].allJava
-//    classpath = project.configurations["runtimeClasspath"]
-////    destinationDir = project.file("build/docs/javadoc")
-//
-//    (options as org.gradle.external.javadoc.StandardJavadocDocletOptions).apply {
-//        addStringOption("Xdoclint:none", "-quiet")
-//        memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PUBLIC
-//        link("https://docs.oracle.com/javase/8/docs/api/")
-//    }
-//}
 
 android {
     compileSdk = 33
-
     namespace = "com.example.debtbuddies"
+
+//    testOptions {
+//        unitTests.includeAndroidResources = true
+//
+//    }
+
 
     defaultConfig {
         applicationId = "com.example.debtbuddies"
@@ -43,7 +34,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true // maybe this is the right variable...?
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -59,32 +55,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-//    tasks {
-//        // Other task configurations...
-//
-//        // Add the Javadoc generation task
-//        register("generateReleaseJavadoc", Javadoc::class) {
-//            group = "documentation"
-//            description = "Generates Javadoc for the release."
-//
-//            // Set the source files for Javadoc generation
-//            source = sourceSets["main"].allJava
-//            // Define the classpath to include the dependencies
-//            classpath = configurations["runtimeClasspath"]
-//            // Set the destination directory for the generated Javadoc
-//            destinationDir = file("build/docs/javadoc")
-//
-//            // Configure the Javadoc options
-//            options {
-//                this as StandardJavadocDocletOptions
-//                addStringOption("Xdoclint:none", "-quiet")
-//                memberLevel = JavadocMemberLevel.PUBLIC
-//                links("https://docs.oracle.com/javase/8/docs/api/")
-//            }
-//        }
-//    }
-
 }
 
 dependencies {
@@ -99,8 +69,44 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.navigation:navigation-fragment:2.5.3")
     implementation("androidx.navigation:navigation-ui:2.5.3")
+
+    // the dependency directly below breaks the code and stops it from running lol
+//    implementation(fileTree(mapOf(
+//        "dir" to "C:\\Users\\kdick\\AppData\\Local\\Android\\Sdk\\platforms\\android-33",
+//        "include" to listOf("*.aar", "*.jar")
+//        "exclude" to listOf()
+//    )))
+    implementation("com.google.android.gms:play-services-tflite-acceleration-service:16.0.0-beta01")
+    implementation("com.google.ar.sceneform:filament-android:1.17.1")
+    implementation("androidx.leanback:leanback:1.0.0")
+    implementation("androidx.test:runner:1.5.2")
+//    implementation("androidx.test:runner:1.5.2")
+
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.test.ext:junit:1.1.5")
+    testDebugImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    implementation ("com.android.volley:volley:1.1.1")    // duplicate entry
     implementation ("androidx.cardview:cardview:1.0.0")
+
+
+    implementation ("androidx.appcompat:appcompat:1.1.0")
+    implementation ("androidx.constraintlayout:constraintlayout:1.1.3")
+//    implementation ("junit:junit:4.13")
+    // required if you want to use Mockito for unit tests
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+//    implementation ("org.robolectric:robolectric:4.3.1")
+    testImplementation ("androidx.test:core:1.2.0")
+
+
+    // required if you want to use Mockito for Android tests
+//    implementation ("org.mockito:mockito-android:2.7.22")
+    implementation("com.android.support.test:rules:1.0.2")
+    implementation ("com.android.support.test:runner:1.0.2")
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation ("com.android.volley:volley:1.1.1")
+    implementation ("androidx.test.ext:junit:1.1.3")
+    implementation("androidx.test.espresso:espresso-contrib:3.4.0")
+
+
 }

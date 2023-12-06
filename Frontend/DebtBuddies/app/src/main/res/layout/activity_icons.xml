@@ -313,7 +313,7 @@
         app:cardElevation="16dp">
         <ImageView
             android:scaleType = "centerCrop"
-            android:src = "@drawable/icon7"
+            android:src = "@drawable/icon8"
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"/>
     </androidx.cardview.widget.CardView>
