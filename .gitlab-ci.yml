@@ -1,29 +1,25 @@
-stages:
-  - androidbuild
-  - androidtest 
-  
-android-build:
-  image: afirefly/android-ci:java17
-  stage: androidbuild
-  tags:
-   - brock_tag                   # <-- change to your runner's tag
-  before_script:                    # change 'Frontend' to where you have 'gradlew'
-    - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Frontend/gradlew
-  script:
-    - cd Frontend                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-    - ./gradlew build
+stages:             # these stages (jobs) forms the CICD pipeline
+  - mavenbuild      # this is a JOB to build your Springboot application
+  - maventest       # this is a JOB to run tests in your Springboot application (it's okay you don't have any test for now)
 
-android-test:
-   image: afirefly/android-ci:java17
-   stage: androidtest
+
+maven-build:            
+  stage: mavenbuild     # one of the stages listed above
+  tags:                 # to specify which runner to execute this job
+    - kyle_tag    # change to your runner's tag
+  script:               # what to execute for this job
+    - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application
+        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - mvn package       # maven package
+  artifacts:            # where to output the packaged jar file, change 'Backend' to to where you have the pom.xml
+    paths:
+    - Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/target/*.jar
+
+maven-test:             
+   stage: maventest     # one of the stages listed above
    tags:
-    - brock_tag                  # <-- change to your runner's tag
-   before_script:                   # change 'Frontend' to where you have 'gradlew'
-     - export GRADLE_USER_HOME=`pwd`/.gradle
-     - chmod +x ./Frontend/gradlew
+     - kyle_tag   # change to your runner's tag
    script:
-     - cd Frontend                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-     - ./gradlew test
-
+     - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+     - mvn test         # maven test
 
