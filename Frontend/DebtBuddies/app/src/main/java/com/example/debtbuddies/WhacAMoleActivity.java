@@ -170,7 +170,8 @@ public class WhacAMoleActivity extends AppCompatActivity {
 //        highscore = pref.getInt(key_highscore, 0);
         if (!MyApplication.loggedInAsGuest) {
             try {
-                highscore = MyApplication.currentUser.getInt("whack");
+                SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName;
+                makeJsonObjReq();
             } catch (Exception e) {
                 Log.e(TAG, "Failed getting current user's whac-a-mole highscore.");
                 e.printStackTrace();
@@ -404,7 +405,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
     }
 
     /**
-     * Posts updates to the backend (coin count and highscore).
+     * Posts updates to the backend (coin count).
      */
     private void postRequest() {
 
@@ -428,7 +429,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (depositingCoins) {
-                            Log.d("Volley: ", "coins deposited and highscore possibly updated");
+                            Log.d("Volley: ", "coins deposited");
                             Toast.makeText(getApplicationContext(), "Deposited 5 coins to play.", Toast.LENGTH_SHORT).show();
                             depositingCoins = false;
                         } else {
@@ -453,7 +454,7 @@ public class WhacAMoleActivity extends AppCompatActivity {
      * Used ONLY for getting the whack score in this activity.
      **/
     private void makeJsonObjReq() {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, SERVER_URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName, null, new Response.Listener<JSONObject>() {
             /**
              * Updates some text views and instance variables according to the response.
              * @param response
@@ -462,9 +463,12 @@ public class WhacAMoleActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Volley Response", "response received: " + response.toString());
                 try {
+                    if (response.getInt("whack") > highscore) {
+                        highscore = response.getInt("whack");
+                    }
+                    Log.d(TAG, "updating whack with value: " + highscore + " to user: " + MyApplication.currentUserName);
                     response.put("whack", highscore);
-                    postRequest();
-
+                    updateWhack(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -482,6 +486,33 @@ public class WhacAMoleActivity extends AppCompatActivity {
 
         Log.d(TAG, jsonObjReq.toString());
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Posts updates to the backend.
+     */
+    private void updateWhack(JSONObject postBody) {
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PUT,
+                "http://coms-309-048.class.las.iastate.edu:8080/GameScores/" + MyApplication.currentUserName,
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "updated whack score in backend successfully");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                    }
+                }
+        );
+
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 
 
