@@ -1,8 +1,11 @@
 var ws;
 
-window.onbeforeunload = function() {
-    ws.close();
-};
+window.addEventListener('beforeunload', function() {
+    if (ws) {
+        ws.onclose = function () {}; // Disable onclose handler first
+        ws.close();
+    }
+});
 
 function connect() {
     var username = document.getElementById("username").value;
@@ -17,14 +20,36 @@ function connect() {
 
         // display on browser
 
-	//const jsonString = event.data;
-	//const jsonObject = JSON.parse(jsonString);
+	/*
 
-	//var sb = "";
+	var sb = "";
 
-	//if(jsonObject.type == "lobbyEvent"){
-	//    sb+="Joined lobby " + jsonObect.data.lobbyId;
-	//}
+	try{
+
+	const jsonString = event.data;
+	const jsonObject = JSON.parse(jsonString);
+
+	if(jsonObject.type == "lobbyEvent"){
+	    if(jsonObject.data.type == "joinQueue"){
+		sb+="Joined lobby " + jsonObject.data.lobbyId;
+	    }
+	}else if(jsonObject.type == "startInfo"){
+	    sb+="Hand:\n" + jsonObject.data.hand[0].rank + " of " + jsonObject.data.hand[0].suit + "\n" + jsonObject.data.hand[1].rank + " of " + jsonObject.data.hand[1].suit;
+	}else if(jsonObject.type == "turnInfo"){
+
+	}else if(jsonObject.type == "stageInfo"){
+
+	}else if(jsonObject.type == "endInfo"){
+
+	}
+	
+	}catch(error){
+	    console.error("json error");
+	}
+
+	console.log(sb);
+
+	*/
 	
         var log = document.getElementById("log");
         log.innerHTML += event.data + "\n\n";
@@ -35,6 +60,10 @@ function connect() {
     ws.onopen = function(event) { // called when connection is opened
         var log = document.getElementById("log");
         log.innerHTML += "Connected to " + event.currentTarget.url + "\n";
+    };
+
+    ws.onclose = function(event) {
+        console.error('WebSocket closed:', event);
     };
 }
 
