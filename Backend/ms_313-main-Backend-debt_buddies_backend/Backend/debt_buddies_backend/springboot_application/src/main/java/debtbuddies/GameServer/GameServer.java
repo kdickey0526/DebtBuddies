@@ -192,10 +192,10 @@ public class GameServer {
     public void onError(Session session, Throwable throwable) {
 
         // get the username from session-username mapping
-        String username = sessionUserMap.get(session).toString();
+        //String username = sessionUserMap.get(session).toString();
 
         // do error handling here
-        logger.info("[onError]: " + username + " - " + throwable.getMessage());
+        logger.info("[onError]: " + throwable.getMessage());
     }
 
     /**
