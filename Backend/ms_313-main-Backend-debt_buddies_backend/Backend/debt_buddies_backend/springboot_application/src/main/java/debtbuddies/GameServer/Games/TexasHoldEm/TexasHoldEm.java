@@ -10,6 +10,10 @@ import debtbuddies.GameServer.Games.GameInterface;
 import debtbuddies.GameServer.Games.TexasHoldEm.TexasHoldEmInfo.*;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.GameServer.DBManager;
+import debtbuddies.person.PersonRepository;
+import org.hibernate.Hibernate;
+import org.springframework.transaction.annotation.Transactional;
 
 public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<TexasHoldEmUser, TexasHoldEm> {
 
@@ -63,7 +67,8 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return new TexasHoldEmUser(user);
     }
 
-    public void getResponse(User user, ServerEvent serverEvent){
+
+    public void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository){
 
         TexasHoldEmUser player = userPlayerMap.get(user);
 
@@ -85,6 +90,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                     call(player);
                     break;
                 case "raise":
+                    if(serverEvent.getValue() == 0){ return; }
                     raise(player, serverEvent.getValue());
                     break;
                 default:
@@ -92,7 +98,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             }
 
             if(getActivePlayers() == 1){
-                TexasHoldEmUser winner = end_game();
+                TexasHoldEmUser winner = end_game(personRepository);
                 sendEndInfo(winner);
                 return;
             }else{
@@ -113,9 +119,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                         break;
                     case 3:
                         river();
-                        break;
+                        sendStageInfo();
                     default:
-                        sendEndInfo(end_game());
+                        sendEndInfo(end_game(personRepository));
                         return;
                 }
             }
@@ -140,7 +146,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     }
 
     private void sendEndInfo(TexasHoldEmUser winner){
-        EndInfo endInfo = new EndInfo(winner.toString(), winner.getHigh_hand().toString(), winner.getHand());
+        EndInfo endInfo = new EndInfo(winner.toString(), winner.getHigh_hand().toString(), winner.getHand(), pot);
         Response.addMessage(users, "endInfo", endInfo);
     }
 
@@ -176,8 +182,13 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         final_player = target_player;
     }
 
-    private TexasHoldEmUser end_game(){
+    public TexasHoldEmUser getTargetPlayer(){
+        return target_player;
+    }
+
+    public TexasHoldEmUser end_game(PersonRepository personRepository){
         running = 0;
+        /*
         if(getActivePlayers() == 1){
             for(TexasHoldEmUser player : players){
                 if(!player.foldStatus()){
@@ -185,7 +196,31 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                 }
             }
         }
-        return decideWinner();
+         */
+
+        DBManager dbManager = new DBManager(personRepository);
+
+        TexasHoldEmUser winner = decideWinner();
+
+        dbManager.updatePerson(winner.toString(), winner.getBalance() + pot);
+
+        List<Long> ids = new ArrayList<>();
+        List<Integer> coins = new ArrayList<>();
+
+        ids.add(winner.getID());
+        coins.add(winner.getBalance() + pot);
+
+        for(TexasHoldEmUser player : players){
+            if(player != winner){
+                ids.add(player.getID());
+                coins.add(player.getBalance());
+                dbManager.updatePerson(player.toString(), player.getBalance());
+            }
+        }
+
+        //dbManager.updatePersons(ids, coins);
+
+        return winner;
     }
 
     private void fold(TexasHoldEmUser player){
@@ -369,7 +404,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return values;
     }
 
-    private PokerHands convertHigh(List<Card> cards){
+    public PokerHands convertHigh(List<Card> cards){
         if(royalFlush(cards)){
             return PokerHands.ROYAL_FLUSH;
         }else if(straightFlush(cards)){
@@ -494,7 +529,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         return false;
     }
 
-    private PokerHands getHighEnum(List<Card> cards){
+    public PokerHands getHighEnum(List<Card> cards){
         switch(cards.get(cards.size() - 1).getRank()){
             case 2:
                 return PokerHands.HIGH_TWO;

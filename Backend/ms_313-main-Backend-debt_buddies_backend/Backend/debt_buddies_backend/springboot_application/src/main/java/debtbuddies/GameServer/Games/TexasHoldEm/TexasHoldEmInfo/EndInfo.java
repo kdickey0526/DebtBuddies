@@ -12,10 +12,13 @@ public class EndInfo {
 
     public List<Card> winning_hand;
 
-    public EndInfo(String winner, String winning_hand_type, List<Card> winning_hand){
+    public int payout;
+
+    public EndInfo(String winner, String winning_hand_type, List<Card> winning_hand, int payout){
         this.winner = winner;
         this.winning_hand_type = winning_hand_type;
         this.winning_hand = winning_hand;
+        this.payout = payout;
     }
 
 }

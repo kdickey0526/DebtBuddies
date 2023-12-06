@@ -39,30 +39,31 @@ public class Person {
 	private int Coins;
 	private String Profile;
 
-	@OneToOne(cascade = CascadeType.ALL)
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "gameScore_id")
 	private GameScore gameScore;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "settings_id")
 	private Setting settings;
 
-
+	/*
 	@ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="friends_with",
 	joinColumns={@JoinColumn(name="person_id")},
 	inverseJoinColumns={@JoinColumn(name="friend_id")})
 	@JsonIgnore
-	private Set<Person> friends/* = new HashSet<Person>()*/;
+	private Set<Person> friends;/*//* = new HashSet<Person>()*/;
 
 	/*@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinTable(name = "friends_with", joinColumns = {@JoinColumn(name = "person_id")}, inverseJoinColumns = {@JoinColumn(name = "friend_id")})
 	private Set<Person> friends;*/
 
-
-	@ManyToMany(mappedBy="friends")
+	/*
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="friends")
 	@JsonIgnore
-	private Set<Person> friendsOf/* = new HashSet<Person>()*/;
+	private Set<Person> friendsOf*//* = new HashSet<Person>()*/;
 
 
 
