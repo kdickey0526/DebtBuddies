@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(value = "FirstFriendController", description = "Rest Api used for friend lists")
 @RestController
-@RequestMapping(value="/friends")
+@RequestMapping(value="/firstfriends")
 public class FirstFriendController {
 
     @ApiResponses(value = {
