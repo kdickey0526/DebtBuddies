@@ -27,23 +27,15 @@ import android.util.Log;
 @RunWith(AndroidJUnit4ClassRunner.class)
 @LargeTest   // large execution time
 
-public class SystemTest {
+public class MenuTest {
     private static final int SIMULATED_DELAY_MS = 500;
 
     @Rule   // needed to launch the activity
-    public ActivityTestRule<LoginScreenActivity> activityRule = new ActivityTestRule<>(LoginScreenActivity.class);
+    public ActivityTestRule<Menu> activityRule = new ActivityTestRule<>(Menu.class);
 
     @Test
-    public void login() {
-        onView(withId(R.id.usernameField))
-                .perform(typeText("guest"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn)).perform(click());
-        try {
-            Thread.sleep(SIMULATED_DELAY_MS);
-        } catch (InterruptedException e) {
-        }
-//        // Verify that volley returned the correct value
-//        onView(withId(R.id.usernameField)).check(matches(withText(endsWith("guest"))));
+    public void Menu() {
+        onView(withId(R.id.b_main_menu)).perform(click());
     }
 
 

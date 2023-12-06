@@ -6,9 +6,11 @@ import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,6 +30,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     private TextView usernameField;
     private TextView coinsField;
 
+    public ImageView profileIcon;
+
     private static final String TAG = "HomeScreenActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
@@ -45,6 +49,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         // instantiate views
         usernameField = (TextView) findViewById(R.id.usernameText);
         coinsField = (TextView) findViewById(R.id.coinsText);
+        profileIcon = findViewById(R.id.userIcon);
+        String hold = "";
 
         if (MyApplication.enableDarkMode) {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
@@ -67,6 +73,9 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Log.d(TAG, MyApplication.currentUser.toString());
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
+                hold = MyApplication.currentUser.getString("profile");
+                int image = getResources().getIdentifier(hold, "drawable", getPackageName());
+                profileIcon.setImageResource(image);
             } catch (JSONException e) {
                 Log.e(TAG, "failed setting username and coins in text views");
                 e.printStackTrace();

@@ -27,23 +27,23 @@ import android.util.Log;
 @RunWith(AndroidJUnit4ClassRunner.class)
 @LargeTest   // large execution time
 
-public class SystemTest {
+public class ProfileIconTest {
     private static final int SIMULATED_DELAY_MS = 500;
 
     @Rule   // needed to launch the activity
-    public ActivityTestRule<LoginScreenActivity> activityRule = new ActivityTestRule<>(LoginScreenActivity.class);
+    public ActivityTestRule<ProfileIcons> activityRule = new ActivityTestRule<>(ProfileIcons.class);
 
     @Test
-    public void login() {
-        onView(withId(R.id.usernameField))
-                .perform(typeText("guest"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn)).perform(click());
-        try {
-            Thread.sleep(SIMULATED_DELAY_MS);
-        } catch (InterruptedException e) {
-        }
-//        // Verify that volley returned the correct value
-//        onView(withId(R.id.usernameField)).check(matches(withText(endsWith("guest"))));
+    public void profile() {
+        onView(withId(R.id.b_icon0)).perform(click());
+        onView(withId(R.id.b_icon1)).perform(click());
+        onView(withId(R.id.b_icon2)).perform(click());
+        onView(withId(R.id.b_icon3)).perform(click());
+        onView(withId(R.id.b_icon4)).perform(click());
+        onView(withId(R.id.b_icon5)).perform(click());
+        onView(withId(R.id.b_icon6)).perform(click());
+        onView(withId(R.id.b_icon7)).perform(click());
+        onView(withId(R.id.b_icon8)).perform(click());
     }
 
 
