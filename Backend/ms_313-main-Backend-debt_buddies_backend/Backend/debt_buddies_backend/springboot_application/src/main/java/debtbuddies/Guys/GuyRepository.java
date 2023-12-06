@@ -1,7 +1,8 @@
-package debtbuddies.Friends;
+package debtbuddies.Guys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -10,11 +11,12 @@ import java.util.List;
  *
  */
 
-public interface FriendRepository extends JpaRepository<Friend, Long> {
-    List<Friend> findAllByPersonName(String PersonName);
-    Friend findById(int id);
+public interface GuyRepository extends JpaRepository<Guy, Long> {
 
-    //User findBy(String userName);
+    List<Guy> findAllByguyName(String guyName);
+    Guy findById(int id);
+
+    //guy findBy(String guyName);
     @Transactional
     void deleteById(int id);
 }

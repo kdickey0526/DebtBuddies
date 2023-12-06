@@ -1,4 +1,4 @@
-package debtbuddies.Friends;
+package debtbuddies.Guys;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 
-@Api(value = "FriendController", description = "Rest Api used for Friend object")
+@Api(value = "guyController", description = "Rest Api used for guy object")
 @RestController
-public class FriendController {
+public class GuyController {
 
     @Autowired
-    FriendRepository friendrepo;
+    GuyRepository guyRepository;
 
 
     private String success = "{\"message\":\"success\"}";
@@ -36,9 +36,9 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @GetMapping(path = "/friends")
-    List<Friend> getAllFriends(){
-        return friendrepo.findAll();
+    @GetMapping(path = "/guys")
+    List<Guy> getAllguys(){
+        return guyRepository.findAll();
     }
 
     @ApiResponses(value = {
@@ -46,47 +46,21 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @GetMapping(path = "/friends/{personName}")
-    List<Friend> getFriendById( @PathVariable String personName){
-        return friendrepo.findAllByPersonName(personName);
+    @GetMapping(path = "/guys/{guyName}")
+    List<Guy> getguyById(@PathVariable String guyName){
+        return guyRepository.findAllByguyName(guyName);
     }
 
-    @ApiResponses(value = {
+/*    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success|OK"),
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @PostMapping(path = "/friends")
-    String createFriend(@RequestBody(required = false) Friend Friend){
-        if (Friend == null)
+    @PostMapping(path = "/guys")
+    String createguy(@RequestBody(required = false) Guy guy){
+        if (guy == null || guy.getuserName() == null)
             return failure;
-        friendrepo.save(Friend);
-        return success;
-    }
-
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success|OK"),
-            @ApiResponse(code = 401, message = "not authorized!"),
-            @ApiResponse(code = 403, message = "forbidden!!!"),
-            @ApiResponse(code = 404, message = "not found!!!") })
-    @PutMapping("/friends/{id}")
-    Friend updateFriend(@PathVariable int id, @RequestBody Friend request){
-        Friend Friend = friendrepo.findById(id);
-        if(Friend == null)
-            return null;
-        friendrepo.save(request);
-        return friendrepo.findById(id);
-    }
-
-    /*@PutMapping("/Friends/{FriendId}/laptops/{laptopId}")
-    String assignLaptopToFriend(@PathVariable int FriendId,@PathVariable int laptopId){
-        Friend Friend = friendrepo.findById(FriendId);
-        Laptop laptop = laptoprepo.findById(laptopId);
-        if(Friend == null || laptop == null)
-            return failure;
-        laptop.setFriend(Friend);
-        Friend.setLaptop(laptop);
-        friendrepo.save(Friend);
+        guyRepository.save(guy);
         return success;
     }*/
 
@@ -95,9 +69,35 @@ public class FriendController {
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
-    @DeleteMapping(path = "/friends/{id}")
-    String deleteFriend(@PathVariable int id){
-        friendrepo.deleteById(id);
+    @PutMapping("/guys/{id}")
+    Guy updateguy(@PathVariable int id, @RequestBody Guy request){
+        Guy guy = guyRepository.findById(id);
+        if(guy == null)
+            return null;
+        guyRepository.save(request);
+        return guyRepository.findById(id);
+    }
+
+    /*@PutMapping("/guys/{guyId}/laptops/{laptopId}")
+    String assignLaptopToguy(@PathVariable int guyId,@PathVariable int laptopId){
+        guy guy = guyRepository.findById(guyId);
+        Laptop laptop = laptopRepository.findById(laptopId);
+        if(guy == null || laptop == null)
+            return failure;
+        laptop.setguy(guy);
+        guy.setLaptop(laptop);
+        guyRepository.save(guy);
+        return success;
+    }*/
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success|OK"),
+            @ApiResponse(code = 401, message = "not authorized!"),
+            @ApiResponse(code = 403, message = "forbidden!!!"),
+            @ApiResponse(code = 404, message = "not found!!!") })
+    @DeleteMapping(path = "/guys/{id}")
+    String deleteguy(@PathVariable int id){
+        guyRepository.deleteById(id);
         return success;
     }
 }
