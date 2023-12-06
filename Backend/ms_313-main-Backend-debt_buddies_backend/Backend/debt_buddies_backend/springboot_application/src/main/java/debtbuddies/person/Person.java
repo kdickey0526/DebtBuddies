@@ -48,13 +48,13 @@ public class Person {
 	@JoinColumn(name = "settings_id")
 	private Setting settings;
 
-
+	/*
 	@ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(name="friends_with",
 	joinColumns={@JoinColumn(name="person_id")},
 	inverseJoinColumns={@JoinColumn(name="friend_id")})
 	@JsonIgnore
-	private Set<Person> friends;//* = new HashSet<Person>()*/;
+	private Set<Person> friends;/*//* = new HashSet<Person>()*/;
 
 	/*@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinTable(name = "friends_with", joinColumns = {@JoinColumn(name = "person_id")}, inverseJoinColumns = {@JoinColumn(name = "friend_id")})
