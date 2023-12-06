@@ -139,4 +139,17 @@
         </LinearLayout>
     </ScrollView>
 
+    <ImageView
+        android:id="@+id/btn_refresh"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:onClick="onRefreshButtonClick"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_leaderboard"
+        app:srcCompat="@drawable/refresh" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,10 @@
 package com.example.debtbuddies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +27,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView usernameField;
     private TextView coinsField;
+
     private static final String TAG = "HomeScreenActivity";
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/person/";
 
@@ -31,6 +35,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      * Sets up the UI elements and fetches user information.
      * @param savedInstanceState the current instance of the app
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         // instantiate views
         usernameField = (TextView) findViewById(R.id.usernameText);
         coinsField = (TextView) findViewById(R.id.coinsText);
+
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
 
         // set username & coins based on current user
         // this code will only work when server is running and logged into an actual user
@@ -53,6 +64,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Log.d(TAG, MyApplication.currentUser.toString());
                 usernameField.setText(MyApplication.currentUser.getString("name"));
                 coinsField.setText(MyApplication.currentUser.getInt("coins") + " coins");
             } catch (JSONException e) {
@@ -65,6 +77,16 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         updateUserSettings();
+    }
+
+    @Override
+    protected void onResume() {
+        if (MyApplication.enableDarkMode) {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
+        } else {
+            getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+        }
+        super.onResume();
     }
 
     /**

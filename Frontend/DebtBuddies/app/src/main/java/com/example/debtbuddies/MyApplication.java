@@ -18,10 +18,15 @@ public class MyApplication extends Application {
      */
     public static String currentUserName = null;
 
+    public static int currentUserID;
+
     /**
      * Variable holding whether the user has logged in as guest or not.
      */
     public static boolean loggedInAsGuest = false;
 
+    // ===================== Settings here =====================
     public static boolean enableSounds = true; // by default enabled
+
+    public static boolean enableDarkMode = false;
 }
