@@ -43,7 +43,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
                 case "joinQueue":
                     if(inLobby(user)){ return; }
                     joinQueue(user, personRepository);
-                    lobbyInfo = new LobbyInfo("joinQueue", userLobbyMap.get(user).getGroupId());
+                    lobbyInfo = new LobbyInfo("joinQueue", userLobbyMap.get(user).getGroupId(), userLobbyMap.get(user).getUsersString());
                     break;
                 case "joinLobby":
                     if(inLobby(user)){ return; }
@@ -67,7 +67,11 @@ public class GameManager<T , K extends GameInterface<T, K>> {
                     lobbyInfo = new LobbyInfo("gameStart", userLobbyMap.get(user).getGroupId());
                     break;
             }
-            Response.addMessage(user, "lobbyEvent", lobbyInfo);
+            try {
+                Response.addMessage(userLobbyMap.get(user).getUsers(), "lobbyEvent", lobbyInfo);
+            }catch(Exception e){
+                Response.addMessage(user, "lobbyEvent", lobbyInfo);
+            }
         }
     }
 

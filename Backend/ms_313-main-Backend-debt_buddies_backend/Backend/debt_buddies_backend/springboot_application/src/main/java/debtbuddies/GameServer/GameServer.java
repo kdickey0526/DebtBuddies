@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -65,6 +66,8 @@ public class GameServer {
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
 
+    private static Map < String , Session > usernameSessionMap = new Hashtable<>();
+
     private static Map < Session , User > sessionUserMap = new Hashtable<>();
     private static Map < User , Session > userSessionMap = new Hashtable<>();
     private static Map < User , String > userGameMap = new Hashtable<>();
@@ -80,6 +83,9 @@ public class GameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("game") String game, @PathParam("username") String username) throws IOException {
 
+        if(usernameSessionMap.containsKey(username)){
+            onClose(usernameSessionMap.get(username));
+        }
 
         // server side log
         logger.info("[onOpen] " + username);
@@ -123,6 +129,7 @@ public class GameServer {
             sessionUserMap.put(session, user);
             userSessionMap.put(user, session);
             userGameMap.put(user, game);
+            usernameSessionMap.put(username, session);
             sendMessageToParticularUser(user, "Welcome " + user.toString() + "!");
         }
     }
@@ -173,10 +180,15 @@ public class GameServer {
         // server side log
         logger.info("[onClose] " + user.toString());
 
+        ServerEvent serverEvent = new ServerEvent("leaveLobby", 0);
+
+        Manager.getResponse(userGameMap.get(user), user, serverEvent, Repo);
+
         // remove user from memory mappings
         sessionUserMap.remove(session);
         userSessionMap.remove(user);
         userGameMap.remove(user);
+        usernameSessionMap.remove(user.toString());
 
         // send the message to chat
         broadcast(user.toString() + " disconnected");
@@ -206,7 +218,9 @@ public class GameServer {
      */
     private void sendMessageToParticularUser(User user, String message) {
         try {
-            userSessionMap.get(user).getBasicRemote().sendText(message);
+            if(userSessionMap.get(user) != null){
+                userSessionMap.get(user).getBasicRemote().sendText(message);
+            }
         } catch (IOException e) {
             logger.info("[DM Exception] " + e.getMessage());
         }
