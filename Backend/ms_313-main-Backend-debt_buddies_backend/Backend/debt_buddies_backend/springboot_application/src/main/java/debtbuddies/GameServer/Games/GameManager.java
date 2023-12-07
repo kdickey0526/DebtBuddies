@@ -5,6 +5,7 @@ import debtbuddies.GameServer.Communication.ServerEvent;
 import debtbuddies.GameServer.Communication.Response;
 import debtbuddies.GameServer.PlayerClasses.Group;
 import debtbuddies.GameServer.PlayerClasses.User;
+import debtbuddies.person.PersonRepository;
 
 import java.util.*;
 
@@ -32,17 +33,17 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         lobbyIdLobbyMap.put(LobbyId, Queue);
     }
 
-    public void getResponse(User user, ServerEvent serverEvent){
+    public void getResponse(User user, ServerEvent serverEvent, PersonRepository personRepository){
         String action = serverEvent.getAction();
         if(inGame(user)){
-            gameAction(user, serverEvent);
+            gameAction(user, serverEvent, personRepository);
         }else{
             LobbyInfo lobbyInfo = new LobbyInfo("lobbyError");
             switch(action){
                 case "joinQueue":
                     if(inLobby(user)){ return; }
-                    joinQueue(user);
-                    lobbyInfo = new LobbyInfo("joinQueue", userLobbyMap.get(user).getGroupId());
+                    joinQueue(user, personRepository);
+                    lobbyInfo = new LobbyInfo("joinQueue", userLobbyMap.get(user).getGroupId(), userLobbyMap.get(user).getUsersString());
                     break;
                 case "joinLobby":
                     if(inLobby(user)){ return; }
@@ -62,26 +63,30 @@ public class GameManager<T , K extends GameInterface<T, K>> {
                     break;
                 case "start":
                     if(!inLobby(user) || userLobbyMap.get(user).getGroupId() == 0){ return; }
-                    startGame(user);
+                    startGame(user, personRepository);
                     lobbyInfo = new LobbyInfo("gameStart", userLobbyMap.get(user).getGroupId());
                     break;
             }
-            Response.addMessage(user, "lobbyEvent", lobbyInfo);
+            try {
+                Response.addMessage(userLobbyMap.get(user).getUsers(), "lobbyEvent", lobbyInfo);
+            }catch(Exception e){
+                Response.addMessage(user, "lobbyEvent", lobbyInfo);
+            }
         }
     }
 
-    public void gameAction(User user, ServerEvent serverEvent){
+    public void gameAction(User user, ServerEvent serverEvent, PersonRepository personRepository){
         K server = gameIdServerMap.get(userGameIdMap.get(user));
-        server.getResponse(user, serverEvent);
+        server.getResponse(user, serverEvent, personRepository);
     }
 
-    public void joinQueue(User user){
+    public void joinQueue(User user, PersonRepository personRepository){
         Queue.add(user);
         userLobbyMap.put(user, Queue);
         if(Queue.getNumUsers() == dummyInstance.getQueueSize()){
             LobbyInfo lobbyInfo = new LobbyInfo("gameFound", GameId + 1, Queue.getUsersString());
             Response.addMessage(Queue.getUsers(), "lobbyEvent", lobbyInfo);
-            startGame(user);
+            startGame(user, personRepository);
         }
     }
 
@@ -120,7 +125,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
         lobbyIdLobbyMap.put(new_lobby.getGroupId(), new_lobby);
     }
 
-    public void startGame(User user){
+    public void startGame(User user, PersonRepository personRepository){
 
         Group current_lobby = userLobbyMap.get(user);
 
@@ -145,7 +150,7 @@ public class GameManager<T , K extends GameInterface<T, K>> {
             userGameIdMap.put(current_user, GameId);
         }
 
-        new_game.getResponse(user, new ServerEvent("start"));
+        new_game.getResponse(user, new ServerEvent("start"), personRepository);
     }
 
 }

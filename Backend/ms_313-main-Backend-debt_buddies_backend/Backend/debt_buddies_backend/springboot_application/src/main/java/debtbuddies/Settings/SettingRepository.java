@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
  */ 
 
 public interface SettingRepository extends JpaRepository<Setting, Long> {
-    Setting findByUserName(String userName);
+    Setting findById(int id);
 
     @Transactional
     void deleteById(int id);

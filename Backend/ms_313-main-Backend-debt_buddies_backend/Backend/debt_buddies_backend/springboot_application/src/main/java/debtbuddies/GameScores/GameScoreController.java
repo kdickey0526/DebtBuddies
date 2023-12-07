@@ -33,8 +33,8 @@ public class GameScoreController {
     }
 
     @GetMapping(path = "/GameScores/{id}")
-    GameScore getGameScoreById(@PathVariable String id){
-        return GameScoreRepo.findByuserName(id);
+    GameScore getGameScoreById(@PathVariable int id){
+        return GameScoreRepo.findById(id);
     }
 
     @PostMapping(path = "/GameScores")
@@ -61,12 +61,12 @@ public class GameScoreController {
     }
 
     @PutMapping(path = "/GameScores/{id}")
-    GameScore updateGameScore(@PathVariable String id, @RequestBody GameScore request){
-        GameScore GameScore = GameScoreRepo.findByuserName(id);
+    GameScore updateGameScore(@PathVariable int id, @RequestBody GameScore request){
+        GameScore GameScore = GameScoreRepo.findById(id);
         if(GameScore == null)
             return null;
         GameScoreRepo.save(request);
-        return GameScoreRepo.findByuserName(id);
+        return GameScoreRepo.findById(id);
     }
 
     @DeleteMapping(path = "/GameScores/{id}")

@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface PersonRepository extends JpaRepository<Person, Long>{
 
+	Person findByName(String name);
 	Person findById(int id);
 
-	Person findByName(String name);
+	@Transactional
+	void deleteById(int id);
 
 
 //	List<Person> findTop2ByWhackBetween(int startScore, int endScore, Sort sort);
@@ -17,4 +19,3 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
 	@Transactional
 	void deleteByName(String name);
 }
-

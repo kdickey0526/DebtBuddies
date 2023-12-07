@@ -29,7 +29,6 @@ public class GameScore {
     private int warWon;
     private int warLost;
     private int blackJack;
-    private String userName;
     //
     //private int WarLost;
 
@@ -41,12 +40,11 @@ public class GameScore {
     @JsonIgnore
     private Person person;
 
-    public GameScore(int whack, int WarWon, int BlackJack, int WarLost, String userName) {
+    public GameScore(int whack, int WarWon, int BlackJack, int WarLost) {
         this.whack = whack;
         this.warWon = WarWon;
         this.blackJack = BlackJack;
         this.warLost = WarLost;
-        this.userName = userName;
     }
 
     public GameScore() {
@@ -86,13 +84,7 @@ public class GameScore {
         this.warLost = warLost;
     }
 
-    public String getuserName(){
-        return userName;
-    }
 
-    public void setuserName(String userName){
-        this.userName = userName;
-    }
     public int getWarWon(){
         return warWon;
     }

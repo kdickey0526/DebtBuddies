@@ -47,7 +47,7 @@ public class PersonController {
 	public void addPerson(@RequestBody Person p) {
 		personRepo.save(p);
 	}
-
+	/*
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
@@ -62,6 +62,8 @@ public class PersonController {
 			personRepo.save(person);
 		}
 	}
+
+	 */
 
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
@@ -87,11 +89,11 @@ public class PersonController {
 		return personRepo.findByName(name);
 	}
 
-	@GetMapping(path = "/num/{id}")
-    Person getPersonById( @PathVariable int id){
-        return personRepo.findById(id);
-    }
-
+	@GetMapping(path = "/id/{name}")
+	public Person getPersonById(@PathVariable int name){
+		return personRepo.findById(name);
+	}
+	/*
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
@@ -101,7 +103,7 @@ public class PersonController {
 	public void deleteFriend(@PathVariable String name){
 		personRepo.deleteByName(name);
 	}
-
+	*/
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 401, message = "not authorized!"),
@@ -123,8 +125,8 @@ public class PersonController {
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/persons/{userId}/GameScore/{laptopId}")
-	String assignGameScoreToUser(@PathVariable String userId,@PathVariable int laptopId){
-		Person user = personRepo.findByName(userId);
+	String assignGameScoreToUser(@PathVariable int userId,@PathVariable int laptopId){
+		Person user = personRepo.findById(userId);
 		GameScore laptop = GameScoreRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
@@ -140,9 +142,9 @@ public class PersonController {
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/persons/{userId}/Settings/{laptopId}")
-	String assignSettingsToUser(@PathVariable String userId,@PathVariable String laptopId){
-		Person user = personRepo.findByName(userId);
-		Setting laptop = SettingRepo.findByUserName(laptopId);
+	String assignSettingsToUser(@PathVariable int userId,@PathVariable int laptopId){
+		Person user = personRepo.findById(userId);
+		Setting laptop = SettingRepo.findById(laptopId);
 		if(user == null || laptop == null)
 			return failure;
 		laptop.setPerson(user);
