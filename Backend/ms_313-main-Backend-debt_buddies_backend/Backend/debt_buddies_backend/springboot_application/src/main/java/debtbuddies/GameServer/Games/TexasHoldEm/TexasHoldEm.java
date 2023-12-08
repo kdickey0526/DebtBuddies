@@ -25,6 +25,8 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
     private int ante;
     private int stage;
     private int p_index = 0;
+
+    private int update = 0;
     private TexasHoldEmUser target_player;
     private TexasHoldEmUser final_player;
 
@@ -85,6 +87,7 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
             switch(serverEvent.getAction()) {
                 case "fold":
                     fold(player);
+                    update = 1;
                     break;
                 case "call":
                     call(player);
@@ -124,6 +127,11 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
                         sendEndInfo(end_game(personRepository));
                         return;
                 }
+            }
+
+            if(player == final_player && update == 1){
+                update = 0;
+                final_player = nextTargetPlayer();
             }
 
             if(stage != pre_stage){
@@ -225,10 +233,6 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
     private void fold(TexasHoldEmUser player){
         player.foldHand();
-        if(player == final_player){
-            final_player = nextTargetPlayer();
-        }
-        last_move = "fold";
     }
 
     private void call(TexasHoldEmUser player){
@@ -250,6 +254,16 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
         while(temp.foldStatus()){
             temp = players.get((players.indexOf(temp) + 1) % players.size());
         }
+        return temp;
+    }
+
+    private TexasHoldEmUser prevTargetPlayer(){
+        TexasHoldEmUser temp = players.get((((players.indexOf(target_player) - 1) + num_users) % players.size()));
+
+        while(temp.foldStatus()){
+            temp = players.get((((players.indexOf(target_player) - 1) + players.size()) % players.size()));
+        }
+
         return temp;
     }
 
