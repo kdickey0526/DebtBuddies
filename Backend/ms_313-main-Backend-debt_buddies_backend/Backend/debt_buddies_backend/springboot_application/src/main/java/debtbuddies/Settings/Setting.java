@@ -11,14 +11,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import debtbuddies.person.Person;
 
 /**
- * 
+ *
  * @author Vivek Bengre
- */ 
+ */
 
 @Entity
 public class Setting {
-    
-    /* 
+
+    /*
      * The annotation @ID marks the field below as the primary key for the table created by springboot
      * The @GeneratedValue generates a value if not already present, The strategy in this case is to start from 1 and increment for each table
      */
@@ -26,6 +26,10 @@ public class Setting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private boolean sound;
+    private boolean darkmode;
+
+    private String userName;
+
 /*    private int cpuCores;
     private int ram;
     private String manufacturer;
@@ -44,7 +48,7 @@ public class Setting {
     }
 
     public Setting() {
-                this.sound = true;
+        this.sound = true;
     }
 
     // =============================== Getters and Setters for each field ================================== //
@@ -63,6 +67,22 @@ public class Setting {
 
     public void setSound(boolean sound){
         this.sound = sound;
+    }
+
+    public String getuserName(){
+        return userName;
+    }
+
+    public void setuserName(String userName){
+        this.userName = userName;
+    }
+
+    public boolean getDarkmode(){
+        return darkmode;
+    }
+
+    public void setDarkmode(boolean darkmode){
+        this.darkmode = darkmode;
     }
 
     public Person getPerson(){
