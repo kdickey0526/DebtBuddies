@@ -32,8 +32,8 @@ public class SettingController {
     }
 
     @GetMapping(path = "/Settings/{id}")
-    Setting getSettingById(@PathVariable int id){
-        return SettingRepo.findById(id);
+    Setting getSettingById(@PathVariable String id){
+        return SettingRepo.findByUserName(id);
     }
 
     @PostMapping(path = "/Settings")
@@ -45,12 +45,12 @@ public class SettingController {
     }
 
     @PutMapping(path = "/Settings/{id}")
-    Setting updateSetting(@PathVariable int id, @RequestBody Setting request){
-        Setting Setting = SettingRepo.findById(id);
+    Setting updateSetting(@PathVariable String id, @RequestBody Setting request){
+        Setting Setting = SettingRepo.findByUserName(id);
         if(Setting == null)
             return null;
         SettingRepo.save(request);
-        return SettingRepo.findById(id);
+        return SettingRepo.findByUserName(id);
     }
 
     @DeleteMapping(path = "/Settings/{id}")
