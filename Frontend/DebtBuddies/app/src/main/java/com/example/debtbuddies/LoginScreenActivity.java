@@ -176,6 +176,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 coins = MyApplication.currentUser.getInt("coins");
                 coins++;
                 MyApplication.currentUser.put("coins", coins);
+                MyApplication.currentUser.put("isOnline", true);
                 postRequest();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -213,7 +214,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.d("Volley: ", "object PUT");
+                            Log.d("Volley: ", "new coin value: " + response.getInt("coins") + ", isOnline: " + response.getBoolean("isOnline"));
                             coinCount.setText("Coins: " + response.getInt("coins"));
                         } catch (JSONException e) {
                             e.printStackTrace();
