@@ -225,6 +225,9 @@ public class TexasHoldEm extends Game<TexasHoldEmUser> implements GameInterface<
 
     private void fold(TexasHoldEmUser player){
         player.foldHand();
+        if(player == final_player){
+            final_player = nextTargetPlayer();
+        }
         last_move = "fold";
     }
 
