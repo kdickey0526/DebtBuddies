@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 import androidx.test.filters.LargeTest;
@@ -24,8 +25,9 @@ import static org.hamcrest.core.StringEndsWith.endsWith;
 
 import android.support.test.rule.ActivityTestRule;
 import android.util.Log;
-@RunWith(AndroidJUnit4ClassRunner.class)
+//@RunWith(AndroidJUnit4ClassRunner.class)
 @LargeTest   // large execution time
+@RunWith(MockitoJUnitRunner.class)
 
 public class BlackJackTest {
     private static final int SIMULATED_DELAY_MS = 500;

@@ -188,7 +188,7 @@ public class TexasHoldem extends AppCompatActivity implements WebSocketListener 
                 suit = temp[3].charAt(12);
                 rank = "";
 
-                for (int j = 9; j < temp[4].length() - 1; j++) {
+                for (int j = 9; j < temp[4].length() - 2; j++) {
                     rank += temp[4].charAt(j);
                 }
 

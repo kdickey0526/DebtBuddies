@@ -216,39 +216,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="77dp"
-            android:layout_weight="1"
-            android:onClick="texasOnClickListener">
-
-            <ImageView
-                android:id="@+id/holdemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="texasOnClickListener"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/holdembackground" />
-
-            <TextView
-                android:id="@+id/holdEmText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/indie_flower"
-                android:onClick="texasOnClickListener"
-                android:text="Texas Hold 'Em"
-                android:textColor="@color/white"
-                android:textSize="34sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/holdemBackground"
-                app:layout_constraintHorizontal_bias="0.105"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/holdemBackground" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/spacer4"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -354,5 +321,38 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/leaderboardicon" />
+
+    <ImageView
+        android:id="@+id/holdemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="texasOnClickListener"
+        app:srcCompat="@drawable/holdembackground"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="59dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:layout_weight="1"
+        android:onClick="texasOnClickListener"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="61dp">
+
+        <TextView
+            android:id="@+id/holdEmText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/indie_flower"
+            android:onClick="texasOnClickListener"
+            android:text="Texas Hold 'Em"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/holdemBackground"
+            app:layout_constraintHorizontal_bias="0.105"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/holdemBackground" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
