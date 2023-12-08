@@ -1,59 +1,18 @@
 stages:
   - mavenbuild
   - maventest
-  - mavenDeploy
-  - androidbuild
-  - androidtest
 maven-build: #this is a JOB
   stage: mavenbuild
   tags:
-    - springboot_tag
+    - kyle_tag
   script:
     - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application # to where you have the pom.xml
     - mvn package
 maven-test:
    stage: maventest
    tags:
-     - springboot_tag
+     - kyle_tag
    script:
      - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application
      - mvn test
-   artifacts:
-     paths:
-       - Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application/target/*.jar
-#Below job builds, deploys, executes jar as service.
-autoDeploy:
-  stage: mavenDeploy  #do make a stage with same name!
-  tags:
-  - springboot_tag
-  script:
-    - cd Backend/ms_313-main-Backend-debt_buddies_backend/Backend/debt_buddies_backend/springboot_application
-    - mvn package
-    - sudo mv target/*.jar /target/web-demo.jar 
-    - sudo systemctl stop system-web-demo
-    - sudo systemctl start system-web-demo
-
-android-build:
-  image: afirefly/android-ci:java17 # Docker image that has Android environments installed     gjandres/android-ci:latest
-  stage: androidbuild               # one of the stages listed above
-  tags:
-   - android_tag                    # change to your runner's tag
-  before_script:                    # enable gradlew, change 'Frontend' to where you have 'gradlew'
-    - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Frontend/DebtBuddies/gradlew
-  script:
-    - cd Frontend/DebtBuddies                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-    - ./gradlew build               # gradle build
-
-android-test:
-   image: afirefly/android-ci:java17
-   stage: androidtest               # one of the stages listed above
-   tags:
-    - android_tag                   # change to your runner's tag
-   before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
-     - export GRADLE_USER_HOME=`pwd`/.gradle
-     - chmod +x ./Frontend/DebtBuddies/gradlew
-   script:
-     - cd Frontend/DebtBuddies                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
-     - ./gradlew test               # gradle test
 
