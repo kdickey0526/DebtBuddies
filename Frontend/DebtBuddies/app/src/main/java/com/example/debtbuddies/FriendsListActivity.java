@@ -236,7 +236,7 @@ public class FriendsListActivity extends AppCompatActivity {
                 Log.d("Volley Response", "response received: " + response.toString());
 //                currentFriend = response; // store json object
                 try {
-                    boolean onlineStatus = response.getBoolean("isOnline"); // not sure what it's actually named in backend
+                    boolean onlineStatus = response.getBoolean("online"); // not sure what it's actually named in backend
                     String name = response.getString("name");
                     String status = "";
 
@@ -276,11 +276,11 @@ public class FriendsListActivity extends AppCompatActivity {
         String temp =
                 "{" +
                         "\"guyName\":\"" + MyApplication.currentUserName + "\"," +
-                        "\"guysFriend\":\"" + friend + "}";
+                        "\"guysFriend\":\"" + friend + "\"}";
 
         try {
             postBody = new JSONObject(temp);
-            Log.d(TAG, "Succeeded making JSONObject from user input.");
+            Log.d(TAG, "Succeeded making JSONObject from user input. Object: " + temp);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -296,7 +296,7 @@ public class FriendsListActivity extends AppCompatActivity {
                      */
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e(TAG, "Adding friend successful");
+                        Log.d(TAG, "Adding friend successful");
                     }
                 },
                 new Response.ErrorListener() {

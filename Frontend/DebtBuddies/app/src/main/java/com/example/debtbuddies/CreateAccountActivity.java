@@ -130,22 +130,25 @@ public class CreateAccountActivity extends AppCompatActivity {
         JSONObject postBody;
         String temp =
                 "{" +
+                        "\"name\":\"" + username +"\"," +
                         "\"email\":\"" + email + "\"," +
-                        "\"userName\":\"" + username +"\"," +
-                        "\"password\":\"" + password + "\"," +
-                        "\"person_id\":\"" + 8 +
-                        "}";
+//                        "\"coins\":\"" + 20 + "\"," +
+//                        "\"gameScore\":\"" + null + "\"," +
+//                        "\"settings\":\"" + null + "\"," +
+//                        "\"profile\":\"" + "icon0" + "\"," +
+//                        "\"online\":\"" + true + "\"," +
+                        "\"password\":\"" + password + "\"}";
 
         try {
              postBody = new JSONObject(temp);
-            Log.d(TAG, "Succeeded making JSONObject from user input.");
+            Log.d(TAG, "Succeeded making JSONObject from user input: " + postBody);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                SERVER_URL,
+                "http://coms-309-048.class.las.iastate.edu:8080/person/add",
                 postBody,
                 new Response.Listener<JSONObject>() {
                     /**
@@ -155,6 +158,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         //  tvResponse.setText(response.toString());
+                        Log.d(TAG, "Successful!");
 
                     }
                 },
@@ -166,6 +170,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //tvResponse.setText(error.getMessage());
+                        Log.e(TAG, "UNSUCCESSFUL");
+                        error.printStackTrace();
                     }
                 }
         ){
