@@ -93,6 +93,16 @@ public class FriendsListActivity extends AppCompatActivity {
                                 scroller.setFocusable(ScrollView.NOT_FOCUSABLE);
                                 scroller.post(() -> scroller.fullScroll(View.FOCUS_DOWN));
                                 scroller.setFocusable(ScrollView.NOT_FOCUSABLE);
+
+                                // refresh the user's friends list
+                                if (!MyApplication.loggedInAsGuest) {
+                                    // setup server URL
+                                    SERVER_URL += MyApplication.currentUserName; // or something similar
+                                    // request user's friends list from backend here
+                                    makeJsonArrayReq();
+                                } else {
+                                    listOfFriends.setText("Silly goose, you're logged in as guest! You have no friends.");
+                                }
                             } catch (Exception e) {
                                 // shouldn't throw any exceptions, but just in case
                                 Log.d(TAG, "onKey: Exception when sending message");
@@ -268,7 +278,7 @@ public class FriendsListActivity extends AppCompatActivity {
                         status = "Offline";
 
                     String previousList = listOfFriends.getText().toString();
-                    listOfFriends.setText(previousList + name + getString(R.string.tab) + getString(R.string.tab) + "Status: " + status + "\n");
+                    listOfFriends.setText(previousList + name + getString(R.string.tab) + getString(R.string.tab) + ": " + status + "\n");
                 } catch (Exception e) {
                     Log.e(TAG, "error getting fields from object");
                     e.printStackTrace();
