@@ -51,18 +51,18 @@ public class GuyController {
         return guyRepository.findAllByguyName(guyName);
     }
 
-/*    @ApiResponses(value = {
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success|OK"),
             @ApiResponse(code = 401, message = "not authorized!"),
             @ApiResponse(code = 403, message = "forbidden!!!"),
             @ApiResponse(code = 404, message = "not found!!!") })
     @PostMapping(path = "/guys")
     String createguy(@RequestBody(required = false) Guy guy){
-        if (guy == null || guy.getuserName() == null)
+        if (guy == null)
             return failure;
         guyRepository.save(guy);
         return success;
-    }*/
+    }
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success|OK"),
