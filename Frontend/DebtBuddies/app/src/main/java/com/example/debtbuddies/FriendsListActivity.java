@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
@@ -14,7 +19,13 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * Screen which displays the current user's friends list. Displays their
@@ -23,6 +34,8 @@ import org.json.JSONObject;
 public class FriendsListActivity extends AppCompatActivity {
 
     private TextView listOfFriends;
+    private EditText addingFriend;
+    private ScrollView scroller;
 
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/guys/";
     private JSONArray userFriendList = null;
@@ -46,6 +59,47 @@ public class FriendsListActivity extends AppCompatActivity {
 
         // instantiate views
         listOfFriends = findViewById(R.id.tv_friends);
+        addingFriend = findViewById(R.id.et_addUser);
+        scroller = findViewById(R.id.scroll_view);
+        addingFriend.setFocusableInTouchMode(true);
+        addingFriend.setFocusable(true);
+        addingFriend.requestFocus();
+        addingFriend.setOnKeyListener(new View.OnKeyListener() {
+            /**
+             * Listener for the chat message box that takes user input. Listens for the enter/return key to be pressed,
+             * and then sends the message typed into the box.
+             * @param view the EditText message textbox
+             * @param i the keycode/key pressed
+             * @param keyEvent the state of the key (pressed/down)
+             * @return true if enter is pressed false otherwise
+             */
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                // if user presses enter, send message
+                if (!MyApplication.loggedInAsGuest) {
+                    if ((keyEvent.getAction()) == KeyEvent.ACTION_DOWN && (i == KeyEvent.KEYCODE_ENTER)) {
+                        String newFriend = addingFriend.getText().toString();
+                        newFriend = newFriend.trim();
+                        // make sure message being sent isn't just white space
+                        if (!newFriend.equals("") || !newFriend.isEmpty()) {
+                            // send the message
+                            try {
+                                postRequest(newFriend);
+                                Log.d(TAG, "adding friend successful");
+                            } catch (Exception e) {
+                                // shouldn't throw any exceptions, but just in case
+                                Log.d(TAG, "onKey: Exception when sending message");
+                                e.printStackTrace();
+                            }
+                            addingFriend.setText("");
+                            scroller.post(() -> scroller.fullScroll(View.FOCUS_DOWN));
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         if (MyApplication.enableDarkMode) {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
@@ -97,12 +151,24 @@ public class FriendsListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        super.onResume();
+
+        // enable dark mode if desired
         if (MyApplication.enableDarkMode) {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.darkerlightgray));
         } else {
             getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
         }
-        super.onResume();
+
+        // refresh the user's friends list
+        if (!MyApplication.loggedInAsGuest) {
+            // setup server URL
+            SERVER_URL += MyApplication.currentUserName; // or something similar
+            // request user's friends list from backend here
+            makeJsonArrayReq();
+        } else {
+            listOfFriends.setText("Silly goose, you're logged in as guest! You have no friends.");
+        }
     }
 
     /**
@@ -198,5 +264,81 @@ public class FriendsListActivity extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjReq);
+    }
+
+    /**
+     * Method sets up the JSONObject (which represents the new user) and sends it to the backend.
+     */
+    private void postRequest(String friend) {
+
+        // Convert input to JSONObject
+        JSONObject postBody;
+        String temp =
+                "{" +
+                        "\"guyName\":\"" + MyApplication.currentUserName + "\"," +
+                        "\"guysFriend\":\"" + friend + "}";
+
+        try {
+            postBody = new JSONObject(temp);
+            Log.d(TAG, "Succeeded making JSONObject from user input.");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                "http://coms-309-048.class.las.iastate.edu:8080/guys/",
+                postBody,
+                new Response.Listener<JSONObject>() {
+                    /**
+                     * Does nothing, but is required by the listener.
+                     * @param response the response from the server. Contains a JSONObject.
+                     */
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e(TAG, "Adding friend successful");
+                    }
+                },
+                new Response.ErrorListener() {
+                    /**
+                     * Does nothing, but is required by the listener.
+                     * @param error the error response from the server. Contains a VolleyError
+                     */
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Adding friend unsuccessful");
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            /**
+             * Gets the headers of the request. Not used, but may be required.
+             * @return a HashMap of the headers
+             * @throws AuthFailureError
+             */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                //                headers.put("Authorization", "Bearer YOUR_ACCESS_TOKEN");
+                //                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            /**
+             * Gets the parameters of the request. Not used, but may be required.
+             * @return a HashMap of the parameters
+             */
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //                params.put("param1", "value1");
+                //                params.put("param2", "value2");
+                return params;
+            }
+        };
+
+        Log.d(TAG, "Adding POST request to the queue.");
+        // Adding request to request queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
     }
 }
