@@ -80,4 +80,14 @@
         </LinearLayout>
     </ScrollView>
 
+    <ImageView
+        android:id="@+id/btn_refresh_friendslist"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_addUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_addUser"
+        app:layout_constraintTop_toTopOf="@+id/et_addUser"
+        app:srcCompat="@drawable/refresh" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

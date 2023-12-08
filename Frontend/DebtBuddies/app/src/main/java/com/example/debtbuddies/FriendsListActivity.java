@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class FriendsListActivity extends AppCompatActivity {
     private TextView listOfFriends;
     private EditText addingFriend;
     private ScrollView scroller;
+    private ImageView btn_refresh;
 
     private String SERVER_URL = "http://coms-309-048.class.las.iastate.edu:8080/guys/";
     private JSONArray userFriendList = null;
@@ -60,6 +63,7 @@ public class FriendsListActivity extends AppCompatActivity {
         // instantiate views
         listOfFriends = findViewById(R.id.tv_friends);
         addingFriend = findViewById(R.id.et_addUser);
+        btn_refresh = findViewById(R.id.btn_refresh_friendslist);
         scroller = findViewById(R.id.scroll_view);
         addingFriend.setFocusableInTouchMode(true);
         addingFriend.setFocusable(true);
@@ -150,6 +154,21 @@ public class FriendsListActivity extends AppCompatActivity {
         } else {
             listOfFriends.setText("Silly goose, you're logged in as guest! You have no friends.");
         }
+
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // refresh the user's friends list
+                if (!MyApplication.loggedInAsGuest) {
+                    // setup server URL
+                    SERVER_URL += MyApplication.currentUserName; // or something similar
+                    // request user's friends list from backend here
+                    makeJsonArrayReq();
+                } else {
+                    listOfFriends.setText("Silly goose, you're logged in as guest! You have no friends.");
+                }
+            }
+        });
     }
 
     @Override
