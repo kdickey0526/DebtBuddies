@@ -43,10 +43,14 @@ public class PersonController {
 			@ApiResponse(code = 401, message = "not authorized!"),
 			@ApiResponse(code = 403, message = "forbidden!!!"),
 			@ApiResponse(code = 404, message = "not found!!!") })
-	@PostMapping("/add")
-	public void addPerson(@RequestBody Person p) {
-		personRepo.save(p);
-	}
+
+	@PostMapping(path = "/add")
+    String createPerson(@RequestBody(required = false) Person guy){
+        if (guy == null)
+            return failure;
+        personRepo.save(guy);
+        return success;
+    }
 
 	/*
 	@ApiResponses(value = {
