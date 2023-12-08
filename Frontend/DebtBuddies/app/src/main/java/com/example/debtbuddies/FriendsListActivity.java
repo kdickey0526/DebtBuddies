@@ -86,6 +86,9 @@ public class FriendsListActivity extends AppCompatActivity {
                             try {
                                 postRequest(newFriend);
                                 Log.d(TAG, "adding friend successful");
+                                scroller.setFocusable(ScrollView.NOT_FOCUSABLE);
+                                scroller.post(() -> scroller.fullScroll(View.FOCUS_DOWN));
+                                scroller.setFocusable(ScrollView.NOT_FOCUSABLE);
                             } catch (Exception e) {
                                 // shouldn't throw any exceptions, but just in case
                                 Log.d(TAG, "onKey: Exception when sending message");
@@ -297,6 +300,7 @@ public class FriendsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "Adding friend successful");
+
                     }
                 },
                 new Response.ErrorListener() {
