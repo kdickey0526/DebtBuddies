@@ -2,7 +2,7 @@
 *.apk
 *.ap_
 *.aab
-*.yml
+gitlab-ci.yml
                            
 # files for the dex VM
 *.dex
