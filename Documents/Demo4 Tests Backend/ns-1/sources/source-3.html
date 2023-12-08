@@ -1,0 +1,96 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GameScoreRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.GameScores</a>
+</div>
+
+<h1>Coverage Summary for Class: GameScoreRepository (debtbuddies.GameScores)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">GameScoreRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.GameScores;
+&nbsp;
+&nbsp;import debtbuddies.person.Person;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * 
+&nbsp; * @author Vivek Bengre
+&nbsp; * 
+&nbsp; */ 
+&nbsp;
+&nbsp;public interface GameScoreRepository extends JpaRepository&lt;GameScore, Long&gt; {
+&nbsp;    GameScore findById(int id);
+&nbsp;
+&nbsp;    GameScore findByuserName(String userName);
+&nbsp;
+&nbsp;    List&lt;GameScore&gt; findTop5ByOrderByWhackDesc();
+&nbsp;
+&nbsp;    List&lt;GameScore&gt; findTop5ByOrderByWarWonDesc();
+&nbsp;
+&nbsp;    List&lt;GameScore&gt; findTop5ByOrderByBlackJackDesc();
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    void deleteById(int id);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-07 21:41</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GuyController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">debtbuddies.Guys</a>
+</div>
+
+<h1>Coverage Summary for Class: GuyController (debtbuddies.Guys)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GuyController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (3/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (8/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package debtbuddies.Guys;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import io.swagger.annotations.Api;
+&nbsp;import io.swagger.annotations.ApiResponse;
+&nbsp;import io.swagger.annotations.ApiResponses;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author Vivek Bengre
+&nbsp; *
+&nbsp; */
+&nbsp;
+&nbsp;@Api(value = &quot;guyController&quot;, description = &quot;Rest Api used for guy object&quot;)
+&nbsp;@RestController
+<b class="fc">&nbsp;public class GuyController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    GuyRepository guyRepository;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    private String success = &quot;{\&quot;message\&quot;:\&quot;success\&quot;}&quot;;</b>
+<b class="fc">&nbsp;    private String failure = &quot;{\&quot;message\&quot;:\&quot;failure\&quot;}&quot;;</b>
+&nbsp;
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Success|OK&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;not authorized!&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;forbidden!!!&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;not found!!!&quot;) })
+&nbsp;    @GetMapping(path = &quot;/guys&quot;)
+&nbsp;    List&lt;Guy&gt; getAllguys(){
+<b class="nc">&nbsp;        return guyRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Success|OK&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;not authorized!&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;forbidden!!!&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;not found!!!&quot;) })
+&nbsp;    @GetMapping(path = &quot;/guys/{guyName}&quot;)
+&nbsp;    List&lt;Guy&gt; getguyById(@PathVariable String guyName){
+<b class="nc">&nbsp;        return guyRepository.findAllByguyName(guyName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;/*    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Success|OK&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;not authorized!&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;forbidden!!!&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;not found!!!&quot;) })
+&nbsp;    @PostMapping(path = &quot;/guys&quot;)
+&nbsp;    String createguy(@RequestBody(required = false) Guy guy){
+&nbsp;        if (guy == null || guy.getuserName() == null)
+&nbsp;            return failure;
+&nbsp;        guyRepository.save(guy);
+&nbsp;        return success;
+&nbsp;    }*/
+&nbsp;
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Success|OK&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;not authorized!&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;forbidden!!!&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;not found!!!&quot;) })
+&nbsp;    @PutMapping(&quot;/guys/{id}&quot;)
+&nbsp;    Guy updateguy(@PathVariable int id, @RequestBody Guy request){
+<b class="fc">&nbsp;        Guy guy = guyRepository.findById(id);</b>
+<b class="fc">&nbsp;        if(guy == null)</b>
+<b class="fc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        guyRepository.save(request);</b>
+<b class="nc">&nbsp;        return guyRepository.findById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*@PutMapping(&quot;/guys/{guyId}/laptops/{laptopId}&quot;)
+&nbsp;    String assignLaptopToguy(@PathVariable int guyId,@PathVariable int laptopId){
+&nbsp;        guy guy = guyRepository.findById(guyId);
+&nbsp;        Laptop laptop = laptopRepository.findById(laptopId);
+&nbsp;        if(guy == null || laptop == null)
+&nbsp;            return failure;
+&nbsp;        laptop.setguy(guy);
+&nbsp;        guy.setLaptop(laptop);
+&nbsp;        guyRepository.save(guy);
+&nbsp;        return success;
+&nbsp;    }*/
+&nbsp;
+&nbsp;    @ApiResponses(value = {
+&nbsp;            @ApiResponse(code = 200, message = &quot;Success|OK&quot;),
+&nbsp;            @ApiResponse(code = 401, message = &quot;not authorized!&quot;),
+&nbsp;            @ApiResponse(code = 403, message = &quot;forbidden!!!&quot;),
+&nbsp;            @ApiResponse(code = 404, message = &quot;not found!!!&quot;) })
+&nbsp;    @DeleteMapping(path = &quot;/guys/{id}&quot;)
+&nbsp;    String deleteguy(@PathVariable int id){
+<b class="fc">&nbsp;        guyRepository.deleteById(id);</b>
+<b class="fc">&nbsp;        return success;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-07 21:41</div>
+</div>
+</body>
+</html>
